@@ -11,3 +11,8 @@ Folders content:
 - nrfProg:  SPI programmer that uses jtagkey USB addapter
 - usb_tools: Python scripts to reset and bootload Crazyradio from command line
 - lib: Software libraries to use Crazyradio with Pyton
+
+# Updating the firmware
+
+    python usbtools/launchBootloader.py
+    python usbtools/nrfbootload.py flash cradio-0.53.bin
