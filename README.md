@@ -15,4 +15,4 @@ Folders content:
 # Updating the firmware
 
     python usbtools/launchBootloader.py
-    python usbtools/nrfbootload.py flash cradio-0.53.bin
+    python usbtools/nrfbootload.py flash firmware/bin/cradio.bin

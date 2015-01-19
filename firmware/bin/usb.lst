@@ -1,0 +1,2184 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ANSI-C Compiler
+                                      3 ; Version 3.4.0 #8981 (Jul 12 2014) (Linux)
+                                      4 ; This file was generated Mon Jan 19 14:54:25 2015
+                                      5 ;--------------------------------------------------------
+                                      6 	.module usb
+                                      7 	.optsdcc -mmcs51 --model-large
+                                      8 	
+                                      9 ;--------------------------------------------------------
+                                     10 ; Public variables in this module
+                                     11 ;--------------------------------------------------------
+                                     12 	.globl _ledSet
+                                     13 	.globl _memcpy
+                                     14 	.globl _USB_SWRDT
+                                     15 	.globl _USB_WU
+                                     16 	.globl _USB_SUSPEND
+                                     17 	.globl _USB_IV4
+                                     18 	.globl _USB_IV3
+                                     19 	.globl _USB_IV2
+                                     20 	.globl _USB_IV1
+                                     21 	.globl _USB_IV0
+                                     22 	.globl _EXF2
+                                     23 	.globl _TF2
+                                     24 	.globl _WU
+                                     25 	.globl _USBIRQ_F
+                                     26 	.globl _USBWU
+                                     27 	.globl _SDONE
+                                     28 	.globl _RFIRQ
+                                     29 	.globl _RFRDY
+                                     30 	.globl _P0_7
+                                     31 	.globl _P0_6
+                                     32 	.globl _P0_5
+                                     33 	.globl _P0_4
+                                     34 	.globl _P0_3
+                                     35 	.globl _P0_2
+                                     36 	.globl _P0_1
+                                     37 	.globl _P0_0
+                                     38 	.globl _RFCKEN
+                                     39 	.globl _RFCSN
+                                     40 	.globl _RFCE
+                                     41 	.globl _USBSLP
+                                     42 	.globl _USBCON
+                                     43 	.globl _FCR
+                                     44 	.globl _FPCR
+                                     45 	.globl _FSR
+                                     46 	.globl _CRCH
+                                     47 	.globl _CRCL
+                                     48 	.globl _CCH3
+                                     49 	.globl _CCL3
+                                     50 	.globl _CCH2
+                                     51 	.globl _CCL2
+                                     52 	.globl _CCH1
+                                     53 	.globl _CCL1
+                                     54 	.globl _CCEN
+                                     55 	.globl _TH2
+                                     56 	.globl _TL2
+                                     57 	.globl _T2CON
+                                     58 	.globl _TH1
+                                     59 	.globl _TH0
+                                     60 	.globl _TL1
+                                     61 	.globl _TL0
+                                     62 	.globl _TMOD
+                                     63 	.globl _TCON
+                                     64 	.globl _IRCON
+                                     65 	.globl _IP1
+                                     66 	.globl _IP0
+                                     67 	.globl _IEN1
+                                     68 	.globl _IEN0
+                                     69 	.globl _SSSTAT
+                                     70 	.globl _SSDAT
+                                     71 	.globl _SSCONF
+                                     72 	.globl _P0EXP
+                                     73 	.globl _P0ALT
+                                     74 	.globl _P0DIR
+                                     75 	.globl _P0
+                                     76 	.globl _RFCON
+                                     77 	.globl _RFCTL
+                                     78 	.globl _RFDAT
+                                     79 	.globl _usbBulkSend_PARM_3
+                                     80 	.globl _usbBulkSend_PARM_2
+                                     81 	.globl _inflow
+                                     82 	.globl _IN5BUF
+                                     83 	.globl _OUT5BUF
+                                     84 	.globl _IN4BUF
+                                     85 	.globl _OUT4BUF
+                                     86 	.globl _IN3BUF
+                                     87 	.globl _OUT3BUF
+                                     88 	.globl _IN2BUF
+                                     89 	.globl _OUT2BUF
+                                     90 	.globl _IN1BUF
+                                     91 	.globl _OUT1BUF
+                                     92 	.globl _IN0BUF
+                                     93 	.globl _OUT0BUF
+                                     94 	.globl _SETUPBUF
+                                     95 	.globl _usbInit
+                                     96 	.globl _usbDeinit
+                                     97 	.globl _usbGetState
+                                     98 	.globl _usbWuIsr
+                                     99 	.globl _usbIsr
+                                    100 	.globl _usbBulkOutIsr
+                                    101 	.globl _usbBulkInIsr
+                                    102 	.globl _usbSetupIsr
+                                    103 	.globl _usbVendorIsr
+                                    104 	.globl _usbClassIsr
+                                    105 	.globl _usbBulkSend
+                                    106 	.globl _usbSendIdString
+                                    107 	.globl _usbIsVendorSetup
+                                    108 	.globl _usbGetSetupPacket
+                                    109 	.globl _usbAckSetup
+                                    110 	.globl _usbDismissSetup
+                                    111 ;--------------------------------------------------------
+                                    112 ; special function registers
+                                    113 ;--------------------------------------------------------
+                                    114 	.area RSEG    (ABS,DATA)
+      000000                        115 	.org 0x0000
+                           0000E5   116 _RFDAT	=	0x00e5
+                           0000E6   117 _RFCTL	=	0x00e6
+                           000090   118 _RFCON	=	0x0090
+                           000080   119 _P0	=	0x0080
+                           000094   120 _P0DIR	=	0x0094
+                           000095   121 _P0ALT	=	0x0095
+                           0000C9   122 _P0EXP	=	0x00c9
+                           0000BC   123 _SSCONF	=	0x00bc
+                           0000BD   124 _SSDAT	=	0x00bd
+                           0000BE   125 _SSSTAT	=	0x00be
+                           0000A8   126 _IEN0	=	0x00a8
+                           0000B8   127 _IEN1	=	0x00b8
+                           0000A9   128 _IP0	=	0x00a9
+                           0000B9   129 _IP1	=	0x00b9
+                           0000C0   130 _IRCON	=	0x00c0
+                           000088   131 _TCON	=	0x0088
+                           000089   132 _TMOD	=	0x0089
+                           00008A   133 _TL0	=	0x008a
+                           00008B   134 _TL1	=	0x008b
+                           00008C   135 _TH0	=	0x008c
+                           00008D   136 _TH1	=	0x008d
+                           0000C8   137 _T2CON	=	0x00c8
+                           0000CC   138 _TL2	=	0x00cc
+                           0000CD   139 _TH2	=	0x00cd
+                           0000C1   140 _CCEN	=	0x00c1
+                           0000C2   141 _CCL1	=	0x00c2
+                           0000C3   142 _CCH1	=	0x00c3
+                           0000C4   143 _CCL2	=	0x00c4
+                           0000C5   144 _CCH2	=	0x00c5
+                           0000C6   145 _CCL3	=	0x00c6
+                           0000C7   146 _CCH3	=	0x00c7
+                           0000CA   147 _CRCL	=	0x00ca
+                           0000CB   148 _CRCH	=	0x00cb
+                           0000F8   149 _FSR	=	0x00f8
+                           0000F9   150 _FPCR	=	0x00f9
+                           0000FA   151 _FCR	=	0x00fa
+                           0000A0   152 _USBCON	=	0x00a0
+                           0000D9   153 _USBSLP	=	0x00d9
+                                    154 ;--------------------------------------------------------
+                                    155 ; special function bits
+                                    156 ;--------------------------------------------------------
+                                    157 	.area RSEG    (ABS,DATA)
+      000000                        158 	.org 0x0000
+                           000090   159 _RFCE	=	0x0090
+                           000091   160 _RFCSN	=	0x0091
+                           000092   161 _RFCKEN	=	0x0092
+                           000080   162 _P0_0	=	0x0080
+                           000081   163 _P0_1	=	0x0081
+                           000082   164 _P0_2	=	0x0082
+                           000083   165 _P0_3	=	0x0083
+                           000084   166 _P0_4	=	0x0084
+                           000085   167 _P0_5	=	0x0085
+                           000086   168 _P0_6	=	0x0086
+                           000087   169 _P0_7	=	0x0087
+                           0000C0   170 _RFRDY	=	0x00c0
+                           0000C1   171 _RFIRQ	=	0x00c1
+                           0000C2   172 _SDONE	=	0x00c2
+                           0000C3   173 _USBWU	=	0x00c3
+                           0000C4   174 _USBIRQ_F	=	0x00c4
+                           0000C5   175 _WU	=	0x00c5
+                           0000C6   176 _TF2	=	0x00c6
+                           0000C7   177 _EXF2	=	0x00c7
+                           0000A0   178 _USB_IV0	=	0x00a0
+                           0000A1   179 _USB_IV1	=	0x00a1
+                           0000A2   180 _USB_IV2	=	0x00a2
+                           0000A3   181 _USB_IV3	=	0x00a3
+                           0000A4   182 _USB_IV4	=	0x00a4
+                           0000A5   183 _USB_SUSPEND	=	0x00a5
+                           0000A6   184 _USB_WU	=	0x00a6
+                           0000A7   185 _USB_SWRDT	=	0x00a7
+                                    186 ;--------------------------------------------------------
+                                    187 ; overlayable register banks
+                                    188 ;--------------------------------------------------------
+                                    189 	.area REG_BANK_0	(REL,OVR,DATA)
+      000000                        190 	.ds 8
+                                    191 	.area REG_BANK_1	(REL,OVR,DATA)
+      000000                        192 	.ds 8
+                                    193 ;--------------------------------------------------------
+                                    194 ; overlayable bit register bank
+                                    195 ;--------------------------------------------------------
+                                    196 	.area BIT_BANK	(REL,OVR,DATA)
+      000000                        197 bits:
+      000000                        198 	.ds 1
+                           008000   199 	b0 = bits[0]
+                           008100   200 	b1 = bits[1]
+                           008200   201 	b2 = bits[2]
+                           008300   202 	b3 = bits[3]
+                           008400   203 	b4 = bits[4]
+                           008500   204 	b5 = bits[5]
+                           008600   205 	b6 = bits[6]
+                           008700   206 	b7 = bits[7]
+                                    207 ;--------------------------------------------------------
+                                    208 ; internal ram data
+                                    209 ;--------------------------------------------------------
+                                    210 	.area DSEG    (DATA)
+      000000                        211 _usbBulkInIsr_sloc0_1_0:
+      000000                        212 	.ds 2
+      000002                        213 _usbSetupIsr_sloc0_1_0:
+      000002                        214 	.ds 2
+                                    215 ;--------------------------------------------------------
+                                    216 ; overlayable items in internal ram 
+                                    217 ;--------------------------------------------------------
+                                    218 ;--------------------------------------------------------
+                                    219 ; indirectly addressable internal ram data
+                                    220 ;--------------------------------------------------------
+                                    221 	.area ISEG    (DATA)
+                                    222 ;--------------------------------------------------------
+                                    223 ; absolute internal ram data
+                                    224 ;--------------------------------------------------------
+                                    225 	.area IABS    (ABS,DATA)
+                                    226 	.area IABS    (ABS,DATA)
+                                    227 ;--------------------------------------------------------
+                                    228 ; bit data
+                                    229 ;--------------------------------------------------------
+                                    230 	.area BSEG    (BIT)
+      000000                        231 _launchBootloader:
+      000000                        232 	.ds 1
+      000001                        233 _vendorSetup:
+      000001                        234 	.ds 1
+                                    235 ;--------------------------------------------------------
+                                    236 ; paged external ram data
+                                    237 ;--------------------------------------------------------
+                                    238 	.area PSEG    (PAG,XDATA)
+                                    239 ;--------------------------------------------------------
+                                    240 ; external ram data
+                                    241 ;--------------------------------------------------------
+                                    242 	.area XSEG    (XDATA)
+                           00C7E8   243 _SETUPBUF	=	0xc7e8
+                           00C6C0   244 _OUT0BUF	=	0xc6c0
+                           00C700   245 _IN0BUF	=	0xc700
+                           00C640   246 _OUT1BUF	=	0xc640
+                           00C680   247 _IN1BUF	=	0xc680
+                           00C5C0   248 _OUT2BUF	=	0xc5c0
+                           00C600   249 _IN2BUF	=	0xc600
+                           00C540   250 _OUT3BUF	=	0xc540
+                           00C580   251 _IN3BUF	=	0xc580
+                           00C4C0   252 _OUT4BUF	=	0xc4c0
+                           00C500   253 _IN4BUF	=	0xc500
+                           00C440   254 _OUT5BUF	=	0xc440
+                           00C480   255 _IN5BUF	=	0xc480
+      000000                        256 _configuration:
+      000000                        257 	.ds 1
+      000001                        258 _inflow::
+      000001                        259 	.ds 7
+      000008                        260 _usbBulkInIsr_ep_1_41:
+      000008                        261 	.ds 1
+      000009                        262 _usbBulkSend_PARM_2:
+      000009                        263 	.ds 3
+      00000C                        264 _usbBulkSend_PARM_3:
+      00000C                        265 	.ds 1
+                                    266 ;--------------------------------------------------------
+                                    267 ; absolute external ram data
+                                    268 ;--------------------------------------------------------
+                                    269 	.area XABS    (ABS,XDATA)
+                                    270 ;--------------------------------------------------------
+                                    271 ; external initialized ram data
+                                    272 ;--------------------------------------------------------
+                                    273 	.area XISEG   (XDATA)
+      000000                        274 _state:
+      000000                        275 	.ds 1
+      000001                        276 _radioChannel:
+      000001                        277 	.ds 1
+      000002                        278 _dataRate:
+      000002                        279 	.ds 1
+                                    280 	.area HOME    (CODE)
+                                    281 	.area GSINIT0 (CODE)
+                                    282 	.area GSINIT1 (CODE)
+                                    283 	.area GSINIT2 (CODE)
+                                    284 	.area GSINIT3 (CODE)
+                                    285 	.area GSINIT4 (CODE)
+                                    286 	.area GSINIT5 (CODE)
+                                    287 	.area GSINIT  (CODE)
+                                    288 	.area GSFINAL (CODE)
+                                    289 	.area CSEG    (CODE)
+                                    290 ;--------------------------------------------------------
+                                    291 ; global & static initialisations
+                                    292 ;--------------------------------------------------------
+                                    293 	.area HOME    (CODE)
+                                    294 	.area GSINIT  (CODE)
+                                    295 	.area GSFINAL (CODE)
+                                    296 	.area GSINIT  (CODE)
+                                    297 ;	src/usb.c:48: static __bit launchBootloader = 0;
+      000000 C2*00            [12]  298 	clr	_launchBootloader
+                                    299 ;	src/usb.c:51: static bool vendorSetup=false;
+      000002 C2*01            [12]  300 	clr	_vendorSetup
+                                    301 ;--------------------------------------------------------
+                                    302 ; Home
+                                    303 ;--------------------------------------------------------
+                                    304 	.area HOME    (CODE)
+                                    305 	.area HOME    (CODE)
+                                    306 ;--------------------------------------------------------
+                                    307 ; code
+                                    308 ;--------------------------------------------------------
+                                    309 	.area CSEG    (CODE)
+                                    310 ;------------------------------------------------------------
+                                    311 ;Allocation info for local variables in function 'usbInit'
+                                    312 ;------------------------------------------------------------
+                                    313 ;i                         Allocated with name '_usbInit_i_1_32'
+                                    314 ;------------------------------------------------------------
+                                    315 ;	src/usb.c:57: void usbInit() 
+                                    316 ;	-----------------------------------------
+                                    317 ;	 function usbInit
+                                    318 ;	-----------------------------------------
+      000000                        319 _usbInit:
+                           000007   320 	ar7 = 0x07
+                           000006   321 	ar6 = 0x06
+                           000005   322 	ar5 = 0x05
+                           000004   323 	ar4 = 0x04
+                           000003   324 	ar3 = 0x03
+                           000002   325 	ar2 = 0x02
+                           000001   326 	ar1 = 0x01
+                           000000   327 	ar0 = 0x00
+                                    328 ;	src/usb.c:61: state = POWERED;
+      000000 90r00r00         [24]  329 	mov	dptr,#_state
+      000003 E4               [12]  330 	clr	a
+      000004 F0               [24]  331 	movx	@dptr,a
+                                    332 ;	src/usb.c:64: USBCON = WU;
+      000005 75 A0 40         [24]  333 	mov	_USBCON,#0x40
+                                    334 ;	src/usb.c:67: USBCS |= DISCON;
+      000008 90 C7 D6         [24]  335 	mov	dptr,#0xC7D6
+      00000B E0               [24]  336 	movx	a,@dptr
+      00000C 44 04            [12]  337 	orl	a,#0x04
+      00000E F0               [24]  338 	movx	@dptr,a
+                                    339 ;	src/usb.c:69: for(i=0;i<50000;i++);
+      00000F 7C 50            [12]  340 	mov	r4,#0x50
+      000011 7D C3            [12]  341 	mov	r5,#0xC3
+      000013 7E 00            [12]  342 	mov	r6,#0x00
+      000015 7F 00            [12]  343 	mov	r7,#0x00
+      000017                        344 00104$:
+      000017 1C               [12]  345 	dec	r4
+      000018 BC FF 09         [24]  346 	cjne	r4,#0xFF,00114$
+      00001B 1D               [12]  347 	dec	r5
+      00001C BD FF 05         [24]  348 	cjne	r5,#0xFF,00114$
+      00001F 1E               [12]  349 	dec	r6
+      000020 BE FF 01         [24]  350 	cjne	r6,#0xFF,00114$
+      000023 1F               [12]  351 	dec	r7
+      000024                        352 00114$:
+      000024 EC               [12]  353 	mov	a,r4
+      000025 4D               [12]  354 	orl	a,r5
+      000026 4E               [12]  355 	orl	a,r6
+      000027 4F               [12]  356 	orl	a,r7
+      000028 70 ED            [24]  357 	jnz	00104$
+                                    358 ;	src/usb.c:70: USBCS &= ~DISCON;
+      00002A 90 C7 D6         [24]  359 	mov	dptr,#0xC7D6
+      00002D E0               [24]  360 	movx	a,@dptr
+      00002E 54 FB            [12]  361 	anl	a,#0xFB
+      000030 F0               [24]  362 	movx	@dptr,a
+                                    363 ;	src/usb.c:73: INBULKVAL=0;   //IN EP
+      000031 90 C7 DE         [24]  364 	mov	dptr,#0xC7DE
+      000034 E4               [12]  365 	clr	a
+      000035 F0               [24]  366 	movx	@dptr,a
+                                    367 ;	src/usb.c:74: IN_IEN=0;
+      000036 90 C7 AC         [24]  368 	mov	dptr,#0xC7AC
+      000039 F0               [24]  369 	movx	@dptr,a
+                                    370 ;	src/usb.c:75: OUTBULKVAL=0;  //OUT EP
+      00003A 90 C7 DF         [24]  371 	mov	dptr,#0xC7DF
+      00003D F0               [24]  372 	movx	@dptr,a
+                                    373 ;	src/usb.c:76: OUT_IEN=0;
+      00003E 90 C7 AD         [24]  374 	mov	dptr,#0xC7AD
+      000041 F0               [24]  375 	movx	@dptr,a
+                                    376 ;	src/usb.c:77: INISOVAL=0;    //ISO EP
+      000042 90 C7 E0         [24]  377 	mov	dptr,#0xC7E0
+      000045 F0               [24]  378 	movx	@dptr,a
+                                    379 ;	src/usb.c:78: OUTISOVAL=0;
+      000046 90 C7 00         [24]  380 	mov	dptr,#0xC700
+      000049 F0               [24]  381 	movx	@dptr,a
+                                    382 ;	src/usb.c:81: USBIEN = URESIE | SUSPIE;
+      00004A 90 C7 AE         [24]  383 	mov	dptr,#0xC7AE
+      00004D 74 18            [12]  384 	mov	a,#0x18
+      00004F F0               [24]  385 	movx	@dptr,a
+                                    386 ;	src/usb.c:84: IN_IRQ = 0xFF;
+      000050 90 C7 A9         [24]  387 	mov	dptr,#0xC7A9
+      000053 74 FF            [12]  388 	mov	a,#0xFF
+      000055 F0               [24]  389 	movx	@dptr,a
+                                    390 ;	src/usb.c:85: OUT_IRQ = 0xFF;
+      000056 90 C7 AA         [24]  391 	mov	dptr,#0xC7AA
+      000059 F0               [24]  392 	movx	@dptr,a
+                                    393 ;	src/usb.c:86: USBIRQ = 0xFF;
+      00005A 90 C7 AB         [24]  394 	mov	dptr,#0xC7AB
+      00005D F0               [24]  395 	movx	@dptr,a
+                                    396 ;	src/usb.c:91: BOUT1ADDR = 32;
+      00005E 90 C7 81         [24]  397 	mov	dptr,#0xC781
+      000061 74 20            [12]  398 	mov	a,#0x20
+      000063 F0               [24]  399 	movx	@dptr,a
+                                    400 ;	src/usb.c:92: BOUT2ADDR = 64;
+      000064 90 C7 82         [24]  401 	mov	dptr,#0xC782
+      000067 23               [12]  402 	rl	a
+      000068 F0               [24]  403 	movx	@dptr,a
+                                    404 ;	src/usb.c:93: BOUT3ADDR = 96;
+      000069 90 C7 83         [24]  405 	mov	dptr,#0xC783
+      00006C 74 60            [12]  406 	mov	a,#0x60
+      00006E F0               [24]  407 	movx	@dptr,a
+                                    408 ;	src/usb.c:94: BINSTADDR = 0x40; // EPOUT_Size/4 = 256/4 = 64
+      00006F 90 C7 88         [24]  409 	mov	dptr,#0xC788
+      000072 74 40            [12]  410 	mov	a,#0x40
+      000074 F0               [24]  411 	movx	@dptr,a
+                                    412 ;	src/usb.c:95: BIN1ADDR  = 32;
+      000075 90 C7 89         [24]  413 	mov	dptr,#0xC789
+      000078 03               [12]  414 	rr	a
+      000079 F0               [24]  415 	movx	@dptr,a
+                                    416 ;	src/usb.c:96: BIN2ADDR  = 64;
+      00007A 90 C7 8A         [24]  417 	mov	dptr,#0xC78A
+      00007D 23               [12]  418 	rl	a
+      00007E F0               [24]  419 	movx	@dptr,a
+                                    420 ;	src/usb.c:97: BIN3ADDR  = 96;
+      00007F 90 C7 8B         [24]  421 	mov	dptr,#0xC78B
+      000082 74 60            [12]  422 	mov	a,#0x60
+      000084 F0               [24]  423 	movx	@dptr,a
+                                    424 ;	src/usb.c:100: IEN1 |= 0x18;  
+      000085 43 B8 18         [24]  425 	orl	_IEN1,#0x18
+      000088 22               [24]  426 	ret
+                                    427 ;------------------------------------------------------------
+                                    428 ;Allocation info for local variables in function 'usbDeinit'
+                                    429 ;------------------------------------------------------------
+                                    430 ;	src/usb.c:103: void usbDeinit()
+                                    431 ;	-----------------------------------------
+                                    432 ;	 function usbDeinit
+                                    433 ;	-----------------------------------------
+      000089                        434 _usbDeinit:
+                                    435 ;	src/usb.c:105: state = POWERED; //Deactivate all mechanism
+      000089 90r00r00         [24]  436 	mov	dptr,#_state
+      00008C E4               [12]  437 	clr	a
+      00008D F0               [24]  438 	movx	@dptr,a
+                                    439 ;	src/usb.c:108: IEN1 &= (~0x18);
+      00008E AF B8            [24]  440 	mov	r7,_IEN1
+      000090 74 E7            [12]  441 	mov	a,#0xE7
+      000092 5F               [12]  442 	anl	a,r7
+      000093 F5 B8            [12]  443 	mov	_IEN1,a
+                                    444 ;	src/usb.c:111: USB_SUSPEND = 1;
+      000095 D2 A5            [12]  445 	setb	_USB_SUSPEND
+      000097 22               [24]  446 	ret
+                                    447 ;------------------------------------------------------------
+                                    448 ;Allocation info for local variables in function 'usbGetState'
+                                    449 ;------------------------------------------------------------
+                                    450 ;	src/usb.c:114: usbState_t usbGetState()
+                                    451 ;	-----------------------------------------
+                                    452 ;	 function usbGetState
+                                    453 ;	-----------------------------------------
+      000098                        454 _usbGetState:
+                                    455 ;	src/usb.c:116: return state;
+      000098 90r00r00         [24]  456 	mov	dptr,#_state
+      00009B E0               [24]  457 	movx	a,@dptr
+      00009C F5 82            [12]  458 	mov	dpl,a
+      00009E 22               [24]  459 	ret
+                                    460 ;------------------------------------------------------------
+                                    461 ;Allocation info for local variables in function 'usbWuIsr'
+                                    462 ;------------------------------------------------------------
+                                    463 ;	src/usb.c:119: void usbWuIsr() __interrupt(11)
+                                    464 ;	-----------------------------------------
+                                    465 ;	 function usbWuIsr
+                                    466 ;	-----------------------------------------
+      00009F                        467 _usbWuIsr:
+                                    468 ;	src/usb.c:122: return;
+      00009F 32               [24]  469 	reti
+                                    470 ;	eliminated unneeded mov psw,# (no regs used in bank)
+                                    471 ;	eliminated unneeded push/pop psw
+                                    472 ;	eliminated unneeded push/pop dpl
+                                    473 ;	eliminated unneeded push/pop dph
+                                    474 ;	eliminated unneeded push/pop b
+                                    475 ;	eliminated unneeded push/pop acc
+                                    476 ;------------------------------------------------------------
+                                    477 ;Allocation info for local variables in function 'usbIsr'
+                                    478 ;------------------------------------------------------------
+                                    479 ;	src/usb.c:127: void usbIsr() __interrupt(12)  __using(1)
+                                    480 ;	-----------------------------------------
+                                    481 ;	 function usbIsr
+                                    482 ;	-----------------------------------------
+      0000A0                        483 _usbIsr:
+                           00000F   484 	ar7 = 0x0F
+                           00000E   485 	ar6 = 0x0E
+                           00000D   486 	ar5 = 0x0D
+                           00000C   487 	ar4 = 0x0C
+                           00000B   488 	ar3 = 0x0B
+                           00000A   489 	ar2 = 0x0A
+                           000009   490 	ar1 = 0x09
+                           000008   491 	ar0 = 0x08
+      0000A0 C0*00            [24]  492 	push	bits
+      0000A2 C0 E0            [24]  493 	push	acc
+      0000A4 C0 F0            [24]  494 	push	b
+      0000A6 C0 82            [24]  495 	push	dpl
+      0000A8 C0 83            [24]  496 	push	dph
+      0000AA C0 07            [24]  497 	push	(0+7)
+      0000AC C0 06            [24]  498 	push	(0+6)
+      0000AE C0 05            [24]  499 	push	(0+5)
+      0000B0 C0 04            [24]  500 	push	(0+4)
+      0000B2 C0 03            [24]  501 	push	(0+3)
+      0000B4 C0 02            [24]  502 	push	(0+2)
+      0000B6 C0 01            [24]  503 	push	(0+1)
+      0000B8 C0 00            [24]  504 	push	(0+0)
+      0000BA C0 D0            [24]  505 	push	psw
+      0000BC 75 D0 08         [24]  506 	mov	psw,#0x08
+                                    507 ;	src/usb.c:130: switch (IVEC) {
+      0000BF 90 C7 A8         [24]  508 	mov	dptr,#0xC7A8
+      0000C2 E0               [24]  509 	movx	a,@dptr
+      0000C3 FF               [12]  510 	mov	r7,a
+      0000C4 60 63            [24]  511 	jz	00101$
+      0000C6 BF 04 03         [24]  512 	cjne	r7,#0x04,00200$
+      0000C9 02r01r7A         [24]  513 	ljmp	00111$
+      0000CC                        514 00200$:
+      0000CC BF 08 03         [24]  515 	cjne	r7,#0x08,00201$
+      0000CF 02r01rC6         [24]  516 	ljmp	00115$
+      0000D2                        517 00201$:
+      0000D2 BF 0C 03         [24]  518 	cjne	r7,#0x0C,00202$
+      0000D5 02r01rCF         [24]  519 	ljmp	00116$
+      0000D8                        520 00202$:
+      0000D8 BF 10 03         [24]  521 	cjne	r7,#0x10,00203$
+      0000DB 02r01rD8         [24]  522 	ljmp	00117$
+      0000DE                        523 00203$:
+      0000DE BF 18 03         [24]  524 	cjne	r7,#0x18,00204$
+      0000E1 02r02r03         [24]  525 	ljmp	00118$
+      0000E4                        526 00204$:
+      0000E4 BF 1C 03         [24]  527 	cjne	r7,#0x1C,00205$
+      0000E7 02r02r17         [24]  528 	ljmp	00119$
+      0000EA                        529 00205$:
+      0000EA BF 20 03         [24]  530 	cjne	r7,#0x20,00206$
+      0000ED 02r02r2B         [24]  531 	ljmp	00120$
+      0000F0                        532 00206$:
+      0000F0 BF 24 03         [24]  533 	cjne	r7,#0x24,00207$
+      0000F3 02r02r33         [24]  534 	ljmp	00121$
+      0000F6                        535 00207$:
+      0000F6 BF 28 03         [24]  536 	cjne	r7,#0x28,00208$
+      0000F9 02r02r3B         [24]  537 	ljmp	00122$
+      0000FC                        538 00208$:
+      0000FC BF 2C 03         [24]  539 	cjne	r7,#0x2C,00209$
+      0000FF 02r02r43         [24]  540 	ljmp	00123$
+      000102                        541 00209$:
+      000102 BF 30 03         [24]  542 	cjne	r7,#0x30,00210$
+      000105 02r02r4B         [24]  543 	ljmp	00124$
+      000108                        544 00210$:
+      000108 BF 34 03         [24]  545 	cjne	r7,#0x34,00211$
+      00010B 02r02r53         [24]  546 	ljmp	00125$
+      00010E                        547 00211$:
+      00010E BF 38 03         [24]  548 	cjne	r7,#0x38,00212$
+      000111 02r02r5B         [24]  549 	ljmp	00126$
+      000114                        550 00212$:
+      000114 BF 3C 03         [24]  551 	cjne	r7,#0x3C,00213$
+      000117 02r02r63         [24]  552 	ljmp	00127$
+      00011A                        553 00213$:
+      00011A BF 40 03         [24]  554 	cjne	r7,#0x40,00214$
+      00011D 02r02r6B         [24]  555 	ljmp	00128$
+      000120                        556 00214$:
+      000120 BF 44 03         [24]  557 	cjne	r7,#0x44,00215$
+      000123 02r02r73         [24]  558 	ljmp	00129$
+      000126                        559 00215$:
+      000126 02r02r79         [24]  560 	ljmp	00131$
+                                    561 ;	src/usb.c:131: case IRQ_SUDAV:
+      000129                        562 00101$:
+                                    563 ;	src/usb.c:133: if(IS_STANDARD(SETUPBUF[0]))
+      000129 90 C7 E8         [24]  564 	mov	dptr,#_SETUPBUF
+      00012C E0               [24]  565 	movx	a,@dptr
+      00012D FF               [12]  566 	mov	r7,a
+      00012E 54 60            [12]  567 	anl	a,#0x60
+      000130 60 02            [24]  568 	jz	00217$
+      000132 80 0B            [24]  569 	sjmp	00109$
+      000134                        570 00217$:
+                                    571 ;	src/usb.c:134: usbSetupIsr();
+      000134 75 D0 00         [24]  572 	mov	psw,#0x00
+      000137 12r03r99         [24]  573 	lcall	_usbSetupIsr
+      00013A 75 D0 08         [24]  574 	mov	psw,#0x08
+      00013D 80 32            [24]  575 	sjmp	00110$
+      00013F                        576 00109$:
+                                    577 ;	src/usb.c:135: else if(IS_VENDOR(SETUPBUF[0]))
+      00013F 90 C7 E8         [24]  578 	mov	dptr,#_SETUPBUF
+      000142 E0               [24]  579 	movx	a,@dptr
+      000143 FF               [12]  580 	mov	r7,a
+      000144 53 0F 60         [24]  581 	anl	ar7,#0x60
+      000147 BF 40 0B         [24]  582 	cjne	r7,#0x40,00106$
+                                    583 ;	src/usb.c:136: usbVendorIsr();
+      00014A 75 D0 00         [24]  584 	mov	psw,#0x00
+      00014D 12r08r27         [24]  585 	lcall	_usbVendorIsr
+      000150 75 D0 08         [24]  586 	mov	psw,#0x08
+      000153 80 1C            [24]  587 	sjmp	00110$
+      000155                        588 00106$:
+                                    589 ;	src/usb.c:137: else if(IS_CLASS(SETUPBUF[0]))
+      000155 90 C7 E8         [24]  590 	mov	dptr,#_SETUPBUF
+      000158 E0               [24]  591 	movx	a,@dptr
+      000159 FF               [12]  592 	mov	r7,a
+      00015A 53 0F 60         [24]  593 	anl	ar7,#0x60
+      00015D BF 20 0B         [24]  594 	cjne	r7,#0x20,00103$
+                                    595 ;	src/usb.c:138: usbClassIsr();
+      000160 75 D0 00         [24]  596 	mov	psw,#0x00
+      000163 12r08r2A         [24]  597 	lcall	_usbClassIsr
+      000166 75 D0 08         [24]  598 	mov	psw,#0x08
+      000169 80 06            [24]  599 	sjmp	00110$
+      00016B                        600 00103$:
+                                    601 ;	src/usb.c:140: EP0CS = EP0STALL; //Stall to error
+      00016B 90 C7 B4         [24]  602 	mov	dptr,#0xC7B4
+      00016E 74 01            [12]  603 	mov	a,#0x01
+      000170 F0               [24]  604 	movx	@dptr,a
+      000171                        605 00110$:
+                                    606 ;	src/usb.c:142: USBIRQ = SUDAVIR;
+      000171 90 C7 AB         [24]  607 	mov	dptr,#0xC7AB
+      000174 74 01            [12]  608 	mov	a,#0x01
+      000176 F0               [24]  609 	movx	@dptr,a
+                                    610 ;	src/usb.c:143: break;
+      000177 02r02r79         [24]  611 	ljmp	00131$
+                                    612 ;	src/usb.c:144: case IRQ_SOF:
+      00017A                        613 00111$:
+                                    614 ;	src/usb.c:145: if((ledTimeout>=0) && (!ledTimeout--)) {
+      00017A 90r00r00         [24]  615 	mov	dptr,#_ledTimeout
+      00017D E0               [24]  616 	movx	a,@dptr
+      00017E FE               [12]  617 	mov	r6,a
+      00017F A3               [24]  618 	inc	dptr
+      000180 E0               [24]  619 	movx	a,@dptr
+      000181 FF               [12]  620 	mov	r7,a
+      000182 20 E7 38         [24]  621 	jb	acc.7,00113$
+      000185 8E 0C            [24]  622 	mov	ar4,r6
+      000187 8F 0D            [24]  623 	mov	ar5,r7
+      000189 1E               [12]  624 	dec	r6
+      00018A BE FF 01         [24]  625 	cjne	r6,#0xFF,00223$
+      00018D 1F               [12]  626 	dec	r7
+      00018E                        627 00223$:
+      00018E 90r00r00         [24]  628 	mov	dptr,#_ledTimeout
+      000191 EE               [12]  629 	mov	a,r6
+      000192 F0               [24]  630 	movx	@dptr,a
+      000193 EF               [12]  631 	mov	a,r7
+      000194 A3               [24]  632 	inc	dptr
+      000195 F0               [24]  633 	movx	@dptr,a
+      000196 EC               [12]  634 	mov	a,r4
+      000197 4D               [12]  635 	orl	a,r5
+      000198 70 23            [24]  636 	jnz	00113$
+                                    637 ;	src/usb.c:146: ledSet(LED_RED, false);
+      00019A C2*00            [12]  638 	clr	_ledSet_PARM_2
+      00019C 75 82 01         [24]  639 	mov	dpl,#0x01
+      00019F 75 D0 00         [24]  640 	mov	psw,#0x00
+      0001A2 12r00r00         [24]  641 	lcall	_ledSet
+      0001A5 75 D0 08         [24]  642 	mov	psw,#0x08
+                                    643 ;	src/usb.c:147: ledSet(LED_GREEN, false);
+      0001A8 C2*00            [12]  644 	clr	_ledSet_PARM_2
+      0001AA 75 82 02         [24]  645 	mov	dpl,#0x02
+      0001AD 75 D0 00         [24]  646 	mov	psw,#0x00
+      0001B0 12r00r00         [24]  647 	lcall	_ledSet
+      0001B3 75 D0 08         [24]  648 	mov	psw,#0x08
+                                    649 ;	src/usb.c:148: ledTimeout = 0;
+      0001B6 90r00r00         [24]  650 	mov	dptr,#_ledTimeout
+      0001B9 E4               [12]  651 	clr	a
+      0001BA F0               [24]  652 	movx	@dptr,a
+      0001BB A3               [24]  653 	inc	dptr
+      0001BC F0               [24]  654 	movx	@dptr,a
+      0001BD                        655 00113$:
+                                    656 ;	src/usb.c:150: USBIRQ = SOFIR;
+      0001BD 90 C7 AB         [24]  657 	mov	dptr,#0xC7AB
+      0001C0 74 02            [12]  658 	mov	a,#0x02
+      0001C2 F0               [24]  659 	movx	@dptr,a
+                                    660 ;	src/usb.c:151: break;
+      0001C3 02r02r79         [24]  661 	ljmp	00131$
+                                    662 ;	src/usb.c:152: case IRQ_SUTOK:
+      0001C6                        663 00115$:
+                                    664 ;	src/usb.c:153: USBIRQ = SUTOKIR;
+      0001C6 90 C7 AB         [24]  665 	mov	dptr,#0xC7AB
+      0001C9 74 04            [12]  666 	mov	a,#0x04
+      0001CB F0               [24]  667 	movx	@dptr,a
+                                    668 ;	src/usb.c:154: break;
+      0001CC 02r02r79         [24]  669 	ljmp	00131$
+                                    670 ;	src/usb.c:155: case IRQ_SUSPEND:
+      0001CF                        671 00116$:
+                                    672 ;	src/usb.c:156: USBIRQ = SUSPIR;
+      0001CF 90 C7 AB         [24]  673 	mov	dptr,#0xC7AB
+      0001D2 74 08            [12]  674 	mov	a,#0x08
+      0001D4 F0               [24]  675 	movx	@dptr,a
+                                    676 ;	src/usb.c:157: break;
+      0001D5 02r02r79         [24]  677 	ljmp	00131$
+                                    678 ;	src/usb.c:158: case IRQ_USBRESET:
+      0001D8                        679 00117$:
+                                    680 ;	src/usb.c:160: state = DEFAULT;
+      0001D8 90r00r00         [24]  681 	mov	dptr,#_state
+      0001DB 74 01            [12]  682 	mov	a,#0x01
+      0001DD F0               [24]  683 	movx	@dptr,a
+                                    684 ;	src/usb.c:163: INBULKVAL = IN0VAL;
+      0001DE 90 C7 DE         [24]  685 	mov	dptr,#0xC7DE
+      0001E1 F0               [24]  686 	movx	@dptr,a
+                                    687 ;	src/usb.c:164: OUTBULKVAL= OUT0VAL;
+      0001E2 90 C7 DF         [24]  688 	mov	dptr,#0xC7DF
+      0001E5 F0               [24]  689 	movx	@dptr,a
+                                    690 ;	src/usb.c:167: OUT0BC = BCDUMMY;
+      0001E6 90 C7 C5         [24]  691 	mov	dptr,#0xC7C5
+      0001E9 F0               [24]  692 	movx	@dptr,a
+                                    693 ;	src/usb.c:170: IN_IEN = IN0IE;
+      0001EA 90 C7 AC         [24]  694 	mov	dptr,#0xC7AC
+      0001ED F0               [24]  695 	movx	@dptr,a
+                                    696 ;	src/usb.c:171: OUT_IEN = OUT0IE;
+      0001EE 90 C7 AD         [24]  697 	mov	dptr,#0xC7AD
+      0001F1 F0               [24]  698 	movx	@dptr,a
+                                    699 ;	src/usb.c:172: USBIEN |= SUDAVIE | SUTOKIE;
+      0001F2 90 C7 AE         [24]  700 	mov	dptr,#0xC7AE
+      0001F5 E0               [24]  701 	movx	a,@dptr
+      0001F6 44 05            [12]  702 	orl	a,#0x05
+      0001F8 FF               [12]  703 	mov	r7,a
+      0001F9 F0               [24]  704 	movx	@dptr,a
+                                    705 ;	src/usb.c:174: USBIRQ = URESIR;
+      0001FA 90 C7 AB         [24]  706 	mov	dptr,#0xC7AB
+      0001FD 74 10            [12]  707 	mov	a,#0x10
+      0001FF F0               [24]  708 	movx	@dptr,a
+                                    709 ;	src/usb.c:175: break;
+      000200 02r02r79         [24]  710 	ljmp	00131$
+                                    711 ;	src/usb.c:176: case IRQ_EP0IN:
+      000203                        712 00118$:
+                                    713 ;	src/usb.c:177: usbBulkInIsr(0);
+      000203 75 82 00         [24]  714 	mov	dpl,#0x00
+      000206 75 D0 00         [24]  715 	mov	psw,#0x00
+      000209 12r02r97         [24]  716 	lcall	_usbBulkInIsr
+      00020C 75 D0 08         [24]  717 	mov	psw,#0x08
+                                    718 ;	src/usb.c:178: IN_IRQ = IN0IR;
+      00020F 90 C7 A9         [24]  719 	mov	dptr,#0xC7A9
+      000212 74 01            [12]  720 	mov	a,#0x01
+      000214 F0               [24]  721 	movx	@dptr,a
+                                    722 ;	src/usb.c:179: break;
+                                    723 ;	src/usb.c:180: case IRQ_EP0OUT:
+      000215 80 62            [24]  724 	sjmp	00131$
+      000217                        725 00119$:
+                                    726 ;	src/usb.c:181: usbBulkOutIsr(0);
+      000217 75 82 00         [24]  727 	mov	dpl,#0x00
+      00021A 75 D0 00         [24]  728 	mov	psw,#0x00
+      00021D 12r02r96         [24]  729 	lcall	_usbBulkOutIsr
+      000220 75 D0 08         [24]  730 	mov	psw,#0x08
+                                    731 ;	src/usb.c:183: OUT_IRQ = OUT0IR;
+      000223 90 C7 AA         [24]  732 	mov	dptr,#0xC7AA
+      000226 74 01            [12]  733 	mov	a,#0x01
+      000228 F0               [24]  734 	movx	@dptr,a
+                                    735 ;	src/usb.c:184: break;
+                                    736 ;	src/usb.c:185: case IRQ_EP1IN:
+      000229 80 4E            [24]  737 	sjmp	00131$
+      00022B                        738 00120$:
+                                    739 ;	src/usb.c:186: IN_IRQ = IN1IR;
+      00022B 90 C7 A9         [24]  740 	mov	dptr,#0xC7A9
+      00022E 74 02            [12]  741 	mov	a,#0x02
+      000230 F0               [24]  742 	movx	@dptr,a
+                                    743 ;	src/usb.c:187: break;
+                                    744 ;	src/usb.c:188: case IRQ_EP1OUT:
+      000231 80 46            [24]  745 	sjmp	00131$
+      000233                        746 00121$:
+                                    747 ;	src/usb.c:189: OUT_IRQ = OUT1IR;
+      000233 90 C7 AA         [24]  748 	mov	dptr,#0xC7AA
+      000236 74 02            [12]  749 	mov	a,#0x02
+      000238 F0               [24]  750 	movx	@dptr,a
+                                    751 ;	src/usb.c:190: break;
+                                    752 ;	src/usb.c:191: case IRQ_EP2IN:
+      000239 80 3E            [24]  753 	sjmp	00131$
+      00023B                        754 00122$:
+                                    755 ;	src/usb.c:192: IN_IRQ = IN2IR;
+      00023B 90 C7 A9         [24]  756 	mov	dptr,#0xC7A9
+      00023E 74 04            [12]  757 	mov	a,#0x04
+      000240 F0               [24]  758 	movx	@dptr,a
+                                    759 ;	src/usb.c:193: break;
+                                    760 ;	src/usb.c:194: case IRQ_EP2OUT:
+      000241 80 36            [24]  761 	sjmp	00131$
+      000243                        762 00123$:
+                                    763 ;	src/usb.c:195: OUT_IRQ = OUT2IR;
+      000243 90 C7 AA         [24]  764 	mov	dptr,#0xC7AA
+      000246 74 04            [12]  765 	mov	a,#0x04
+      000248 F0               [24]  766 	movx	@dptr,a
+                                    767 ;	src/usb.c:196: break;
+                                    768 ;	src/usb.c:197: case IRQ_EP3IN:
+      000249 80 2E            [24]  769 	sjmp	00131$
+      00024B                        770 00124$:
+                                    771 ;	src/usb.c:198: IN_IRQ = IN3IR;
+      00024B 90 C7 A9         [24]  772 	mov	dptr,#0xC7A9
+      00024E 74 08            [12]  773 	mov	a,#0x08
+      000250 F0               [24]  774 	movx	@dptr,a
+                                    775 ;	src/usb.c:199: break;
+                                    776 ;	src/usb.c:200: case IRQ_EP3OUT:
+      000251 80 26            [24]  777 	sjmp	00131$
+      000253                        778 00125$:
+                                    779 ;	src/usb.c:201: OUT_IRQ = OUT3IR;
+      000253 90 C7 AA         [24]  780 	mov	dptr,#0xC7AA
+      000256 74 08            [12]  781 	mov	a,#0x08
+      000258 F0               [24]  782 	movx	@dptr,a
+                                    783 ;	src/usb.c:202: break;
+                                    784 ;	src/usb.c:203: case IRQ_EP4IN:
+      000259 80 1E            [24]  785 	sjmp	00131$
+      00025B                        786 00126$:
+                                    787 ;	src/usb.c:204: IN_IRQ = IN4IR;
+      00025B 90 C7 A9         [24]  788 	mov	dptr,#0xC7A9
+      00025E 74 10            [12]  789 	mov	a,#0x10
+      000260 F0               [24]  790 	movx	@dptr,a
+                                    791 ;	src/usb.c:205: break;
+                                    792 ;	src/usb.c:206: case IRQ_EP4OUT:
+      000261 80 16            [24]  793 	sjmp	00131$
+      000263                        794 00127$:
+                                    795 ;	src/usb.c:207: OUT_IRQ = OUT4IR;
+      000263 90 C7 AA         [24]  796 	mov	dptr,#0xC7AA
+      000266 74 10            [12]  797 	mov	a,#0x10
+      000268 F0               [24]  798 	movx	@dptr,a
+                                    799 ;	src/usb.c:208: break;
+                                    800 ;	src/usb.c:209: case IRQ_EP5IN:
+      000269 80 0E            [24]  801 	sjmp	00131$
+      00026B                        802 00128$:
+                                    803 ;	src/usb.c:210: IN_IRQ = IN5IR;
+      00026B 90 C7 A9         [24]  804 	mov	dptr,#0xC7A9
+      00026E 74 20            [12]  805 	mov	a,#0x20
+      000270 F0               [24]  806 	movx	@dptr,a
+                                    807 ;	src/usb.c:211: break;
+                                    808 ;	src/usb.c:212: case IRQ_EP5OUT:
+      000271 80 06            [24]  809 	sjmp	00131$
+      000273                        810 00129$:
+                                    811 ;	src/usb.c:213: OUT_IRQ = OUT5IR;  
+      000273 90 C7 AA         [24]  812 	mov	dptr,#0xC7AA
+      000276 74 20            [12]  813 	mov	a,#0x20
+      000278 F0               [24]  814 	movx	@dptr,a
+                                    815 ;	src/usb.c:215: }
+      000279                        816 00131$:
+      000279 D0 D0            [24]  817 	pop	psw
+      00027B D0 00            [24]  818 	pop	(0+0)
+      00027D D0 01            [24]  819 	pop	(0+1)
+      00027F D0 02            [24]  820 	pop	(0+2)
+      000281 D0 03            [24]  821 	pop	(0+3)
+      000283 D0 04            [24]  822 	pop	(0+4)
+      000285 D0 05            [24]  823 	pop	(0+5)
+      000287 D0 06            [24]  824 	pop	(0+6)
+      000289 D0 07            [24]  825 	pop	(0+7)
+      00028B D0 83            [24]  826 	pop	dph
+      00028D D0 82            [24]  827 	pop	dpl
+      00028F D0 F0            [24]  828 	pop	b
+      000291 D0 E0            [24]  829 	pop	acc
+      000293 D0*00            [24]  830 	pop	bits
+      000295 32               [24]  831 	reti
+                                    832 ;------------------------------------------------------------
+                                    833 ;Allocation info for local variables in function 'usbBulkOutIsr'
+                                    834 ;------------------------------------------------------------
+                                    835 ;ep                        Allocated with name '_usbBulkOutIsr_ep_1_39'
+                                    836 ;------------------------------------------------------------
+                                    837 ;	src/usb.c:221: void usbBulkOutIsr(char ep) {
+                                    838 ;	-----------------------------------------
+                                    839 ;	 function usbBulkOutIsr
+                                    840 ;	-----------------------------------------
+      000296                        841 _usbBulkOutIsr:
+                           000007   842 	ar7 = 0x07
+                           000006   843 	ar6 = 0x06
+                           000005   844 	ar5 = 0x05
+                           000004   845 	ar4 = 0x04
+                           000003   846 	ar3 = 0x03
+                           000002   847 	ar2 = 0x02
+                           000001   848 	ar1 = 0x01
+                           000000   849 	ar0 = 0x00
+                                    850 ;	src/usb.c:223: return;  
+      000296 22               [24]  851 	ret
+                                    852 ;------------------------------------------------------------
+                                    853 ;Allocation info for local variables in function 'usbBulkInIsr'
+                                    854 ;------------------------------------------------------------
+                                    855 ;sloc0                     Allocated with name '_usbBulkInIsr_sloc0_1_0'
+                                    856 ;ep                        Allocated with name '_usbBulkInIsr_ep_1_41'
+                                    857 ;lenToSend                 Allocated with name '_usbBulkInIsr_lenToSend_1_42'
+                                    858 ;------------------------------------------------------------
+                                    859 ;	src/usb.c:229: void usbBulkInIsr(char ep)
+                                    860 ;	-----------------------------------------
+                                    861 ;	 function usbBulkInIsr
+                                    862 ;	-----------------------------------------
+      000297                        863 _usbBulkInIsr:
+      000297 E5 82            [12]  864 	mov	a,dpl
+      000299 90r00r08         [24]  865 	mov	dptr,#_usbBulkInIsr_ep_1_41
+      00029C F0               [24]  866 	movx	@dptr,a
+                                    867 ;	src/usb.c:231: unsigned char lenToSend = (inflow[ep].len<64)?inflow[ep].len:64;
+      00029D E0               [24]  868 	movx	a,@dptr
+      00029E FF               [12]  869 	mov	r7,a
+      00029F C2 D5            [12]  870 	clr	F0
+      0002A1 75 F0 07         [24]  871 	mov	b,#0x07
+      0002A4 EF               [12]  872 	mov	a,r7
+      0002A5 30 E7 04         [24]  873 	jnb	acc.7,00122$
+      0002A8 B2 D5            [12]  874 	cpl	F0
+      0002AA F4               [12]  875 	cpl	a
+      0002AB 04               [12]  876 	inc	a
+      0002AC                        877 00122$:
+      0002AC A4               [48]  878 	mul	ab
+      0002AD 30 D5 0A         [24]  879 	jnb	F0,00123$
+      0002B0 F4               [12]  880 	cpl	a
+      0002B1 24 01            [12]  881 	add	a,#0x01
+      0002B3 C5 F0            [12]  882 	xch	a,b
+      0002B5 F4               [12]  883 	cpl	a
+      0002B6 34 00            [12]  884 	addc	a,#0x00
+      0002B8 C5 F0            [12]  885 	xch	a,b
+      0002BA                        886 00123$:
+      0002BA 24r01            [12]  887 	add	a,#_inflow
+      0002BC FD               [12]  888 	mov	r5,a
+      0002BD 74s00            [12]  889 	mov	a,#(_inflow >> 8)
+      0002BF 35 F0            [12]  890 	addc	a,b
+      0002C1 FE               [12]  891 	mov	r6,a
+      0002C2 74 01            [12]  892 	mov	a,#0x01
+      0002C4 2D               [12]  893 	add	a,r5
+      0002C5 FB               [12]  894 	mov	r3,a
+      0002C6 E4               [12]  895 	clr	a
+      0002C7 3E               [12]  896 	addc	a,r6
+      0002C8 FC               [12]  897 	mov	r4,a
+      0002C9 8B 82            [24]  898 	mov	dpl,r3
+      0002CB 8C 83            [24]  899 	mov	dph,r4
+      0002CD E0               [24]  900 	movx	a,@dptr
+      0002CE F9               [12]  901 	mov	r1,a
+      0002CF A3               [24]  902 	inc	dptr
+      0002D0 E0               [24]  903 	movx	a,@dptr
+      0002D1 FA               [12]  904 	mov	r2,a
+      0002D2 C3               [12]  905 	clr	c
+      0002D3 E9               [12]  906 	mov	a,r1
+      0002D4 94 40            [12]  907 	subb	a,#0x40
+      0002D6 EA               [12]  908 	mov	a,r2
+      0002D7 64 80            [12]  909 	xrl	a,#0x80
+      0002D9 94 80            [12]  910 	subb	a,#0x80
+      0002DB 50 02            [24]  911 	jnc	00108$
+      0002DD 80 04            [24]  912 	sjmp	00109$
+      0002DF                        913 00108$:
+      0002DF 79 40            [12]  914 	mov	r1,#0x40
+      0002E1 7A 00            [12]  915 	mov	r2,#0x00
+      0002E3                        916 00109$:
+                                    917 ;	src/usb.c:233: if(inflow[ep].rdy)
+      0002E3 8D 82            [24]  918 	mov	dpl,r5
+      0002E5 8E 83            [24]  919 	mov	dph,r6
+      0002E7 E0               [24]  920 	movx	a,@dptr
+      0002E8 70 03            [24]  921 	jnz	00125$
+      0002EA 02r03r98         [24]  922 	ljmp	00105$
+      0002ED                        923 00125$:
+                                    924 ;	src/usb.c:235: usbBulkSend(ep, inflow[ep].buffer+inflow[ep].ptr, lenToSend);
+      0002ED 8D 82            [24]  925 	mov	dpl,r5
+      0002EF 8E 83            [24]  926 	mov	dph,r6
+      0002F1 A3               [24]  927 	inc	dptr
+      0002F2 A3               [24]  928 	inc	dptr
+      0002F3 A3               [24]  929 	inc	dptr
+      0002F4 A3               [24]  930 	inc	dptr
+      0002F5 A3               [24]  931 	inc	dptr
+      0002F6 E0               [24]  932 	movx	a,@dptr
+      0002F7 F8               [12]  933 	mov	r0,a
+      0002F8 A3               [24]  934 	inc	dptr
+      0002F9 E0               [24]  935 	movx	a,@dptr
+      0002FA FA               [12]  936 	mov	r2,a
+      0002FB 74 03            [12]  937 	mov	a,#0x03
+      0002FD 2D               [12]  938 	add	a,r5
+      0002FE F5*00            [12]  939 	mov	_usbBulkInIsr_sloc0_1_0,a
+      000300 E4               [12]  940 	clr	a
+      000301 3E               [12]  941 	addc	a,r6
+      000302 F5*01            [12]  942 	mov	(_usbBulkInIsr_sloc0_1_0 + 1),a
+      000304 C0 05            [24]  943 	push	ar5
+      000306 C0 06            [24]  944 	push	ar6
+      000308 85*00 82         [24]  945 	mov	dpl,_usbBulkInIsr_sloc0_1_0
+      00030B 85*01 83         [24]  946 	mov	dph,(_usbBulkInIsr_sloc0_1_0 + 1)
+      00030E E0               [24]  947 	movx	a,@dptr
+      00030F FD               [12]  948 	mov	r5,a
+      000310 A3               [24]  949 	inc	dptr
+      000311 E0               [24]  950 	movx	a,@dptr
+      000312 FE               [12]  951 	mov	r6,a
+      000313 ED               [12]  952 	mov	a,r5
+      000314 28               [12]  953 	add	a,r0
+      000315 F8               [12]  954 	mov	r0,a
+      000316 EE               [12]  955 	mov	a,r6
+      000317 3A               [12]  956 	addc	a,r2
+      000318 FA               [12]  957 	mov	r2,a
+      000319 90r00r09         [24]  958 	mov	dptr,#_usbBulkSend_PARM_2
+      00031C E8               [12]  959 	mov	a,r0
+      00031D F0               [24]  960 	movx	@dptr,a
+      00031E EA               [12]  961 	mov	a,r2
+      00031F A3               [24]  962 	inc	dptr
+      000320 F0               [24]  963 	movx	@dptr,a
+      000321 74 80            [12]  964 	mov	a,#0x80
+      000323 A3               [24]  965 	inc	dptr
+      000324 F0               [24]  966 	movx	@dptr,a
+      000325 90r00r0C         [24]  967 	mov	dptr,#_usbBulkSend_PARM_3
+      000328 E9               [12]  968 	mov	a,r1
+      000329 F0               [24]  969 	movx	@dptr,a
+      00032A 8F 82            [24]  970 	mov	dpl,r7
+      00032C C0 06            [24]  971 	push	ar6
+      00032E C0 05            [24]  972 	push	ar5
+      000330 C0 04            [24]  973 	push	ar4
+      000332 C0 03            [24]  974 	push	ar3
+      000334 C0 01            [24]  975 	push	ar1
+      000336 12r08r31         [24]  976 	lcall	_usbBulkSend
+      000339 D0 01            [24]  977 	pop	ar1
+      00033B D0 03            [24]  978 	pop	ar3
+      00033D D0 04            [24]  979 	pop	ar4
+      00033F D0 05            [24]  980 	pop	ar5
+      000341 D0 06            [24]  981 	pop	ar6
+                                    982 ;	src/usb.c:237: inflow[ep].len-=lenToSend;
+      000343 8B 82            [24]  983 	mov	dpl,r3
+      000345 8C 83            [24]  984 	mov	dph,r4
+      000347 E0               [24]  985 	movx	a,@dptr
+      000348 FE               [12]  986 	mov	r6,a
+      000349 A3               [24]  987 	inc	dptr
+      00034A E0               [24]  988 	movx	a,@dptr
+      00034B FF               [12]  989 	mov	r7,a
+      00034C 89 02            [24]  990 	mov	ar2,r1
+      00034E 7D 00            [12]  991 	mov	r5,#0x00
+      000350 EE               [12]  992 	mov	a,r6
+      000351 C3               [12]  993 	clr	c
+      000352 9A               [12]  994 	subb	a,r2
+      000353 FE               [12]  995 	mov	r6,a
+      000354 EF               [12]  996 	mov	a,r7
+      000355 9D               [12]  997 	subb	a,r5
+      000356 FF               [12]  998 	mov	r7,a
+      000357 8B 82            [24]  999 	mov	dpl,r3
+      000359 8C 83            [24] 1000 	mov	dph,r4
+      00035B EE               [12] 1001 	mov	a,r6
+      00035C F0               [24] 1002 	movx	@dptr,a
+      00035D EF               [12] 1003 	mov	a,r7
+      00035E A3               [24] 1004 	inc	dptr
+      00035F F0               [24] 1005 	movx	@dptr,a
+                                   1006 ;	src/usb.c:238: inflow[ep].ptr+=lenToSend; 
+      000360 85*00 82         [24] 1007 	mov	dpl,_usbBulkInIsr_sloc0_1_0
+      000363 85*01 83         [24] 1008 	mov	dph,(_usbBulkInIsr_sloc0_1_0 + 1)
+      000366 E0               [24] 1009 	movx	a,@dptr
+      000367 FB               [12] 1010 	mov	r3,a
+      000368 A3               [24] 1011 	inc	dptr
+      000369 E0               [24] 1012 	movx	a,@dptr
+      00036A FC               [12] 1013 	mov	r4,a
+      00036B EA               [12] 1014 	mov	a,r2
+      00036C 2B               [12] 1015 	add	a,r3
+      00036D FA               [12] 1016 	mov	r2,a
+      00036E ED               [12] 1017 	mov	a,r5
+      00036F 3C               [12] 1018 	addc	a,r4
+      000370 FD               [12] 1019 	mov	r5,a
+      000371 85*00 82         [24] 1020 	mov	dpl,_usbBulkInIsr_sloc0_1_0
+      000374 85*01 83         [24] 1021 	mov	dph,(_usbBulkInIsr_sloc0_1_0 + 1)
+      000377 EA               [12] 1022 	mov	a,r2
+      000378 F0               [24] 1023 	movx	@dptr,a
+      000379 ED               [12] 1024 	mov	a,r5
+      00037A A3               [24] 1025 	inc	dptr
+      00037B F0               [24] 1026 	movx	@dptr,a
+                                   1027 ;	src/usb.c:240: if(inflow[ep].len == 0 && lenToSend != 64)
+      00037C EE               [12] 1028 	mov	a,r6
+      00037D 4F               [12] 1029 	orl	a,r7
+      00037E D0 06            [24] 1030 	pop	ar6
+      000380 D0 05            [24] 1031 	pop	ar5
+      000382 70 14            [24] 1032 	jnz	00105$
+      000384 B9 40 02         [24] 1033 	cjne	r1,#0x40,00127$
+      000387 80 0F            [24] 1034 	sjmp	00105$
+      000389                       1035 00127$:
+                                   1036 ;	src/usb.c:242: inflow[ep].rdy = 0;
+      000389 8D 82            [24] 1037 	mov	dpl,r5
+      00038B 8E 83            [24] 1038 	mov	dph,r6
+      00038D E4               [12] 1039 	clr	a
+      00038E F0               [24] 1040 	movx	@dptr,a
+                                   1041 ;	src/usb.c:243: inflow[ep].ptr = 0;
+      00038F 85*00 82         [24] 1042 	mov	dpl,_usbBulkInIsr_sloc0_1_0
+      000392 85*01 83         [24] 1043 	mov	dph,(_usbBulkInIsr_sloc0_1_0 + 1)
+      000395 F0               [24] 1044 	movx	@dptr,a
+      000396 A3               [24] 1045 	inc	dptr
+      000397 F0               [24] 1046 	movx	@dptr,a
+      000398                       1047 00105$:
+                                   1048 ;	src/usb.c:248: return;
+      000398 22               [24] 1049 	ret
+                                   1050 ;------------------------------------------------------------
+                                   1051 ;Allocation info for local variables in function 'usbSetupIsr'
+                                   1052 ;------------------------------------------------------------
+                                   1053 ;sloc0                     Allocated with name '_usbSetupIsr_sloc0_1_0'
+                                   1054 ;setup                     Allocated with name '_usbSetupIsr_setup_1_45'
+                                   1055 ;dLength                   Allocated with name '_usbSetupIsr_dLength_3_47'
+                                   1056 ;dLength                   Allocated with name '_usbSetupIsr_dLength_3_48'
+                                   1057 ;dLength                   Allocated with name '_usbSetupIsr_dLength_3_51'
+                                   1058 ;------------------------------------------------------------
+                                   1059 ;	src/usb.c:252: void usbSetupIsr()
+                                   1060 ;	-----------------------------------------
+                                   1061 ;	 function usbSetupIsr
+                                   1062 ;	-----------------------------------------
+      000399                       1063 _usbSetupIsr:
+                                   1064 ;	src/usb.c:254: __xdata struct controllStruct *setup = (__xdata void*)SETUPBUF;
+                                   1065 ;	src/usb.c:256: if(state >= DEFAULT)
+      000399 90r00r00         [24] 1066 	mov	dptr,#_state
+      00039C E0               [24] 1067 	movx	a,@dptr
+      00039D FF               [12] 1068 	mov	r7,a
+      00039E BF 01 00         [24] 1069 	cjne	r7,#0x01,00375$
+      0003A1                       1070 00375$:
+      0003A1 50 03            [24] 1071 	jnc	00376$
+      0003A3 02r05r99         [24] 1072 	ljmp	00128$
+      0003A6                       1073 00376$:
+                                   1074 ;	src/usb.c:259: if(SETUPBUF[1] == GET_DESCRIPTOR && SETUPBUF[3] == DEVICE_DESCRIPTOR)
+      0003A6 90 C7 E9         [24] 1075 	mov	dptr,#(_SETUPBUF + 0x0001)
+      0003A9 E0               [24] 1076 	movx	a,@dptr
+      0003AA FE               [12] 1077 	mov	r6,a
+      0003AB BE 06 02         [24] 1078 	cjne	r6,#0x06,00377$
+      0003AE 80 03            [24] 1079 	sjmp	00378$
+      0003B0                       1080 00377$:
+      0003B0 02r04r2B         [24] 1081 	ljmp	00102$
+      0003B3                       1082 00378$:
+      0003B3 90 C7 EB         [24] 1083 	mov	dptr,#(_SETUPBUF + 0x0003)
+      0003B6 E0               [24] 1084 	movx	a,@dptr
+      0003B7 FE               [12] 1085 	mov	r6,a
+      0003B8 BE 01 70         [24] 1086 	cjne	r6,#0x01,00102$
+                                   1087 ;	src/usb.c:261: unsigned short dLength = ((unsigned short)SETUPBUF[7]<<8) + ((unsigned short)SETUPBUF[6]<<0);
+      0003BB 90 C7 EF         [24] 1088 	mov	dptr,#(_SETUPBUF + 0x0007)
+      0003BE E0               [24] 1089 	movx	a,@dptr
+      0003BF FD               [12] 1090 	mov	r5,a
+      0003C0 7E 00            [12] 1091 	mov	r6,#0x00
+      0003C2 90 C7 EE         [24] 1092 	mov	dptr,#(_SETUPBUF + 0x0006)
+      0003C5 E0               [24] 1093 	movx	a,@dptr
+      0003C6 7B 00            [12] 1094 	mov	r3,#0x00
+      0003C8 2E               [12] 1095 	add	a,r6
+      0003C9 FE               [12] 1096 	mov	r6,a
+      0003CA EB               [12] 1097 	mov	a,r3
+      0003CB 3D               [12] 1098 	addc	a,r5
+      0003CC FD               [12] 1099 	mov	r5,a
+                                   1100 ;	src/usb.c:263: inflow[0].buffer = usbDeviceDescriptor;
+      0003CD 90r00r06         [24] 1101 	mov	dptr,#(_inflow + 0x0005)
+      0003D0 74r00            [12] 1102 	mov	a,#_usbDeviceDescriptor
+      0003D2 F0               [24] 1103 	movx	@dptr,a
+      0003D3 74s00            [12] 1104 	mov	a,#(_usbDeviceDescriptor >> 8)
+      0003D5 A3               [24] 1105 	inc	dptr
+      0003D6 F0               [24] 1106 	movx	@dptr,a
+                                   1107 ;	src/usb.c:264: inflow[0].len = MIN(dLength, inflow[0].buffer[0]);
+      0003D7 8E 03            [24] 1108 	mov	ar3,r6
+      0003D9 8D 04            [24] 1109 	mov	ar4,r5
+      0003DB 90r00r06         [24] 1110 	mov	dptr,#(_inflow + 0x0005)
+      0003DE E0               [24] 1111 	movx	a,@dptr
+      0003DF F5*02            [12] 1112 	mov	_usbSetupIsr_sloc0_1_0,a
+      0003E1 A3               [24] 1113 	inc	dptr
+      0003E2 E0               [24] 1114 	movx	a,@dptr
+      0003E3 F5*03            [12] 1115 	mov	(_usbSetupIsr_sloc0_1_0 + 1),a
+      0003E5 90r00r00         [24] 1116 	mov	dptr,#_usbDeviceDescriptor
+      0003E8 E4               [12] 1117 	clr	a
+      0003E9 93               [24] 1118 	movc	a,@a+dptr
+      0003EA F8               [12] 1119 	mov	r0,a
+      0003EB 33               [12] 1120 	rlc	a
+      0003EC 95 E0            [12] 1121 	subb	a,acc
+      0003EE FA               [12] 1122 	mov	r2,a
+      0003EF C3               [12] 1123 	clr	c
+      0003F0 EB               [12] 1124 	mov	a,r3
+      0003F1 98               [12] 1125 	subb	a,r0
+      0003F2 EC               [12] 1126 	mov	a,r4
+      0003F3 64 80            [12] 1127 	xrl	a,#0x80
+      0003F5 8A F0            [24] 1128 	mov	b,r2
+      0003F7 63 F0 80         [24] 1129 	xrl	b,#0x80
+      0003FA 95 F0            [12] 1130 	subb	a,b
+      0003FC 40 0E            [24] 1131 	jc	00220$
+      0003FE 85*02 82         [24] 1132 	mov	dpl,_usbSetupIsr_sloc0_1_0
+      000401 85*03 83         [24] 1133 	mov	dph,(_usbSetupIsr_sloc0_1_0 + 1)
+      000404 E4               [12] 1134 	clr	a
+      000405 93               [24] 1135 	movc	a,@a+dptr
+      000406 FC               [12] 1136 	mov	r4,a
+      000407 FE               [12] 1137 	mov	r6,a
+      000408 33               [12] 1138 	rlc	a
+      000409 95 E0            [12] 1139 	subb	a,acc
+      00040B FD               [12] 1140 	mov	r5,a
+      00040C                       1141 00220$:
+      00040C 90r00r02         [24] 1142 	mov	dptr,#(_inflow + 0x0001)
+      00040F EE               [12] 1143 	mov	a,r6
+      000410 F0               [24] 1144 	movx	@dptr,a
+      000411 ED               [12] 1145 	mov	a,r5
+      000412 A3               [24] 1146 	inc	dptr
+      000413 F0               [24] 1147 	movx	@dptr,a
+                                   1148 ;	src/usb.c:265: inflow[0].ptr = 0;
+      000414 90r00r04         [24] 1149 	mov	dptr,#(_inflow + 0x0003)
+      000417 E4               [12] 1150 	clr	a
+      000418 F0               [24] 1151 	movx	@dptr,a
+      000419 A3               [24] 1152 	inc	dptr
+      00041A F0               [24] 1153 	movx	@dptr,a
+                                   1154 ;	src/usb.c:266: inflow[0].rdy = 1;
+      00041B 90r00r01         [24] 1155 	mov	dptr,#_inflow
+      00041E 04               [12] 1156 	inc	a
+      00041F F0               [24] 1157 	movx	@dptr,a
+                                   1158 ;	src/usb.c:269: EP0CS = HSNAK;
+      000420 90 C7 B4         [24] 1159 	mov	dptr,#0xC7B4
+      000423 04               [12] 1160 	inc	a
+      000424 F0               [24] 1161 	movx	@dptr,a
+                                   1162 ;	src/usb.c:270: usbBulkInIsr(0);
+      000425 75 82 00         [24] 1163 	mov	dpl,#0x00
+                                   1164 ;	src/usb.c:271: return;
+      000428 02r02r97         [24] 1165 	ljmp	_usbBulkInIsr
+      00042B                       1166 00102$:
+                                   1167 ;	src/usb.c:275: if (SETUPBUF[1] == GET_DESCRIPTOR && SETUPBUF[3] == STRING_DESCRIPTOR)
+      00042B 90 C7 E9         [24] 1168 	mov	dptr,#(_SETUPBUF + 0x0001)
+      00042E E0               [24] 1169 	movx	a,@dptr
+      00042F FE               [12] 1170 	mov	r6,a
+      000430 BE 06 02         [24] 1171 	cjne	r6,#0x06,00382$
+      000433 80 03            [24] 1172 	sjmp	00383$
+      000435                       1173 00382$:
+      000435 02r04rF7         [24] 1174 	ljmp	00117$
+      000438                       1175 00383$:
+      000438 90 C7 EB         [24] 1176 	mov	dptr,#(_SETUPBUF + 0x0003)
+      00043B E0               [24] 1177 	movx	a,@dptr
+      00043C FE               [12] 1178 	mov	r6,a
+      00043D BE 03 02         [24] 1179 	cjne	r6,#0x03,00384$
+      000440 80 03            [24] 1180 	sjmp	00385$
+      000442                       1181 00384$:
+      000442 02r04rF7         [24] 1182 	ljmp	00117$
+      000445                       1183 00385$:
+                                   1184 ;	src/usb.c:277: unsigned short dLength = ((unsigned short)SETUPBUF[7]<<8) + ((unsigned short)SETUPBUF[6]<<0);
+      000445 90 C7 EF         [24] 1185 	mov	dptr,#(_SETUPBUF + 0x0007)
+      000448 E0               [24] 1186 	movx	a,@dptr
+      000449 FD               [12] 1187 	mov	r5,a
+      00044A 7E 00            [12] 1188 	mov	r6,#0x00
+      00044C 90 C7 EE         [24] 1189 	mov	dptr,#(_SETUPBUF + 0x0006)
+      00044F E0               [24] 1190 	movx	a,@dptr
+      000450 FC               [12] 1191 	mov	r4,a
+      000451 7B 00            [12] 1192 	mov	r3,#0x00
+      000453 2E               [12] 1193 	add	a,r6
+      000454 FE               [12] 1194 	mov	r6,a
+      000455 EB               [12] 1195 	mov	a,r3
+      000456 3D               [12] 1196 	addc	a,r5
+      000457 FD               [12] 1197 	mov	r5,a
+                                   1198 ;	src/usb.c:279: if (SETUPBUF[2]==0)
+      000458 90 C7 EA         [24] 1199 	mov	dptr,#(_SETUPBUF + 0x0002)
+      00045B E0               [24] 1200 	movx	a,@dptr
+      00045C 70 0C            [24] 1201 	jnz	00114$
+                                   1202 ;	src/usb.c:280: inflow[0].buffer = usbStringDescriptor0;
+      00045E 90r00r06         [24] 1203 	mov	dptr,#(_inflow + 0x0005)
+      000461 74r00            [12] 1204 	mov	a,#_usbStringDescriptor0
+      000463 F0               [24] 1205 	movx	@dptr,a
+      000464 74s00            [12] 1206 	mov	a,#(_usbStringDescriptor0 >> 8)
+      000466 A3               [24] 1207 	inc	dptr
+      000467 F0               [24] 1208 	movx	@dptr,a
+      000468 80 41            [24] 1209 	sjmp	00115$
+      00046A                       1210 00114$:
+                                   1211 ;	src/usb.c:281: else if (SETUPBUF[2]==1)
+      00046A 90 C7 EA         [24] 1212 	mov	dptr,#(_SETUPBUF + 0x0002)
+      00046D E0               [24] 1213 	movx	a,@dptr
+      00046E FC               [12] 1214 	mov	r4,a
+      00046F BC 01 0C         [24] 1215 	cjne	r4,#0x01,00111$
+                                   1216 ;	src/usb.c:282: inflow[0].buffer = usbStringDescriptor1;
+      000472 90r00r06         [24] 1217 	mov	dptr,#(_inflow + 0x0005)
+      000475 74r00            [12] 1218 	mov	a,#_usbStringDescriptor1
+      000477 F0               [24] 1219 	movx	@dptr,a
+      000478 74s00            [12] 1220 	mov	a,#(_usbStringDescriptor1 >> 8)
+      00047A A3               [24] 1221 	inc	dptr
+      00047B F0               [24] 1222 	movx	@dptr,a
+      00047C 80 2D            [24] 1223 	sjmp	00115$
+      00047E                       1224 00111$:
+                                   1225 ;	src/usb.c:283: else if (SETUPBUF[2]==2)
+      00047E 90 C7 EA         [24] 1226 	mov	dptr,#(_SETUPBUF + 0x0002)
+      000481 E0               [24] 1227 	movx	a,@dptr
+      000482 FC               [12] 1228 	mov	r4,a
+      000483 BC 02 0C         [24] 1229 	cjne	r4,#0x02,00108$
+                                   1230 ;	src/usb.c:284: inflow[0].buffer = usbStringDescriptor2;
+      000486 90r00r06         [24] 1231 	mov	dptr,#(_inflow + 0x0005)
+      000489 74r00            [12] 1232 	mov	a,#_usbStringDescriptor2
+      00048B F0               [24] 1233 	movx	@dptr,a
+      00048C 74s00            [12] 1234 	mov	a,#(_usbStringDescriptor2 >> 8)
+      00048E A3               [24] 1235 	inc	dptr
+      00048F F0               [24] 1236 	movx	@dptr,a
+      000490 80 19            [24] 1237 	sjmp	00115$
+      000492                       1238 00108$:
+                                   1239 ;	src/usb.c:285: else if (SETUPBUF[2]==0x1d) {
+      000492 90 C7 EA         [24] 1240 	mov	dptr,#(_SETUPBUF + 0x0002)
+      000495 E0               [24] 1241 	movx	a,@dptr
+      000496 FC               [12] 1242 	mov	r4,a
+      000497 BC 1D 0A         [24] 1243 	cjne	r4,#0x1D,00105$
+                                   1244 ;	src/usb.c:286: usbSendIdString();
+      00049A 12r08r6A         [24] 1245 	lcall	_usbSendIdString
+                                   1246 ;	src/usb.c:288: EP0CS = HSNAK;
+      00049D 90 C7 B4         [24] 1247 	mov	dptr,#0xC7B4
+      0004A0 74 02            [12] 1248 	mov	a,#0x02
+      0004A2 F0               [24] 1249 	movx	@dptr,a
+                                   1250 ;	src/usb.c:289: return;
+      0004A3 22               [24] 1251 	ret
+      0004A4                       1252 00105$:
+                                   1253 ;	src/usb.c:291: EP0CS = EP0STALL; //Stall to error
+      0004A4 90 C7 B4         [24] 1254 	mov	dptr,#0xC7B4
+      0004A7 74 01            [12] 1255 	mov	a,#0x01
+      0004A9 F0               [24] 1256 	movx	@dptr,a
+                                   1257 ;	src/usb.c:292: return;
+      0004AA 22               [24] 1258 	ret
+      0004AB                       1259 00115$:
+                                   1260 ;	src/usb.c:295: inflow[0].len = MIN(dLength, inflow[0].buffer[0]);
+      0004AB 8E 03            [24] 1261 	mov	ar3,r6
+      0004AD 8D 04            [24] 1262 	mov	ar4,r5
+      0004AF 90r00r06         [24] 1263 	mov	dptr,#(_inflow + 0x0005)
+      0004B2 E0               [24] 1264 	movx	a,@dptr
+      0004B3 F9               [12] 1265 	mov	r1,a
+      0004B4 A3               [24] 1266 	inc	dptr
+      0004B5 E0               [24] 1267 	movx	a,@dptr
+      0004B6 FA               [12] 1268 	mov	r2,a
+      0004B7 89 82            [24] 1269 	mov	dpl,r1
+      0004B9 8A 83            [24] 1270 	mov	dph,r2
+      0004BB E4               [12] 1271 	clr	a
+      0004BC 93               [24] 1272 	movc	a,@a+dptr
+      0004BD FA               [12] 1273 	mov	r2,a
+      0004BE F8               [12] 1274 	mov	r0,a
+      0004BF 33               [12] 1275 	rlc	a
+      0004C0 95 E0            [12] 1276 	subb	a,acc
+      0004C2 F9               [12] 1277 	mov	r1,a
+      0004C3 C3               [12] 1278 	clr	c
+      0004C4 EB               [12] 1279 	mov	a,r3
+      0004C5 98               [12] 1280 	subb	a,r0
+      0004C6 EC               [12] 1281 	mov	a,r4
+      0004C7 64 80            [12] 1282 	xrl	a,#0x80
+      0004C9 89 F0            [24] 1283 	mov	b,r1
+      0004CB 63 F0 80         [24] 1284 	xrl	b,#0x80
+      0004CE 95 F0            [12] 1285 	subb	a,b
+      0004D0 40 06            [24] 1286 	jc	00222$
+      0004D2 EA               [12] 1287 	mov	a,r2
+      0004D3 FE               [12] 1288 	mov	r6,a
+      0004D4 33               [12] 1289 	rlc	a
+      0004D5 95 E0            [12] 1290 	subb	a,acc
+      0004D7 FD               [12] 1291 	mov	r5,a
+      0004D8                       1292 00222$:
+      0004D8 90r00r02         [24] 1293 	mov	dptr,#(_inflow + 0x0001)
+      0004DB EE               [12] 1294 	mov	a,r6
+      0004DC F0               [24] 1295 	movx	@dptr,a
+      0004DD ED               [12] 1296 	mov	a,r5
+      0004DE A3               [24] 1297 	inc	dptr
+      0004DF F0               [24] 1298 	movx	@dptr,a
+                                   1299 ;	src/usb.c:296: inflow[0].ptr = 0;
+      0004E0 90r00r04         [24] 1300 	mov	dptr,#(_inflow + 0x0003)
+      0004E3 E4               [12] 1301 	clr	a
+      0004E4 F0               [24] 1302 	movx	@dptr,a
+      0004E5 A3               [24] 1303 	inc	dptr
+      0004E6 F0               [24] 1304 	movx	@dptr,a
+                                   1305 ;	src/usb.c:297: inflow[0].rdy = 1;
+      0004E7 90r00r01         [24] 1306 	mov	dptr,#_inflow
+      0004EA 04               [12] 1307 	inc	a
+      0004EB F0               [24] 1308 	movx	@dptr,a
+                                   1309 ;	src/usb.c:300: EP0CS = HSNAK;
+      0004EC 90 C7 B4         [24] 1310 	mov	dptr,#0xC7B4
+      0004EF 04               [12] 1311 	inc	a
+      0004F0 F0               [24] 1312 	movx	@dptr,a
+                                   1313 ;	src/usb.c:301: usbBulkInIsr(0);
+      0004F1 75 82 00         [24] 1314 	mov	dpl,#0x00
+                                   1315 ;	src/usb.c:302: return;
+      0004F4 02r02r97         [24] 1316 	ljmp	_usbBulkInIsr
+      0004F7                       1317 00117$:
+                                   1318 ;	src/usb.c:306: if(SETUPBUF[1] == GET_DESCRIPTOR && SETUPBUF[3] == CONFIGURATION_DESCRIPTOR)
+      0004F7 90 C7 E9         [24] 1319 	mov	dptr,#(_SETUPBUF + 0x0001)
+      0004FA E0               [24] 1320 	movx	a,@dptr
+      0004FB FE               [12] 1321 	mov	r6,a
+      0004FC BE 06 56         [24] 1322 	cjne	r6,#0x06,00120$
+      0004FF 90 C7 EB         [24] 1323 	mov	dptr,#(_SETUPBUF + 0x0003)
+      000502 E0               [24] 1324 	movx	a,@dptr
+      000503 FE               [12] 1325 	mov	r6,a
+      000504 BE 02 4E         [24] 1326 	cjne	r6,#0x02,00120$
+                                   1327 ;	src/usb.c:308: unsigned short dLength = ((unsigned short)SETUPBUF[7]<<8) + ((unsigned short)SETUPBUF[6]<<0);
+      000507 90 C7 EF         [24] 1328 	mov	dptr,#(_SETUPBUF + 0x0007)
+      00050A E0               [24] 1329 	movx	a,@dptr
+      00050B FD               [12] 1330 	mov	r5,a
+      00050C 7E 00            [12] 1331 	mov	r6,#0x00
+      00050E 90 C7 EE         [24] 1332 	mov	dptr,#(_SETUPBUF + 0x0006)
+      000511 E0               [24] 1333 	movx	a,@dptr
+      000512 7B 00            [12] 1334 	mov	r3,#0x00
+      000514 2E               [12] 1335 	add	a,r6
+      000515 FE               [12] 1336 	mov	r6,a
+      000516 EB               [12] 1337 	mov	a,r3
+      000517 3D               [12] 1338 	addc	a,r5
+      000518 FD               [12] 1339 	mov	r5,a
+                                   1340 ;	src/usb.c:310: inflow[0].buffer = usbConfigurationDescriptor;
+      000519 90r00r06         [24] 1341 	mov	dptr,#(_inflow + 0x0005)
+      00051C 74r00            [12] 1342 	mov	a,#_usbConfigurationDescriptor
+      00051E F0               [24] 1343 	movx	@dptr,a
+      00051F 74s00            [12] 1344 	mov	a,#(_usbConfigurationDescriptor >> 8)
+      000521 A3               [24] 1345 	inc	dptr
+      000522 F0               [24] 1346 	movx	@dptr,a
+                                   1347 ;	src/usb.c:311: inflow[0].len = MIN(dLength, sizeof(usbConfigurationDescriptor));
+      000523 8E 03            [24] 1348 	mov	ar3,r6
+      000525 8D 04            [24] 1349 	mov	ar4,r5
+      000527 C3               [12] 1350 	clr	c
+      000528 EB               [12] 1351 	mov	a,r3
+      000529 94 39            [12] 1352 	subb	a,#0x39
+      00052B EC               [12] 1353 	mov	a,r4
+      00052C 64 80            [12] 1354 	xrl	a,#0x80
+      00052E 94 80            [12] 1355 	subb	a,#0x80
+      000530 40 04            [24] 1356 	jc	00224$
+      000532 7E 39            [12] 1357 	mov	r6,#0x39
+      000534 7D 00            [12] 1358 	mov	r5,#0x00
+      000536                       1359 00224$:
+      000536 90r00r02         [24] 1360 	mov	dptr,#(_inflow + 0x0001)
+      000539 EE               [12] 1361 	mov	a,r6
+      00053A F0               [24] 1362 	movx	@dptr,a
+      00053B ED               [12] 1363 	mov	a,r5
+      00053C A3               [24] 1364 	inc	dptr
+      00053D F0               [24] 1365 	movx	@dptr,a
+                                   1366 ;	src/usb.c:312: inflow[0].ptr = 0;
+      00053E 90r00r04         [24] 1367 	mov	dptr,#(_inflow + 0x0003)
+      000541 E4               [12] 1368 	clr	a
+      000542 F0               [24] 1369 	movx	@dptr,a
+      000543 A3               [24] 1370 	inc	dptr
+      000544 F0               [24] 1371 	movx	@dptr,a
+                                   1372 ;	src/usb.c:313: inflow[0].rdy = 1;
+      000545 90r00r01         [24] 1373 	mov	dptr,#_inflow
+      000548 04               [12] 1374 	inc	a
+      000549 F0               [24] 1375 	movx	@dptr,a
+                                   1376 ;	src/usb.c:316: EP0CS = HSNAK;
+      00054A 90 C7 B4         [24] 1377 	mov	dptr,#0xC7B4
+      00054D 04               [12] 1378 	inc	a
+      00054E F0               [24] 1379 	movx	@dptr,a
+                                   1380 ;	src/usb.c:317: usbBulkInIsr(0);
+      00054F 75 82 00         [24] 1381 	mov	dpl,#0x00
+                                   1382 ;	src/usb.c:318: return;
+      000552 02r02r97         [24] 1383 	ljmp	_usbBulkInIsr
+      000555                       1384 00120$:
+                                   1385 ;	src/usb.c:348: if (setup->request == SET_ADDRESS)
+      000555 90 C7 E9         [24] 1386 	mov	dptr,#(_SETUPBUF + 0x0001)
+      000558 E0               [24] 1387 	movx	a,@dptr
+      000559 FE               [12] 1388 	mov	r6,a
+      00055A BE 05 3C         [24] 1389 	cjne	r6,#0x05,00128$
+                                   1390 ;	src/usb.c:351: if (setup->value == 0)
+      00055D 90 C7 EA         [24] 1391 	mov	dptr,#(_SETUPBUF + 0x0002)
+      000560 E0               [24] 1392 	movx	a,@dptr
+      000561 FD               [12] 1393 	mov	r5,a
+      000562 A3               [24] 1394 	inc	dptr
+      000563 E0               [24] 1395 	movx	a,@dptr
+      000564 FE               [12] 1396 	mov	r6,a
+      000565 4D               [12] 1397 	orl	a,r5
+      000566 70 24            [24] 1398 	jnz	00123$
+                                   1399 ;	src/usb.c:354: state = DEFAULT;
+      000568 90r00r00         [24] 1400 	mov	dptr,#_state
+      00056B 74 01            [12] 1401 	mov	a,#0x01
+      00056D F0               [24] 1402 	movx	@dptr,a
+                                   1403 ;	src/usb.c:357: INBULKVAL = IN0VAL;
+      00056E 90 C7 DE         [24] 1404 	mov	dptr,#0xC7DE
+      000571 F0               [24] 1405 	movx	@dptr,a
+                                   1406 ;	src/usb.c:358: OUTBULKVAL= OUT0VAL;
+      000572 90 C7 DF         [24] 1407 	mov	dptr,#0xC7DF
+      000575 F0               [24] 1408 	movx	@dptr,a
+                                   1409 ;	src/usb.c:361: OUT0BC = BCDUMMY;
+      000576 90 C7 C5         [24] 1410 	mov	dptr,#0xC7C5
+      000579 F0               [24] 1411 	movx	@dptr,a
+                                   1412 ;	src/usb.c:364: IN_IEN = IN0IE;
+      00057A 90 C7 AC         [24] 1413 	mov	dptr,#0xC7AC
+      00057D F0               [24] 1414 	movx	@dptr,a
+                                   1415 ;	src/usb.c:365: OUT_IEN = OUT0IE;
+      00057E 90 C7 AD         [24] 1416 	mov	dptr,#0xC7AD
+      000581 F0               [24] 1417 	movx	@dptr,a
+                                   1418 ;	src/usb.c:366: USBIEN |= SUDAVIE | SUTOKIE;
+      000582 90 C7 AE         [24] 1419 	mov	dptr,#0xC7AE
+      000585 E0               [24] 1420 	movx	a,@dptr
+      000586 44 05            [12] 1421 	orl	a,#0x05
+      000588 FE               [12] 1422 	mov	r6,a
+      000589 F0               [24] 1423 	movx	@dptr,a
+      00058A 80 06            [24] 1424 	sjmp	00124$
+      00058C                       1425 00123$:
+                                   1426 ;	src/usb.c:368: state = ADDRESS;  //The device is now addressed
+      00058C 90r00r00         [24] 1427 	mov	dptr,#_state
+      00058F 74 02            [12] 1428 	mov	a,#0x02
+      000591 F0               [24] 1429 	movx	@dptr,a
+      000592                       1430 00124$:
+                                   1431 ;	src/usb.c:371: EP0CS = HSNAK;
+      000592 90 C7 B4         [24] 1432 	mov	dptr,#0xC7B4
+      000595 74 02            [12] 1433 	mov	a,#0x02
+      000597 F0               [24] 1434 	movx	@dptr,a
+                                   1435 ;	src/usb.c:372: return;
+      000598 22               [24] 1436 	ret
+      000599                       1437 00128$:
+                                   1438 ;	src/usb.c:376: if (state >= ADDRESS)
+      000599 BF 02 00         [24] 1439 	cjne	r7,#0x02,00402$
+      00059C                       1440 00402$:
+      00059C 50 03            [24] 1441 	jnc	00403$
+      00059E 02r06rED         [24] 1442 	ljmp	00166$
+      0005A1                       1443 00403$:
+                                   1444 ;	src/usb.c:380: if (SETUPBUF[1] == SET_CONFIGURATION)
+      0005A1 90 C7 E9         [24] 1445 	mov	dptr,#(_SETUPBUF + 0x0001)
+      0005A4 E0               [24] 1446 	movx	a,@dptr
+      0005A5 FE               [12] 1447 	mov	r6,a
+      0005A6 BE 09 61         [24] 1448 	cjne	r6,#0x09,00133$
+                                   1449 ;	src/usb.c:382: if (setup->value == 0)
+      0005A9 90 C7 EA         [24] 1450 	mov	dptr,#(_SETUPBUF + 0x0002)
+      0005AC E0               [24] 1451 	movx	a,@dptr
+      0005AD FD               [12] 1452 	mov	r5,a
+      0005AE A3               [24] 1453 	inc	dptr
+      0005AF E0               [24] 1454 	movx	a,@dptr
+      0005B0 FE               [12] 1455 	mov	r6,a
+      0005B1 4D               [12] 1456 	orl	a,r5
+      0005B2 70 25            [24] 1457 	jnz	00130$
+                                   1458 ;	src/usb.c:384: state = ADDRESS;
+      0005B4 90r00r00         [24] 1459 	mov	dptr,#_state
+      0005B7 74 02            [12] 1460 	mov	a,#0x02
+      0005B9 F0               [24] 1461 	movx	@dptr,a
+                                   1462 ;	src/usb.c:387: INBULKVAL  &= ~(0x02 | 0x04);
+      0005BA 90 C7 DE         [24] 1463 	mov	dptr,#0xC7DE
+      0005BD E0               [24] 1464 	movx	a,@dptr
+      0005BE 54 F9            [12] 1465 	anl	a,#0xF9
+      0005C0 F0               [24] 1466 	movx	@dptr,a
+                                   1467 ;	src/usb.c:388: OUTBULKVAL &= ~(0x02);
+      0005C1 90 C7 DF         [24] 1468 	mov	dptr,#0xC7DF
+      0005C4 E0               [24] 1469 	movx	a,@dptr
+      0005C5 54 FD            [12] 1470 	anl	a,#0xFD
+      0005C7 F0               [24] 1471 	movx	@dptr,a
+                                   1472 ;	src/usb.c:391: OUT_IEN &= ~0x02;
+      0005C8 90 C7 AD         [24] 1473 	mov	dptr,#0xC7AD
+      0005CB E0               [24] 1474 	movx	a,@dptr
+      0005CC 54 FD            [12] 1475 	anl	a,#0xFD
+      0005CE F0               [24] 1476 	movx	@dptr,a
+                                   1477 ;	src/usb.c:392: IN_IEN  &= ~0x02;
+      0005CF 90 C7 AC         [24] 1478 	mov	dptr,#0xC7AC
+      0005D2 E0               [24] 1479 	movx	a,@dptr
+      0005D3 54 FD            [12] 1480 	anl	a,#0xFD
+      0005D5 FE               [12] 1481 	mov	r6,a
+      0005D6 F0               [24] 1482 	movx	@dptr,a
+      0005D7 80 2A            [24] 1483 	sjmp	00131$
+      0005D9                       1484 00130$:
+                                   1485 ;	src/usb.c:394: state = CONFIGURED;
+      0005D9 90r00r00         [24] 1486 	mov	dptr,#_state
+      0005DC 74 03            [12] 1487 	mov	a,#0x03
+      0005DE F0               [24] 1488 	movx	@dptr,a
+                                   1489 ;	src/usb.c:397: INBULKVAL  |= 0x02 | 0x04;
+      0005DF 90 C7 DE         [24] 1490 	mov	dptr,#0xC7DE
+      0005E2 E0               [24] 1491 	movx	a,@dptr
+      0005E3 44 06            [12] 1492 	orl	a,#0x06
+      0005E5 F0               [24] 1493 	movx	@dptr,a
+                                   1494 ;	src/usb.c:398: OUTBULKVAL |= 0x02;
+      0005E6 90 C7 DF         [24] 1495 	mov	dptr,#0xC7DF
+      0005E9 E0               [24] 1496 	movx	a,@dptr
+      0005EA 44 02            [12] 1497 	orl	a,#0x02
+      0005EC F0               [24] 1498 	movx	@dptr,a
+                                   1499 ;	src/usb.c:401: OUT_IEN |= 0x02;
+      0005ED 90 C7 AD         [24] 1500 	mov	dptr,#0xC7AD
+      0005F0 E0               [24] 1501 	movx	a,@dptr
+      0005F1 44 02            [12] 1502 	orl	a,#0x02
+      0005F3 F0               [24] 1503 	movx	@dptr,a
+                                   1504 ;	src/usb.c:402: IN_IEN  |= 0x02;
+      0005F4 90 C7 AC         [24] 1505 	mov	dptr,#0xC7AC
+      0005F7 E0               [24] 1506 	movx	a,@dptr
+      0005F8 44 02            [12] 1507 	orl	a,#0x02
+      0005FA F0               [24] 1508 	movx	@dptr,a
+                                   1509 ;	src/usb.c:403: USBIEN  |= SOFIE;
+      0005FB 90 C7 AE         [24] 1510 	mov	dptr,#0xC7AE
+      0005FE E0               [24] 1511 	movx	a,@dptr
+      0005FF 44 02            [12] 1512 	orl	a,#0x02
+      000601 FE               [12] 1513 	mov	r6,a
+      000602 F0               [24] 1514 	movx	@dptr,a
+      000603                       1515 00131$:
+                                   1516 ;	src/usb.c:406: EP0CS = HSNAK;
+      000603 90 C7 B4         [24] 1517 	mov	dptr,#0xC7B4
+      000606 74 02            [12] 1518 	mov	a,#0x02
+      000608 F0               [24] 1519 	movx	@dptr,a
+                                   1520 ;	src/usb.c:407: return;
+      000609 22               [24] 1521 	ret
+      00060A                       1522 00133$:
+                                   1523 ;	src/usb.c:410: if (setup->request == GET_CONFIGURATION)
+      00060A 90 C7 E9         [24] 1524 	mov	dptr,#(_SETUPBUF + 0x0001)
+      00060D E0               [24] 1525 	movx	a,@dptr
+      00060E FE               [12] 1526 	mov	r6,a
+      00060F BE 08 1C         [24] 1527 	cjne	r6,#0x08,00138$
+                                   1528 ;	src/usb.c:412: if (state == CONFIGURED)
+      000612 BF 03 08         [24] 1529 	cjne	r7,#0x03,00135$
+                                   1530 ;	src/usb.c:413: IN0BUF[0]=1;
+      000615 90 C7 00         [24] 1531 	mov	dptr,#_IN0BUF
+      000618 74 01            [12] 1532 	mov	a,#0x01
+      00061A F0               [24] 1533 	movx	@dptr,a
+      00061B 80 05            [24] 1534 	sjmp	00136$
+      00061D                       1535 00135$:
+                                   1536 ;	src/usb.c:415: IN0BUF[0]=0;
+      00061D 90 C7 00         [24] 1537 	mov	dptr,#_IN0BUF
+      000620 E4               [12] 1538 	clr	a
+      000621 F0               [24] 1539 	movx	@dptr,a
+      000622                       1540 00136$:
+                                   1541 ;	src/usb.c:417: IN0BC=1;
+      000622 90 C7 B5         [24] 1542 	mov	dptr,#0xC7B5
+      000625 74 01            [12] 1543 	mov	a,#0x01
+      000627 F0               [24] 1544 	movx	@dptr,a
+                                   1545 ;	src/usb.c:419: EP0CS = HSNAK;
+      000628 90 C7 B4         [24] 1546 	mov	dptr,#0xC7B4
+      00062B 04               [12] 1547 	inc	a
+      00062C F0               [24] 1548 	movx	@dptr,a
+                                   1549 ;	src/usb.c:420: return;
+      00062D 22               [24] 1550 	ret
+      00062E                       1551 00138$:
+                                   1552 ;	src/usb.c:423: if(SETUPBUF[1] == GET_STATUS)
+      00062E 90 C7 E9         [24] 1553 	mov	dptr,#(_SETUPBUF + 0x0001)
+      000631 E0               [24] 1554 	movx	a,@dptr
+      000632 60 03            [24] 1555 	jz	00411$
+      000634 02r06rED         [24] 1556 	ljmp	00166$
+      000637                       1557 00411$:
+                                   1558 ;	src/usb.c:425: if ((SETUPBUF[0] & REQUEST_RMASK) == REQUEST_ENDPOINT)
+      000637 90 C7 E8         [24] 1559 	mov	dptr,#_SETUPBUF
+      00063A E0               [24] 1560 	movx	a,@dptr
+      00063B FE               [12] 1561 	mov	r6,a
+      00063C 53 06 07         [24] 1562 	anl	ar6,#0x07
+      00063F BE 02 02         [24] 1563 	cjne	r6,#0x02,00412$
+      000642 80 03            [24] 1564 	sjmp	00413$
+      000644                       1565 00412$:
+      000644 02r06rD9         [24] 1566 	ljmp	00161$
+      000647                       1567 00413$:
+                                   1568 ;	src/usb.c:427: if ((SETUPBUF[4]==0) || (state == CONFIGURED))
+      000647 90 C7 EC         [24] 1569 	mov	dptr,#(_SETUPBUF + 0x0004)
+      00064A E0               [24] 1570 	movx	a,@dptr
+      00064B 60 08            [24] 1571 	jz	00157$
+      00064D BF 03 02         [24] 1572 	cjne	r7,#0x03,00415$
+      000650 80 03            [24] 1573 	sjmp	00416$
+      000652                       1574 00415$:
+      000652 02r06rED         [24] 1575 	ljmp	00166$
+      000655                       1576 00416$:
+      000655                       1577 00157$:
+                                   1578 ;	src/usb.c:430: if (setup->index == 0x81)
+      000655 90 C7 EC         [24] 1579 	mov	dptr,#(_SETUPBUF + 0x0004)
+      000658 E0               [24] 1580 	movx	a,@dptr
+      000659 FD               [12] 1581 	mov	r5,a
+      00065A A3               [24] 1582 	inc	dptr
+      00065B E0               [24] 1583 	movx	a,@dptr
+      00065C FE               [12] 1584 	mov	r6,a
+      00065D BD 81 0E         [24] 1585 	cjne	r5,#0x81,00155$
+      000660 BE 00 0B         [24] 1586 	cjne	r6,#0x00,00155$
+                                   1587 ;	src/usb.c:431: IN0BUF[0] = IN1CS;
+      000663 90 C7 B6         [24] 1588 	mov	dptr,#0xC7B6
+      000666 E0               [24] 1589 	movx	a,@dptr
+      000667 FC               [12] 1590 	mov	r4,a
+      000668 90 C7 00         [24] 1591 	mov	dptr,#_IN0BUF
+      00066B F0               [24] 1592 	movx	@dptr,a
+      00066C 80 5B            [24] 1593 	sjmp	00156$
+      00066E                       1594 00155$:
+                                   1595 ;	src/usb.c:432: else if (setup->index == 0x82)
+      00066E BD 82 0E         [24] 1596 	cjne	r5,#0x82,00152$
+      000671 BE 00 0B         [24] 1597 	cjne	r6,#0x00,00152$
+                                   1598 ;	src/usb.c:433: IN0BUF[0] = IN2CS;
+      000674 90 C7 B8         [24] 1599 	mov	dptr,#0xC7B8
+      000677 E0               [24] 1600 	movx	a,@dptr
+      000678 FC               [12] 1601 	mov	r4,a
+      000679 90 C7 00         [24] 1602 	mov	dptr,#_IN0BUF
+      00067C F0               [24] 1603 	movx	@dptr,a
+      00067D 80 4A            [24] 1604 	sjmp	00156$
+      00067F                       1605 00152$:
+                                   1606 ;	src/usb.c:434: else if (setup->index == 0x83)
+      00067F BD 83 0E         [24] 1607 	cjne	r5,#0x83,00149$
+      000682 BE 00 0B         [24] 1608 	cjne	r6,#0x00,00149$
+                                   1609 ;	src/usb.c:435: IN0BUF[0] = IN3CS;
+      000685 90 C7 BA         [24] 1610 	mov	dptr,#0xC7BA
+      000688 E0               [24] 1611 	movx	a,@dptr
+      000689 FC               [12] 1612 	mov	r4,a
+      00068A 90 C7 00         [24] 1613 	mov	dptr,#_IN0BUF
+      00068D F0               [24] 1614 	movx	@dptr,a
+      00068E 80 39            [24] 1615 	sjmp	00156$
+      000690                       1616 00149$:
+                                   1617 ;	src/usb.c:436: else if (setup->index == 0x01)
+      000690 BD 01 0E         [24] 1618 	cjne	r5,#0x01,00146$
+      000693 BE 00 0B         [24] 1619 	cjne	r6,#0x00,00146$
+                                   1620 ;	src/usb.c:437: IN0BUF[0] = OUT1CS;
+      000696 90 C7 C6         [24] 1621 	mov	dptr,#0xC7C6
+      000699 E0               [24] 1622 	movx	a,@dptr
+      00069A FC               [12] 1623 	mov	r4,a
+      00069B 90 C7 00         [24] 1624 	mov	dptr,#_IN0BUF
+      00069E F0               [24] 1625 	movx	@dptr,a
+      00069F 80 28            [24] 1626 	sjmp	00156$
+      0006A1                       1627 00146$:
+                                   1628 ;	src/usb.c:438: else if (setup->index == 0x02)
+      0006A1 BD 02 0E         [24] 1629 	cjne	r5,#0x02,00143$
+      0006A4 BE 00 0B         [24] 1630 	cjne	r6,#0x00,00143$
+                                   1631 ;	src/usb.c:439: IN0BUF[0] = OUT2CS;
+      0006A7 90 C7 C8         [24] 1632 	mov	dptr,#0xC7C8
+      0006AA E0               [24] 1633 	movx	a,@dptr
+      0006AB FC               [12] 1634 	mov	r4,a
+      0006AC 90 C7 00         [24] 1635 	mov	dptr,#_IN0BUF
+      0006AF F0               [24] 1636 	movx	@dptr,a
+      0006B0 80 17            [24] 1637 	sjmp	00156$
+      0006B2                       1638 00143$:
+                                   1639 ;	src/usb.c:440: else if (setup->index == 0x03)
+      0006B2 BD 03 0E         [24] 1640 	cjne	r5,#0x03,00140$
+      0006B5 BE 00 0B         [24] 1641 	cjne	r6,#0x00,00140$
+                                   1642 ;	src/usb.c:441: IN0BUF[0] = OUT3CS;
+      0006B8 90 C7 CA         [24] 1643 	mov	dptr,#0xC7CA
+      0006BB E0               [24] 1644 	movx	a,@dptr
+      0006BC FE               [12] 1645 	mov	r6,a
+      0006BD 90 C7 00         [24] 1646 	mov	dptr,#_IN0BUF
+      0006C0 F0               [24] 1647 	movx	@dptr,a
+      0006C1 80 06            [24] 1648 	sjmp	00156$
+      0006C3                       1649 00140$:
+                                   1650 ;	src/usb.c:443: IN0BUF[0]=1;
+      0006C3 90 C7 00         [24] 1651 	mov	dptr,#_IN0BUF
+      0006C6 74 01            [12] 1652 	mov	a,#0x01
+      0006C8 F0               [24] 1653 	movx	@dptr,a
+      0006C9                       1654 00156$:
+                                   1655 ;	src/usb.c:447: IN0BUF[1]=0;
+      0006C9 90 C7 01         [24] 1656 	mov	dptr,#(_IN0BUF + 0x0001)
+      0006CC E4               [12] 1657 	clr	a
+      0006CD F0               [24] 1658 	movx	@dptr,a
+                                   1659 ;	src/usb.c:448: IN0BC = 2; //2 bytes
+      0006CE 90 C7 B5         [24] 1660 	mov	dptr,#0xC7B5
+      0006D1 74 02            [12] 1661 	mov	a,#0x02
+      0006D3 F0               [24] 1662 	movx	@dptr,a
+                                   1663 ;	src/usb.c:450: EP0CS = HSNAK; //HSNACK dis
+      0006D4 90 C7 B4         [24] 1664 	mov	dptr,#0xC7B4
+      0006D7 F0               [24] 1665 	movx	@dptr,a
+                                   1666 ;	src/usb.c:451: return;
+      0006D8 22               [24] 1667 	ret
+      0006D9                       1668 00161$:
+                                   1669 ;	src/usb.c:458: IN0BUF[0]=0;
+      0006D9 90 C7 00         [24] 1670 	mov	dptr,#_IN0BUF
+      0006DC E4               [12] 1671 	clr	a
+      0006DD F0               [24] 1672 	movx	@dptr,a
+                                   1673 ;	src/usb.c:459: IN0BUF[1]=0;
+      0006DE 90 C7 01         [24] 1674 	mov	dptr,#(_IN0BUF + 0x0001)
+      0006E1 F0               [24] 1675 	movx	@dptr,a
+                                   1676 ;	src/usb.c:460: IN0BC = 2; //2 bytes
+      0006E2 90 C7 B5         [24] 1677 	mov	dptr,#0xC7B5
+      0006E5 74 02            [12] 1678 	mov	a,#0x02
+      0006E7 F0               [24] 1679 	movx	@dptr,a
+                                   1680 ;	src/usb.c:462: EP0CS = HSNAK; //HSNACK dis
+      0006E8 90 C7 B4         [24] 1681 	mov	dptr,#0xC7B4
+      0006EB F0               [24] 1682 	movx	@dptr,a
+                                   1683 ;	src/usb.c:463: return; 
+      0006EC 22               [24] 1684 	ret
+      0006ED                       1685 00166$:
+                                   1686 ;	src/usb.c:468: if (state >= CONFIGURED)
+      0006ED BF 03 00         [24] 1687 	cjne	r7,#0x03,00429$
+      0006F0                       1688 00429$:
+      0006F0 50 03            [24] 1689 	jnc	00430$
+      0006F2 02r08r20         [24] 1690 	ljmp	00216$
+      0006F5                       1691 00430$:
+                                   1692 ;	src/usb.c:470: if(SETUPBUF[1] == GET_INTERFACE)
+      0006F5 90 C7 E9         [24] 1693 	mov	dptr,#(_SETUPBUF + 0x0001)
+      0006F8 E0               [24] 1694 	movx	a,@dptr
+      0006F9 FF               [12] 1695 	mov	r7,a
+      0006FA BF 0A 12         [24] 1696 	cjne	r7,#0x0A,00168$
+                                   1697 ;	src/usb.c:473: IN0BUF[0]=0;
+      0006FD 90 C7 00         [24] 1698 	mov	dptr,#_IN0BUF
+      000700 E4               [12] 1699 	clr	a
+      000701 F0               [24] 1700 	movx	@dptr,a
+                                   1701 ;	src/usb.c:474: IN0BC = 1;
+      000702 90 C7 B5         [24] 1702 	mov	dptr,#0xC7B5
+      000705 04               [12] 1703 	inc	a
+      000706 F0               [24] 1704 	movx	@dptr,a
+                                   1705 ;	src/usb.c:476: EP0CS |= HSNAK; //HSNACK dis
+      000707 90 C7 B4         [24] 1706 	mov	dptr,#0xC7B4
+      00070A E0               [24] 1707 	movx	a,@dptr
+      00070B 44 02            [12] 1708 	orl	a,#0x02
+      00070D F0               [24] 1709 	movx	@dptr,a
+                                   1710 ;	src/usb.c:477: return;    
+      00070E 22               [24] 1711 	ret
+      00070F                       1712 00168$:
+                                   1713 ;	src/usb.c:480: if(setup->request == CLEAR_FEATURE)
+      00070F 90 C7 E9         [24] 1714 	mov	dptr,#(_SETUPBUF + 0x0001)
+      000712 E0               [24] 1715 	movx	a,@dptr
+      000713 FF               [12] 1716 	mov	r7,a
+      000714 BF 01 02         [24] 1717 	cjne	r7,#0x01,00433$
+      000717 80 03            [24] 1718 	sjmp	00434$
+      000719                       1719 00433$:
+      000719 02r07r97         [24] 1720 	ljmp	00191$
+      00071C                       1721 00434$:
+                                   1722 ;	src/usb.c:482: if (IS_ENDPOINT(setup->requestType) && (setup->value == ENDPOINT_HALT))
+      00071C 90 C7 E8         [24] 1723 	mov	dptr,#_SETUPBUF
+      00071F E0               [24] 1724 	movx	a,@dptr
+      000720 FE               [12] 1725 	mov	r6,a
+      000721 53 06 03         [24] 1726 	anl	ar6,#0x03
+      000724 BE 02 70         [24] 1727 	cjne	r6,#0x02,00191$
+      000727 90 C7 EA         [24] 1728 	mov	dptr,#(_SETUPBUF + 0x0002)
+      00072A E0               [24] 1729 	movx	a,@dptr
+      00072B FD               [12] 1730 	mov	r5,a
+      00072C A3               [24] 1731 	inc	dptr
+      00072D E0               [24] 1732 	movx	a,@dptr
+      00072E FE               [12] 1733 	mov	r6,a
+      00072F 4D               [12] 1734 	orl	a,r5
+      000730 70 65            [24] 1735 	jnz	00191$
+                                   1736 ;	src/usb.c:484: if (setup->index == 0x81)
+      000732 90 C7 EC         [24] 1737 	mov	dptr,#(_SETUPBUF + 0x0004)
+      000735 E0               [24] 1738 	movx	a,@dptr
+      000736 FD               [12] 1739 	mov	r5,a
+      000737 A3               [24] 1740 	inc	dptr
+      000738 E0               [24] 1741 	movx	a,@dptr
+      000739 FE               [12] 1742 	mov	r6,a
+      00073A BD 81 0A         [24] 1743 	cjne	r5,#0x81,00185$
+      00073D BE 00 07         [24] 1744 	cjne	r6,#0x00,00185$
+                                   1745 ;	src/usb.c:485: IN1CS = 0;
+      000740 90 C7 B6         [24] 1746 	mov	dptr,#0xC7B6
+      000743 E4               [12] 1747 	clr	a
+      000744 F0               [24] 1748 	movx	@dptr,a
+      000745 80 48            [24] 1749 	sjmp	00186$
+      000747                       1750 00185$:
+                                   1751 ;	src/usb.c:486: else if (setup->index == 0x82)
+      000747 BD 82 0A         [24] 1752 	cjne	r5,#0x82,00182$
+      00074A BE 00 07         [24] 1753 	cjne	r6,#0x00,00182$
+                                   1754 ;	src/usb.c:487: IN2CS = 0;
+      00074D 90 C7 B8         [24] 1755 	mov	dptr,#0xC7B8
+      000750 E4               [12] 1756 	clr	a
+      000751 F0               [24] 1757 	movx	@dptr,a
+      000752 80 3B            [24] 1758 	sjmp	00186$
+      000754                       1759 00182$:
+                                   1760 ;	src/usb.c:488: else if (setup->index == 0x83)
+      000754 BD 83 0A         [24] 1761 	cjne	r5,#0x83,00179$
+      000757 BE 00 07         [24] 1762 	cjne	r6,#0x00,00179$
+                                   1763 ;	src/usb.c:489: IN3CS = 0;
+      00075A 90 C7 BA         [24] 1764 	mov	dptr,#0xC7BA
+      00075D E4               [12] 1765 	clr	a
+      00075E F0               [24] 1766 	movx	@dptr,a
+      00075F 80 2E            [24] 1767 	sjmp	00186$
+      000761                       1768 00179$:
+                                   1769 ;	src/usb.c:490: else if (setup->index == 0x01)
+      000761 BD 01 0A         [24] 1770 	cjne	r5,#0x01,00176$
+      000764 BE 00 07         [24] 1771 	cjne	r6,#0x00,00176$
+                                   1772 ;	src/usb.c:491: OUT1CS = 0;
+      000767 90 C7 C6         [24] 1773 	mov	dptr,#0xC7C6
+      00076A E4               [12] 1774 	clr	a
+      00076B F0               [24] 1775 	movx	@dptr,a
+      00076C 80 21            [24] 1776 	sjmp	00186$
+      00076E                       1777 00176$:
+                                   1778 ;	src/usb.c:492: else if (setup->index == 0x02)
+      00076E BD 02 0A         [24] 1779 	cjne	r5,#0x02,00173$
+      000771 BE 00 07         [24] 1780 	cjne	r6,#0x00,00173$
+                                   1781 ;	src/usb.c:493: OUT2CS = 0;
+      000774 90 C7 C8         [24] 1782 	mov	dptr,#0xC7C8
+      000777 E4               [12] 1783 	clr	a
+      000778 F0               [24] 1784 	movx	@dptr,a
+      000779 80 14            [24] 1785 	sjmp	00186$
+      00077B                       1786 00173$:
+                                   1787 ;	src/usb.c:494: else if (setup->index == 0x03)
+      00077B BD 03 0A         [24] 1788 	cjne	r5,#0x03,00170$
+      00077E BE 00 07         [24] 1789 	cjne	r6,#0x00,00170$
+                                   1790 ;	src/usb.c:495: OUT3CS = 0;
+      000781 90 C7 CA         [24] 1791 	mov	dptr,#0xC7CA
+      000784 E4               [12] 1792 	clr	a
+      000785 F0               [24] 1793 	movx	@dptr,a
+      000786 80 07            [24] 1794 	sjmp	00186$
+      000788                       1795 00170$:
+                                   1796 ;	src/usb.c:497: EP0CS = EP0STALL;
+      000788 90 C7 B4         [24] 1797 	mov	dptr,#0xC7B4
+      00078B 74 01            [12] 1798 	mov	a,#0x01
+      00078D F0               [24] 1799 	movx	@dptr,a
+                                   1800 ;	src/usb.c:498: return;
+      00078E 22               [24] 1801 	ret
+      00078F                       1802 00186$:
+                                   1803 ;	src/usb.c:501: EP0CS |= HSNAK; //HSNACK dis
+      00078F 90 C7 B4         [24] 1804 	mov	dptr,#0xC7B4
+      000792 E0               [24] 1805 	movx	a,@dptr
+      000793 44 02            [12] 1806 	orl	a,#0x02
+      000795 F0               [24] 1807 	movx	@dptr,a
+                                   1808 ;	src/usb.c:502: return; 
+      000796 22               [24] 1809 	ret
+      000797                       1810 00191$:
+                                   1811 ;	src/usb.c:506: if(setup->request == SET_FEATURE)
+      000797 BF 03 02         [24] 1812 	cjne	r7,#0x03,00450$
+      00079A 80 03            [24] 1813 	sjmp	00451$
+      00079C                       1814 00450$:
+      00079C 02r08r20         [24] 1815 	ljmp	00216$
+      00079F                       1816 00451$:
+                                   1817 ;	src/usb.c:508: if (IS_ENDPOINT(setup->requestType) && (setup->value == ENDPOINT_HALT))
+      00079F 90 C7 E8         [24] 1818 	mov	dptr,#_SETUPBUF
+      0007A2 E0               [24] 1819 	movx	a,@dptr
+      0007A3 FF               [12] 1820 	mov	r7,a
+      0007A4 53 07 03         [24] 1821 	anl	ar7,#0x03
+      0007A7 BF 02 76         [24] 1822 	cjne	r7,#0x02,00216$
+      0007AA 90 C7 EA         [24] 1823 	mov	dptr,#(_SETUPBUF + 0x0002)
+      0007AD E0               [24] 1824 	movx	a,@dptr
+      0007AE FE               [12] 1825 	mov	r6,a
+      0007AF A3               [24] 1826 	inc	dptr
+      0007B0 E0               [24] 1827 	movx	a,@dptr
+      0007B1 FF               [12] 1828 	mov	r7,a
+      0007B2 4E               [12] 1829 	orl	a,r6
+      0007B3 70 6B            [24] 1830 	jnz	00216$
+                                   1831 ;	src/usb.c:510: if (setup->index == 0x81)
+      0007B5 90 C7 EC         [24] 1832 	mov	dptr,#(_SETUPBUF + 0x0004)
+      0007B8 E0               [24] 1833 	movx	a,@dptr
+      0007B9 FE               [12] 1834 	mov	r6,a
+      0007BA A3               [24] 1835 	inc	dptr
+      0007BB E0               [24] 1836 	movx	a,@dptr
+      0007BC FF               [12] 1837 	mov	r7,a
+      0007BD BE 81 0B         [24] 1838 	cjne	r6,#0x81,00208$
+      0007C0 BF 00 08         [24] 1839 	cjne	r7,#0x00,00208$
+                                   1840 ;	src/usb.c:511: IN1CS = EPSTALL;
+      0007C3 90 C7 B6         [24] 1841 	mov	dptr,#0xC7B6
+      0007C6 74 01            [12] 1842 	mov	a,#0x01
+      0007C8 F0               [24] 1843 	movx	@dptr,a
+      0007C9 80 4D            [24] 1844 	sjmp	00209$
+      0007CB                       1845 00208$:
+                                   1846 ;	src/usb.c:512: else if (setup->index == 0x82)
+      0007CB BE 82 0B         [24] 1847 	cjne	r6,#0x82,00205$
+      0007CE BF 00 08         [24] 1848 	cjne	r7,#0x00,00205$
+                                   1849 ;	src/usb.c:513: IN2CS = EPSTALL;
+      0007D1 90 C7 B8         [24] 1850 	mov	dptr,#0xC7B8
+      0007D4 74 01            [12] 1851 	mov	a,#0x01
+      0007D6 F0               [24] 1852 	movx	@dptr,a
+      0007D7 80 3F            [24] 1853 	sjmp	00209$
+      0007D9                       1854 00205$:
+                                   1855 ;	src/usb.c:514: else if (setup->index == 0x83)
+      0007D9 BE 83 0B         [24] 1856 	cjne	r6,#0x83,00202$
+      0007DC BF 00 08         [24] 1857 	cjne	r7,#0x00,00202$
+                                   1858 ;	src/usb.c:515: IN3CS = EPSTALL;
+      0007DF 90 C7 BA         [24] 1859 	mov	dptr,#0xC7BA
+      0007E2 74 01            [12] 1860 	mov	a,#0x01
+      0007E4 F0               [24] 1861 	movx	@dptr,a
+      0007E5 80 31            [24] 1862 	sjmp	00209$
+      0007E7                       1863 00202$:
+                                   1864 ;	src/usb.c:516: else if (setup->index == 0x01)
+      0007E7 BE 01 0B         [24] 1865 	cjne	r6,#0x01,00199$
+      0007EA BF 00 08         [24] 1866 	cjne	r7,#0x00,00199$
+                                   1867 ;	src/usb.c:517: OUT1CS = EPSTALL;
+      0007ED 90 C7 C6         [24] 1868 	mov	dptr,#0xC7C6
+      0007F0 74 01            [12] 1869 	mov	a,#0x01
+      0007F2 F0               [24] 1870 	movx	@dptr,a
+      0007F3 80 23            [24] 1871 	sjmp	00209$
+      0007F5                       1872 00199$:
+                                   1873 ;	src/usb.c:518: else if (setup->index == 0x02)
+      0007F5 BE 02 0B         [24] 1874 	cjne	r6,#0x02,00196$
+      0007F8 BF 00 08         [24] 1875 	cjne	r7,#0x00,00196$
+                                   1876 ;	src/usb.c:519: OUT2CS = EPSTALL;
+      0007FB 90 C7 C8         [24] 1877 	mov	dptr,#0xC7C8
+      0007FE 74 01            [12] 1878 	mov	a,#0x01
+      000800 F0               [24] 1879 	movx	@dptr,a
+      000801 80 15            [24] 1880 	sjmp	00209$
+      000803                       1881 00196$:
+                                   1882 ;	src/usb.c:520: else if (setup->index == 0x03)
+      000803 BE 03 0B         [24] 1883 	cjne	r6,#0x03,00193$
+      000806 BF 00 08         [24] 1884 	cjne	r7,#0x00,00193$
+                                   1885 ;	src/usb.c:521: OUT3CS = EPSTALL;
+      000809 90 C7 CA         [24] 1886 	mov	dptr,#0xC7CA
+      00080C 74 01            [12] 1887 	mov	a,#0x01
+      00080E F0               [24] 1888 	movx	@dptr,a
+      00080F 80 07            [24] 1889 	sjmp	00209$
+      000811                       1890 00193$:
+                                   1891 ;	src/usb.c:523: EP0CS = EP0STALL;
+      000811 90 C7 B4         [24] 1892 	mov	dptr,#0xC7B4
+      000814 74 01            [12] 1893 	mov	a,#0x01
+      000816 F0               [24] 1894 	movx	@dptr,a
+                                   1895 ;	src/usb.c:524: return;
+      000817 22               [24] 1896 	ret
+      000818                       1897 00209$:
+                                   1898 ;	src/usb.c:527: EP0CS |= HSNAK; //HSNACK dis
+      000818 90 C7 B4         [24] 1899 	mov	dptr,#0xC7B4
+      00081B E0               [24] 1900 	movx	a,@dptr
+      00081C 44 02            [12] 1901 	orl	a,#0x02
+      00081E F0               [24] 1902 	movx	@dptr,a
+                                   1903 ;	src/usb.c:528: return; 
+                                   1904 ;	src/usb.c:532: if(setup->request == SET_FEATURE)
+      00081F 22               [24] 1905 	ret
+      000820                       1906 00216$:
+                                   1907 ;	src/usb.c:539: EP0CS = EP0STALL; //Stall to error
+      000820 90 C7 B4         [24] 1908 	mov	dptr,#0xC7B4
+      000823 74 01            [12] 1909 	mov	a,#0x01
+      000825 F0               [24] 1910 	movx	@dptr,a
+      000826 22               [24] 1911 	ret
+                                   1912 ;------------------------------------------------------------
+                                   1913 ;Allocation info for local variables in function 'usbVendorIsr'
+                                   1914 ;------------------------------------------------------------
+                                   1915 ;	src/usb.c:542: void usbVendorIsr() 
+                                   1916 ;	-----------------------------------------
+                                   1917 ;	 function usbVendorIsr
+                                   1918 ;	-----------------------------------------
+      000827                       1919 _usbVendorIsr:
+                                   1920 ;	src/usb.c:544: vendorSetup = true;
+      000827 D2*01            [12] 1921 	setb	_vendorSetup
+      000829 22               [24] 1922 	ret
+                                   1923 ;------------------------------------------------------------
+                                   1924 ;Allocation info for local variables in function 'usbClassIsr'
+                                   1925 ;------------------------------------------------------------
+                                   1926 ;	src/usb.c:547: void usbClassIsr() {
+                                   1927 ;	-----------------------------------------
+                                   1928 ;	 function usbClassIsr
+                                   1929 ;	-----------------------------------------
+      00082A                       1930 _usbClassIsr:
+                                   1931 ;	src/usb.c:553: EP0CS = EP0STALL;
+      00082A 90 C7 B4         [24] 1932 	mov	dptr,#0xC7B4
+      00082D 74 01            [12] 1933 	mov	a,#0x01
+      00082F F0               [24] 1934 	movx	@dptr,a
+      000830 22               [24] 1935 	ret
+                                   1936 ;------------------------------------------------------------
+                                   1937 ;Allocation info for local variables in function 'usbBulkSend'
+                                   1938 ;------------------------------------------------------------
+                                   1939 ;buff                      Allocated with name '_usbBulkSend_PARM_2'
+                                   1940 ;len                       Allocated with name '_usbBulkSend_PARM_3'
+                                   1941 ;ep                        Allocated with name '_usbBulkSend_ep_1_76'
+                                   1942 ;------------------------------------------------------------
+                                   1943 ;	src/usb.c:558: void usbBulkSend(unsigned char ep, char* buff, unsigned char len) {
+                                   1944 ;	-----------------------------------------
+                                   1945 ;	 function usbBulkSend
+                                   1946 ;	-----------------------------------------
+      000831                       1947 _usbBulkSend:
+                                   1948 ;	src/usb.c:561: memcpy(IN0BUF, buff, len);
+      000831 90r00r09         [24] 1949 	mov	dptr,#_usbBulkSend_PARM_2
+      000834 E0               [24] 1950 	movx	a,@dptr
+      000835 FD               [12] 1951 	mov	r5,a
+      000836 A3               [24] 1952 	inc	dptr
+      000837 E0               [24] 1953 	movx	a,@dptr
+      000838 FE               [12] 1954 	mov	r6,a
+      000839 A3               [24] 1955 	inc	dptr
+      00083A E0               [24] 1956 	movx	a,@dptr
+      00083B FF               [12] 1957 	mov	r7,a
+      00083C 90r00r0C         [24] 1958 	mov	dptr,#_usbBulkSend_PARM_3
+      00083F E0               [24] 1959 	movx	a,@dptr
+      000840 FC               [12] 1960 	mov	r4,a
+      000841 FA               [12] 1961 	mov	r2,a
+      000842 7B 00            [12] 1962 	mov	r3,#0x00
+      000844 90r00r00         [24] 1963 	mov	dptr,#_memcpy_PARM_2
+      000847 ED               [12] 1964 	mov	a,r5
+      000848 F0               [24] 1965 	movx	@dptr,a
+      000849 EE               [12] 1966 	mov	a,r6
+      00084A A3               [24] 1967 	inc	dptr
+      00084B F0               [24] 1968 	movx	@dptr,a
+      00084C EF               [12] 1969 	mov	a,r7
+      00084D A3               [24] 1970 	inc	dptr
+      00084E F0               [24] 1971 	movx	@dptr,a
+      00084F 90r00r00         [24] 1972 	mov	dptr,#_memcpy_PARM_3
+      000852 EA               [12] 1973 	mov	a,r2
+      000853 F0               [24] 1974 	movx	@dptr,a
+      000854 EB               [12] 1975 	mov	a,r3
+      000855 A3               [24] 1976 	inc	dptr
+      000856 F0               [24] 1977 	movx	@dptr,a
+      000857 90 C7 00         [24] 1978 	mov	dptr,#_IN0BUF
+      00085A 75 F0 00         [24] 1979 	mov	b,#0x00
+      00085D C0 04            [24] 1980 	push	ar4
+      00085F 12r00r00         [24] 1981 	lcall	_memcpy
+      000862 D0 04            [24] 1982 	pop	ar4
+                                   1983 ;	src/usb.c:563: IN0BC = len;
+      000864 90 C7 B5         [24] 1984 	mov	dptr,#0xC7B5
+      000867 EC               [12] 1985 	mov	a,r4
+      000868 F0               [24] 1986 	movx	@dptr,a
+      000869 22               [24] 1987 	ret
+                                   1988 ;------------------------------------------------------------
+                                   1989 ;Allocation info for local variables in function 'usbSendIdString'
+                                   1990 ;------------------------------------------------------------
+                                   1991 ;i                         Allocated with name '_usbSendIdString_i_1_79'
+                                   1992 ;------------------------------------------------------------
+                                   1993 ;	src/usb.c:571: void usbSendIdString(void)
+                                   1994 ;	-----------------------------------------
+                                   1995 ;	 function usbSendIdString
+                                   1996 ;	-----------------------------------------
+      00086A                       1997 _usbSendIdString:
+                                   1998 ;	src/usb.c:575: IN0BUF[0] = 22;
+      00086A 90 C7 00         [24] 1999 	mov	dptr,#_IN0BUF
+      00086D 74 16            [12] 2000 	mov	a,#0x16
+      00086F F0               [24] 2001 	movx	@dptr,a
+                                   2002 ;	src/usb.c:576: IN0BUF[1] = STRING_DESCRIPTOR;
+      000870 90 C7 01         [24] 2003 	mov	dptr,#(_IN0BUF + 0x0001)
+      000873 74 03            [12] 2004 	mov	a,#0x03
+      000875 F0               [24] 2005 	movx	@dptr,a
+                                   2006 ;	src/usb.c:578: for (i=0; i<5; i++)
+      000876 7E 00            [12] 2007 	mov	r6,#0x00
+      000878 7F 00            [12] 2008 	mov	r7,#0x00
+      00087A                       2009 00102$:
+                                   2010 ;	src/usb.c:580: IN0BUF[2+(i*4)] = bin2hex[(chip_id[i]>>4)&0x0F];
+      00087A 8E 05            [24] 2011 	mov	ar5,r6
+      00087C ED               [12] 2012 	mov	a,r5
+      00087D 2D               [12] 2013 	add	a,r5
+      00087E 25 E0            [12] 2014 	add	a,acc
+      000880 FD               [12] 2015 	mov	r5,a
+      000881 24 02            [12] 2016 	add	a,#0x02
+      000883 24 00            [12] 2017 	add	a,#_IN0BUF
+      000885 FB               [12] 2018 	mov	r3,a
+      000886 E4               [12] 2019 	clr	a
+      000887 34 C7            [12] 2020 	addc	a,#(_IN0BUF >> 8)
+      000889 FC               [12] 2021 	mov	r4,a
+      00088A EE               [12] 2022 	mov	a,r6
+      00088B 24r00            [12] 2023 	add	a,#_chip_id
+      00088D F9               [12] 2024 	mov	r1,a
+      00088E EF               [12] 2025 	mov	a,r7
+      00088F 34s00            [12] 2026 	addc	a,#(_chip_id >> 8)
+      000891 FA               [12] 2027 	mov	r2,a
+      000892 89 82            [24] 2028 	mov	dpl,r1
+      000894 8A 83            [24] 2029 	mov	dph,r2
+      000896 E0               [24] 2030 	movx	a,@dptr
+      000897 C4               [12] 2031 	swap	a
+      000898 54 0F            [12] 2032 	anl	a,#0x0F
+      00089A F8               [12] 2033 	mov	r0,a
+      00089B 74 0F            [12] 2034 	mov	a,#0x0F
+      00089D 58               [12] 2035 	anl	a,r0
+      00089E 90r00r00         [24] 2036 	mov	dptr,#_bin2hex
+      0008A1 93               [24] 2037 	movc	a,@a+dptr
+      0008A2 F8               [12] 2038 	mov	r0,a
+      0008A3 8B 82            [24] 2039 	mov	dpl,r3
+      0008A5 8C 83            [24] 2040 	mov	dph,r4
+      0008A7 F0               [24] 2041 	movx	@dptr,a
+                                   2042 ;	src/usb.c:581: IN0BUF[3+(i*4)] = 0;
+      0008A8 74 03            [12] 2043 	mov	a,#0x03
+      0008AA 2D               [12] 2044 	add	a,r5
+      0008AB 24 00            [12] 2045 	add	a,#_IN0BUF
+      0008AD F5 82            [12] 2046 	mov	dpl,a
+      0008AF E4               [12] 2047 	clr	a
+      0008B0 34 C7            [12] 2048 	addc	a,#(_IN0BUF >> 8)
+      0008B2 F5 83            [12] 2049 	mov	dph,a
+      0008B4 E4               [12] 2050 	clr	a
+      0008B5 F0               [24] 2051 	movx	@dptr,a
+                                   2052 ;	src/usb.c:582: IN0BUF[4+(i*4)] = bin2hex[chip_id[i]&0x0F];
+      0008B6 74 04            [12] 2053 	mov	a,#0x04
+      0008B8 2D               [12] 2054 	add	a,r5
+      0008B9 24 00            [12] 2055 	add	a,#_IN0BUF
+      0008BB FB               [12] 2056 	mov	r3,a
+      0008BC E4               [12] 2057 	clr	a
+      0008BD 34 C7            [12] 2058 	addc	a,#(_IN0BUF >> 8)
+      0008BF FC               [12] 2059 	mov	r4,a
+      0008C0 89 82            [24] 2060 	mov	dpl,r1
+      0008C2 8A 83            [24] 2061 	mov	dph,r2
+      0008C4 E0               [24] 2062 	movx	a,@dptr
+      0008C5 F9               [12] 2063 	mov	r1,a
+      0008C6 74 0F            [12] 2064 	mov	a,#0x0F
+      0008C8 59               [12] 2065 	anl	a,r1
+      0008C9 90r00r00         [24] 2066 	mov	dptr,#_bin2hex
+      0008CC 93               [24] 2067 	movc	a,@a+dptr
+      0008CD FA               [12] 2068 	mov	r2,a
+      0008CE 8B 82            [24] 2069 	mov	dpl,r3
+      0008D0 8C 83            [24] 2070 	mov	dph,r4
+      0008D2 F0               [24] 2071 	movx	@dptr,a
+                                   2072 ;	src/usb.c:583: IN0BUF[5+(i*4)] = 0;
+      0008D3 74 05            [12] 2073 	mov	a,#0x05
+      0008D5 2D               [12] 2074 	add	a,r5
+      0008D6 24 00            [12] 2075 	add	a,#_IN0BUF
+      0008D8 F5 82            [12] 2076 	mov	dpl,a
+      0008DA E4               [12] 2077 	clr	a
+      0008DB 34 C7            [12] 2078 	addc	a,#(_IN0BUF >> 8)
+      0008DD F5 83            [12] 2079 	mov	dph,a
+      0008DF E4               [12] 2080 	clr	a
+      0008E0 F0               [24] 2081 	movx	@dptr,a
+                                   2082 ;	src/usb.c:578: for (i=0; i<5; i++)
+      0008E1 0E               [12] 2083 	inc	r6
+      0008E2 BE 00 01         [24] 2084 	cjne	r6,#0x00,00113$
+      0008E5 0F               [12] 2085 	inc	r7
+      0008E6                       2086 00113$:
+      0008E6 C3               [12] 2087 	clr	c
+      0008E7 EE               [12] 2088 	mov	a,r6
+      0008E8 94 05            [12] 2089 	subb	a,#0x05
+      0008EA EF               [12] 2090 	mov	a,r7
+      0008EB 64 80            [12] 2091 	xrl	a,#0x80
+      0008ED 94 80            [12] 2092 	subb	a,#0x80
+      0008EF 50 03            [24] 2093 	jnc	00114$
+      0008F1 02r08r7A         [24] 2094 	ljmp	00102$
+      0008F4                       2095 00114$:
+                                   2096 ;	src/usb.c:586: IN0BC = 22;
+      0008F4 90 C7 B5         [24] 2097 	mov	dptr,#0xC7B5
+      0008F7 74 16            [12] 2098 	mov	a,#0x16
+      0008F9 F0               [24] 2099 	movx	@dptr,a
+      0008FA 22               [24] 2100 	ret
+                                   2101 ;------------------------------------------------------------
+                                   2102 ;Allocation info for local variables in function 'usbIsVendorSetup'
+                                   2103 ;------------------------------------------------------------
+                                   2104 ;	src/usb.c:591: bool usbIsVendorSetup(void)
+                                   2105 ;	-----------------------------------------
+                                   2106 ;	 function usbIsVendorSetup
+                                   2107 ;	-----------------------------------------
+      0008FB                       2108 _usbIsVendorSetup:
+                                   2109 ;	src/usb.c:593: if (vendorSetup)
+                                   2110 ;	src/usb.c:595: vendorSetup = false;
+      0008FB 10*01 02         [24] 2111 	jbc	_vendorSetup,00108$
+      0008FE 80 02            [24] 2112 	sjmp	00102$
+      000900                       2113 00108$:
+                                   2114 ;	src/usb.c:596: return true;
+      000900 D3               [12] 2115 	setb	c
+      000901 22               [24] 2116 	ret
+      000902                       2117 00102$:
+                                   2118 ;	src/usb.c:598: return false;
+      000902 C3               [12] 2119 	clr	c
+      000903 22               [24] 2120 	ret
+                                   2121 ;------------------------------------------------------------
+                                   2122 ;Allocation info for local variables in function 'usbGetSetupPacket'
+                                   2123 ;------------------------------------------------------------
+                                   2124 ;	src/usb.c:605: __xdata struct controllStruct * usbGetSetupPacket(void)
+                                   2125 ;	-----------------------------------------
+                                   2126 ;	 function usbGetSetupPacket
+                                   2127 ;	-----------------------------------------
+      000904                       2128 _usbGetSetupPacket:
+                                   2129 ;	src/usb.c:607: return (__xdata void*) SETUPBUF;
+      000904 90 C7 E8         [24] 2130 	mov	dptr,#_SETUPBUF
+      000907 22               [24] 2131 	ret
+                                   2132 ;------------------------------------------------------------
+                                   2133 ;Allocation info for local variables in function 'usbAckSetup'
+                                   2134 ;------------------------------------------------------------
+                                   2135 ;	src/usb.c:610: void usbAckSetup(void)
+                                   2136 ;	-----------------------------------------
+                                   2137 ;	 function usbAckSetup
+                                   2138 ;	-----------------------------------------
+      000908                       2139 _usbAckSetup:
+                                   2140 ;	src/usb.c:612: EP0CS = HSNAK; //HSNACK dis
+      000908 90 C7 B4         [24] 2141 	mov	dptr,#0xC7B4
+      00090B 74 02            [12] 2142 	mov	a,#0x02
+      00090D F0               [24] 2143 	movx	@dptr,a
+      00090E 22               [24] 2144 	ret
+                                   2145 ;------------------------------------------------------------
+                                   2146 ;Allocation info for local variables in function 'usbDismissSetup'
+                                   2147 ;------------------------------------------------------------
+                                   2148 ;	src/usb.c:615: void usbDismissSetup(void)
+                                   2149 ;	-----------------------------------------
+                                   2150 ;	 function usbDismissSetup
+                                   2151 ;	-----------------------------------------
+      00090F                       2152 _usbDismissSetup:
+                                   2153 ;	src/usb.c:617: EP0CS = EP0STALL; //Stall to error
+      00090F 90 C7 B4         [24] 2154 	mov	dptr,#0xC7B4
+      000912 74 01            [12] 2155 	mov	a,#0x01
+      000914 F0               [24] 2156 	movx	@dptr,a
+      000915 22               [24] 2157 	ret
+                                   2158 	.area CSEG    (CODE)
+                                   2159 	.area CONST   (CODE)
+      000000                       2160 _bin2hex:
+      000000 30                    2161 	.db #0x30	;  48	'0'
+      000001 31                    2162 	.db #0x31	;  49	'1'
+      000002 32                    2163 	.db #0x32	;  50	'2'
+      000003 33                    2164 	.db #0x33	;  51	'3'
+      000004 34                    2165 	.db #0x34	;  52	'4'
+      000005 35                    2166 	.db #0x35	;  53	'5'
+      000006 36                    2167 	.db #0x36	;  54	'6'
+      000007 37                    2168 	.db #0x37	;  55	'7'
+      000008 38                    2169 	.db #0x38	;  56	'8'
+      000009 39                    2170 	.db #0x39	;  57	'9'
+      00000A 41                    2171 	.db #0x41	;  65	'A'
+      00000B 42                    2172 	.db #0x42	;  66	'B'
+      00000C 43                    2173 	.db #0x43	;  67	'C'
+      00000D 44                    2174 	.db #0x44	;  68	'D'
+      00000E 45                    2175 	.db #0x45	;  69	'E'
+      00000F 46                    2176 	.db #0x46	;  70	'F'
+                                   2177 	.area XINIT   (CODE)
+      000000                       2178 __xinit__state:
+      000000 00                    2179 	.db #0x00	; 0
+      000001                       2180 __xinit__radioChannel:
+      000001 FF                    2181 	.db #0xFF	; -1
+      000002                       2182 __xinit__dataRate:
+      000002 FF                    2183 	.db #0xFF	; -1
+                                   2184 	.area CABS    (ABS,CODE)

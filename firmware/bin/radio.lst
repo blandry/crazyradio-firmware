@@ -1,0 +1,1557 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ANSI-C Compiler
+                                      3 ; Version 3.4.0 #8981 (Jul 12 2014) (Linux)
+                                      4 ; This file was generated Mon Jan 19 14:54:25 2015
+                                      5 ;--------------------------------------------------------
+                                      6 	.module radio
+                                      7 	.optsdcc -mmcs51 --model-large
+                                      8 	
+                                      9 ;--------------------------------------------------------
+                                     10 ; Public variables in this module
+                                     11 ;--------------------------------------------------------
+                                     12 	.globl _radioFlushRx
+                                     13 	.globl _radioFlushTx
+                                     14 	.globl _spiRadioReceive
+                                     15 	.globl _spiRadioSend
+                                     16 	.globl _USB_SWRDT
+                                     17 	.globl _USB_WU
+                                     18 	.globl _USB_SUSPEND
+                                     19 	.globl _USB_IV4
+                                     20 	.globl _USB_IV3
+                                     21 	.globl _USB_IV2
+                                     22 	.globl _USB_IV1
+                                     23 	.globl _USB_IV0
+                                     24 	.globl _EXF2
+                                     25 	.globl _TF2
+                                     26 	.globl _WU
+                                     27 	.globl _USBIRQ_F
+                                     28 	.globl _USBWU
+                                     29 	.globl _SDONE
+                                     30 	.globl _RFIRQ
+                                     31 	.globl _RFRDY
+                                     32 	.globl _P0_7
+                                     33 	.globl _P0_6
+                                     34 	.globl _P0_5
+                                     35 	.globl _P0_4
+                                     36 	.globl _P0_3
+                                     37 	.globl _P0_2
+                                     38 	.globl _P0_1
+                                     39 	.globl _P0_0
+                                     40 	.globl _RFCKEN
+                                     41 	.globl _RFCSN
+                                     42 	.globl _RFCE
+                                     43 	.globl _USBSLP
+                                     44 	.globl _USBCON
+                                     45 	.globl _FCR
+                                     46 	.globl _FPCR
+                                     47 	.globl _FSR
+                                     48 	.globl _CRCH
+                                     49 	.globl _CRCL
+                                     50 	.globl _CCH3
+                                     51 	.globl _CCL3
+                                     52 	.globl _CCH2
+                                     53 	.globl _CCL2
+                                     54 	.globl _CCH1
+                                     55 	.globl _CCL1
+                                     56 	.globl _CCEN
+                                     57 	.globl _TH2
+                                     58 	.globl _TL2
+                                     59 	.globl _T2CON
+                                     60 	.globl _TH1
+                                     61 	.globl _TH0
+                                     62 	.globl _TL1
+                                     63 	.globl _TL0
+                                     64 	.globl _TMOD
+                                     65 	.globl _TCON
+                                     66 	.globl _IRCON
+                                     67 	.globl _IP1
+                                     68 	.globl _IP0
+                                     69 	.globl _IEN1
+                                     70 	.globl _IEN0
+                                     71 	.globl _SSSTAT
+                                     72 	.globl _SSDAT
+                                     73 	.globl _SSCONF
+                                     74 	.globl _P0EXP
+                                     75 	.globl _P0ALT
+                                     76 	.globl _P0DIR
+                                     77 	.globl _P0
+                                     78 	.globl _RFCON
+                                     79 	.globl _RFCTL
+                                     80 	.globl _RFDAT
+                                     81 	.globl _radioSendPacketNoAck_PARM_2
+                                     82 	.globl _radioSendPacket_PARM_4
+                                     83 	.globl _radioSendPacket_PARM_3
+                                     84 	.globl _radioSendPacket_PARM_2
+                                     85 	.globl _radioTxPacketNoAck_PARM_2
+                                     86 	.globl _radioTxPacket_PARM_2
+                                     87 	.globl _radioWriteReg_PARM_2
+                                     88 	.globl _IN5BUF
+                                     89 	.globl _OUT5BUF
+                                     90 	.globl _IN4BUF
+                                     91 	.globl _OUT4BUF
+                                     92 	.globl _IN3BUF
+                                     93 	.globl _OUT3BUF
+                                     94 	.globl _IN2BUF
+                                     95 	.globl _OUT2BUF
+                                     96 	.globl _IN1BUF
+                                     97 	.globl _OUT1BUF
+                                     98 	.globl _IN0BUF
+                                     99 	.globl _OUT0BUF
+                                    100 	.globl _SETUPBUF
+                                    101 	.globl _radioSetContCarrier_PARM_1
+                                    102 	.globl _radioInit
+                                    103 	.globl _radioDeinit
+                                    104 	.globl _radioNop
+                                    105 	.globl _radioReadReg
+                                    106 	.globl _radioWriteReg
+                                    107 	.globl _radioTxPacket
+                                    108 	.globl _radioTxPacketNoAck
+                                    109 	.globl _radioRxPacket
+                                    110 	.globl _radioSendPacket
+                                    111 	.globl _radioSendPacketNoAck
+                                    112 	.globl _radioUpdateRetr
+                                    113 	.globl _radioUpdateRfSetup
+                                    114 	.globl _radioSetChannel
+                                    115 	.globl _radioSetDataRate
+                                    116 	.globl _radioGetDataRate
+                                    117 	.globl _radioSetPower
+                                    118 	.globl _radioSetArd
+                                    119 	.globl _radioSetArc
+                                    120 	.globl _radioSetContCarrier
+                                    121 	.globl _radioSetAddress
+                                    122 	.globl _radioGetRpd
+                                    123 	.globl _radioGetTxRetry
+                                    124 ;--------------------------------------------------------
+                                    125 ; special function registers
+                                    126 ;--------------------------------------------------------
+                                    127 	.area RSEG    (ABS,DATA)
+      000000                        128 	.org 0x0000
+                           0000E5   129 _RFDAT	=	0x00e5
+                           0000E6   130 _RFCTL	=	0x00e6
+                           000090   131 _RFCON	=	0x0090
+                           000080   132 _P0	=	0x0080
+                           000094   133 _P0DIR	=	0x0094
+                           000095   134 _P0ALT	=	0x0095
+                           0000C9   135 _P0EXP	=	0x00c9
+                           0000BC   136 _SSCONF	=	0x00bc
+                           0000BD   137 _SSDAT	=	0x00bd
+                           0000BE   138 _SSSTAT	=	0x00be
+                           0000A8   139 _IEN0	=	0x00a8
+                           0000B8   140 _IEN1	=	0x00b8
+                           0000A9   141 _IP0	=	0x00a9
+                           0000B9   142 _IP1	=	0x00b9
+                           0000C0   143 _IRCON	=	0x00c0
+                           000088   144 _TCON	=	0x0088
+                           000089   145 _TMOD	=	0x0089
+                           00008A   146 _TL0	=	0x008a
+                           00008B   147 _TL1	=	0x008b
+                           00008C   148 _TH0	=	0x008c
+                           00008D   149 _TH1	=	0x008d
+                           0000C8   150 _T2CON	=	0x00c8
+                           0000CC   151 _TL2	=	0x00cc
+                           0000CD   152 _TH2	=	0x00cd
+                           0000C1   153 _CCEN	=	0x00c1
+                           0000C2   154 _CCL1	=	0x00c2
+                           0000C3   155 _CCH1	=	0x00c3
+                           0000C4   156 _CCL2	=	0x00c4
+                           0000C5   157 _CCH2	=	0x00c5
+                           0000C6   158 _CCL3	=	0x00c6
+                           0000C7   159 _CCH3	=	0x00c7
+                           0000CA   160 _CRCL	=	0x00ca
+                           0000CB   161 _CRCH	=	0x00cb
+                           0000F8   162 _FSR	=	0x00f8
+                           0000F9   163 _FPCR	=	0x00f9
+                           0000FA   164 _FCR	=	0x00fa
+                           0000A0   165 _USBCON	=	0x00a0
+                           0000D9   166 _USBSLP	=	0x00d9
+                                    167 ;--------------------------------------------------------
+                                    168 ; special function bits
+                                    169 ;--------------------------------------------------------
+                                    170 	.area RSEG    (ABS,DATA)
+      000000                        171 	.org 0x0000
+                           000090   172 _RFCE	=	0x0090
+                           000091   173 _RFCSN	=	0x0091
+                           000092   174 _RFCKEN	=	0x0092
+                           000080   175 _P0_0	=	0x0080
+                           000081   176 _P0_1	=	0x0081
+                           000082   177 _P0_2	=	0x0082
+                           000083   178 _P0_3	=	0x0083
+                           000084   179 _P0_4	=	0x0084
+                           000085   180 _P0_5	=	0x0085
+                           000086   181 _P0_6	=	0x0086
+                           000087   182 _P0_7	=	0x0087
+                           0000C0   183 _RFRDY	=	0x00c0
+                           0000C1   184 _RFIRQ	=	0x00c1
+                           0000C2   185 _SDONE	=	0x00c2
+                           0000C3   186 _USBWU	=	0x00c3
+                           0000C4   187 _USBIRQ_F	=	0x00c4
+                           0000C5   188 _WU	=	0x00c5
+                           0000C6   189 _TF2	=	0x00c6
+                           0000C7   190 _EXF2	=	0x00c7
+                           0000A0   191 _USB_IV0	=	0x00a0
+                           0000A1   192 _USB_IV1	=	0x00a1
+                           0000A2   193 _USB_IV2	=	0x00a2
+                           0000A3   194 _USB_IV3	=	0x00a3
+                           0000A4   195 _USB_IV4	=	0x00a4
+                           0000A5   196 _USB_SUSPEND	=	0x00a5
+                           0000A6   197 _USB_WU	=	0x00a6
+                           0000A7   198 _USB_SWRDT	=	0x00a7
+                                    199 ;--------------------------------------------------------
+                                    200 ; overlayable register banks
+                                    201 ;--------------------------------------------------------
+                                    202 	.area REG_BANK_0	(REL,OVR,DATA)
+      000000                        203 	.ds 8
+                                    204 ;--------------------------------------------------------
+                                    205 ; internal ram data
+                                    206 ;--------------------------------------------------------
+                                    207 	.area DSEG    (DATA)
+                                    208 ;--------------------------------------------------------
+                                    209 ; overlayable items in internal ram 
+                                    210 ;--------------------------------------------------------
+                                    211 ;--------------------------------------------------------
+                                    212 ; indirectly addressable internal ram data
+                                    213 ;--------------------------------------------------------
+                                    214 	.area ISEG    (DATA)
+                                    215 ;--------------------------------------------------------
+                                    216 ; absolute internal ram data
+                                    217 ;--------------------------------------------------------
+                                    218 	.area IABS    (ABS,DATA)
+                                    219 	.area IABS    (ABS,DATA)
+                                    220 ;--------------------------------------------------------
+                                    221 ; bit data
+                                    222 ;--------------------------------------------------------
+                                    223 	.area BSEG    (BIT)
+      000000                        224 _radioSetContCarrier_PARM_1:
+      000000                        225 	.ds 1
+                                    226 ;--------------------------------------------------------
+                                    227 ; paged external ram data
+                                    228 ;--------------------------------------------------------
+                                    229 	.area PSEG    (PAG,XDATA)
+                                    230 ;--------------------------------------------------------
+                                    231 ; external ram data
+                                    232 ;--------------------------------------------------------
+                                    233 	.area XSEG    (XDATA)
+                           00C7E8   234 _SETUPBUF	=	0xc7e8
+                           00C6C0   235 _OUT0BUF	=	0xc6c0
+                           00C700   236 _IN0BUF	=	0xc700
+                           00C640   237 _OUT1BUF	=	0xc640
+                           00C680   238 _IN1BUF	=	0xc680
+                           00C5C0   239 _OUT2BUF	=	0xc5c0
+                           00C600   240 _IN2BUF	=	0xc600
+                           00C540   241 _OUT3BUF	=	0xc540
+                           00C580   242 _IN3BUF	=	0xc580
+                           00C4C0   243 _OUT4BUF	=	0xc4c0
+                           00C500   244 _IN4BUF	=	0xc500
+                           00C440   245 _OUT5BUF	=	0xc440
+                           00C480   246 _IN5BUF	=	0xc480
+      000000                        247 _spiRadioSend_dt_1_25:
+      000000                        248 	.ds 1
+      000001                        249 _radioReadReg_addr_1_33:
+      000001                        250 	.ds 1
+      000002                        251 _radioWriteReg_PARM_2:
+      000002                        252 	.ds 1
+      000003                        253 _radioWriteReg_addr_1_35:
+      000003                        254 	.ds 1
+      000004                        255 _radioTxPacket_PARM_2:
+      000004                        256 	.ds 1
+      000005                        257 _radioTxPacket_payload_1_37:
+      000005                        258 	.ds 2
+      000007                        259 _radioTxPacketNoAck_PARM_2:
+      000007                        260 	.ds 1
+      000008                        261 _radioTxPacketNoAck_payload_1_40:
+      000008                        262 	.ds 2
+      00000A                        263 _radioRxPacket_payload_1_43:
+      00000A                        264 	.ds 2
+      00000C                        265 _radioRxPacket_len_1_44:
+      00000C                        266 	.ds 2
+      00000E                        267 _radioSendPacket_PARM_2:
+      00000E                        268 	.ds 1
+      00000F                        269 _radioSendPacket_PARM_3:
+      00000F                        270 	.ds 2
+      000011                        271 _radioSendPacket_PARM_4:
+      000011                        272 	.ds 3
+      000014                        273 _radioSendPacket_payload_1_47:
+      000014                        274 	.ds 2
+      000016                        275 _radioSendPacketNoAck_PARM_2:
+      000016                        276 	.ds 1
+      000017                        277 _radioSendPacketNoAck_payload_1_50:
+      000017                        278 	.ds 2
+      000019                        279 _radioUpdateRetr_ard_1_52:
+      000019                        280 	.ds 1
+      00001A                        281 _radioUpdateRfSetup_setup_1_54:
+      00001A                        282 	.ds 1
+      00001B                        283 _radioSetChannel_channel_1_55:
+      00001B                        284 	.ds 1
+      00001C                        285 _radioSetDataRate_dr_1_57:
+      00001C                        286 	.ds 1
+      00001D                        287 _radioSetPower_power_1_60:
+      00001D                        288 	.ds 1
+      00001E                        289 _radioSetArd_ard_1_62:
+      00001E                        290 	.ds 1
+      00001F                        291 _radioSetArc_arc_1_64:
+      00001F                        292 	.ds 1
+      000020                        293 _radioSetAddress_address_1_68:
+      000020                        294 	.ds 2
+                                    295 ;--------------------------------------------------------
+                                    296 ; absolute external ram data
+                                    297 ;--------------------------------------------------------
+                                    298 	.area XABS    (ABS,XDATA)
+                                    299 ;--------------------------------------------------------
+                                    300 ; external initialized ram data
+                                    301 ;--------------------------------------------------------
+                                    302 	.area XISEG   (XDATA)
+      000000                        303 _radioConf:
+      000000                        304 	.ds 5
+                                    305 	.area HOME    (CODE)
+                                    306 	.area GSINIT0 (CODE)
+                                    307 	.area GSINIT1 (CODE)
+                                    308 	.area GSINIT2 (CODE)
+                                    309 	.area GSINIT3 (CODE)
+                                    310 	.area GSINIT4 (CODE)
+                                    311 	.area GSINIT5 (CODE)
+                                    312 	.area GSINIT  (CODE)
+                                    313 	.area GSFINAL (CODE)
+                                    314 	.area CSEG    (CODE)
+                                    315 ;--------------------------------------------------------
+                                    316 ; global & static initialisations
+                                    317 ;--------------------------------------------------------
+                                    318 	.area HOME    (CODE)
+                                    319 	.area GSINIT  (CODE)
+                                    320 	.area GSFINAL (CODE)
+                                    321 	.area GSINIT  (CODE)
+                                    322 ;--------------------------------------------------------
+                                    323 ; Home
+                                    324 ;--------------------------------------------------------
+                                    325 	.area HOME    (CODE)
+                                    326 	.area HOME    (CODE)
+                                    327 ;--------------------------------------------------------
+                                    328 ; code
+                                    329 ;--------------------------------------------------------
+                                    330 	.area CSEG    (CODE)
+                                    331 ;------------------------------------------------------------
+                                    332 ;Allocation info for local variables in function 'spiRadioSend'
+                                    333 ;------------------------------------------------------------
+                                    334 ;dt                        Allocated with name '_spiRadioSend_dt_1_25'
+                                    335 ;------------------------------------------------------------
+                                    336 ;	src/radio.c:81: char spiRadioSend(char dt)
+                                    337 ;	-----------------------------------------
+                                    338 ;	 function spiRadioSend
+                                    339 ;	-----------------------------------------
+      000000                        340 _spiRadioSend:
+                           000007   341 	ar7 = 0x07
+                           000006   342 	ar6 = 0x06
+                           000005   343 	ar5 = 0x05
+                           000004   344 	ar4 = 0x04
+                           000003   345 	ar3 = 0x03
+                           000002   346 	ar2 = 0x02
+                           000001   347 	ar1 = 0x01
+                           000000   348 	ar0 = 0x00
+      000000 E5 82            [12]  349 	mov	a,dpl
+      000002 90r00r00         [24]  350 	mov	dptr,#_spiRadioSend_dt_1_25
+      000005 F0               [24]  351 	movx	@dptr,a
+                                    352 ;	src/radio.c:84: RFDAT = dt;
+      000006 E0               [24]  353 	movx	a,@dptr
+      000007 F5 E5            [12]  354 	mov	_RFDAT,a
+                                    355 ;	src/radio.c:86: RFRDY = 0;
+      000009 C2 C0            [12]  356 	clr	_RFRDY
+                                    357 ;	src/radio.c:89: while(!RFRDY);
+      00000B                        358 00101$:
+                                    359 ;	src/radio.c:90: RFRDY=0;
+      00000B 10 C0 02         [24]  360 	jbc	_RFRDY,00112$
+      00000E 80 FB            [24]  361 	sjmp	00101$
+      000010                        362 00112$:
+                                    363 ;	src/radio.c:93: return RFDAT;
+      000010 85 E5 82         [24]  364 	mov	dpl,_RFDAT
+      000013 22               [24]  365 	ret
+                                    366 ;------------------------------------------------------------
+                                    367 ;Allocation info for local variables in function 'spiRadioReceive'
+                                    368 ;------------------------------------------------------------
+                                    369 ;	src/radio.c:96: char spiRadioReceive()
+                                    370 ;	-----------------------------------------
+                                    371 ;	 function spiRadioReceive
+                                    372 ;	-----------------------------------------
+      000014                        373 _spiRadioReceive:
+                                    374 ;	src/radio.c:98: return spiRadioSend(0x00);
+      000014 75 82 00         [24]  375 	mov	dpl,#0x00
+      000017 02r00r00         [24]  376 	ljmp	_spiRadioSend
+                                    377 ;------------------------------------------------------------
+                                    378 ;Allocation info for local variables in function 'radioInit'
+                                    379 ;------------------------------------------------------------
+                                    380 ;i                         Allocated with name '_radioInit_i_1_28'
+                                    381 ;------------------------------------------------------------
+                                    382 ;	src/radio.c:101: void radioInit()
+                                    383 ;	-----------------------------------------
+                                    384 ;	 function radioInit
+                                    385 ;	-----------------------------------------
+      00001A                        386 _radioInit:
+                                    387 ;	src/radio.c:105: RFCON = 0x06;
+      00001A 75 90 06         [24]  388 	mov	_RFCON,#0x06
+                                    389 ;	src/radio.c:106: RFCTL = 0x10;  //SPI enable @8MHz
+      00001D 75 E6 10         [24]  390 	mov	_RFCTL,#0x10
+                                    391 ;	src/radio.c:109: radioWriteReg(REG_CONFIG, 0x7E);
+      000020 90r00r02         [24]  392 	mov	dptr,#_radioWriteReg_PARM_2
+      000023 74 7E            [12]  393 	mov	a,#0x7E
+      000025 F0               [24]  394 	movx	@dptr,a
+      000026 75 82 00         [24]  395 	mov	dpl,#0x00
+      000029 12r00rB8         [24]  396 	lcall	_radioWriteReg
+                                    397 ;	src/radio.c:111: for(i=0;i<1000;i++);
+      00002C 7E E8            [12]  398 	mov	r6,#0xE8
+      00002E 7F 03            [12]  399 	mov	r7,#0x03
+      000030                        400 00104$:
+      000030 1E               [12]  401 	dec	r6
+      000031 BE FF 01         [24]  402 	cjne	r6,#0xFF,00114$
+      000034 1F               [12]  403 	dec	r7
+      000035                        404 00114$:
+      000035 EE               [12]  405 	mov	a,r6
+      000036 4F               [12]  406 	orl	a,r7
+      000037 70 F7            [24]  407 	jnz	00104$
+                                    408 ;	src/radio.c:113: radioWriteReg(REG_FEATURE, 0x06);
+      000039 90r00r02         [24]  409 	mov	dptr,#_radioWriteReg_PARM_2
+      00003C 74 06            [12]  410 	mov	a,#0x06
+      00003E F0               [24]  411 	movx	@dptr,a
+      00003F 75 82 1D         [24]  412 	mov	dpl,#0x1D
+      000042 12r00rB8         [24]  413 	lcall	_radioWriteReg
+                                    414 ;	src/radio.c:114: radioWriteReg(REG_DYNPD, 0x01);
+      000045 90r00r02         [24]  415 	mov	dptr,#_radioWriteReg_PARM_2
+      000048 74 01            [12]  416 	mov	a,#0x01
+      00004A F0               [24]  417 	movx	@dptr,a
+      00004B 75 82 1C         [24]  418 	mov	dpl,#0x1C
+      00004E 12r00rB8         [24]  419 	lcall	_radioWriteReg
+                                    420 ;	src/radio.c:117: radioUpdateRfSetup();
+      000051 12r03rE3         [24]  421 	lcall	_radioUpdateRfSetup
+                                    422 ;	src/radio.c:118: radioUpdateRetr();
+      000054 02r03r64         [24]  423 	ljmp	_radioUpdateRetr
+                                    424 ;------------------------------------------------------------
+                                    425 ;Allocation info for local variables in function 'radioDeinit'
+                                    426 ;------------------------------------------------------------
+                                    427 ;	src/radio.c:121: void radioDeinit()
+                                    428 ;	-----------------------------------------
+                                    429 ;	 function radioDeinit
+                                    430 ;	-----------------------------------------
+      000057                        431 _radioDeinit:
+                                    432 ;	src/radio.c:124: radioWriteReg(REG_CONFIG, 0x00);
+      000057 90r00r02         [24]  433 	mov	dptr,#_radioWriteReg_PARM_2
+      00005A E4               [12]  434 	clr	a
+      00005B F0               [24]  435 	movx	@dptr,a
+      00005C 75 82 00         [24]  436 	mov	dpl,#0x00
+      00005F 12r00rB8         [24]  437 	lcall	_radioWriteReg
+                                    438 ;	src/radio.c:127: RFCON = 0x00;  //Radio unclocked
+      000062 75 90 00         [24]  439 	mov	_RFCON,#0x00
+                                    440 ;	src/radio.c:128: RFCTL = 0x00;  //SPI disable
+      000065 75 E6 00         [24]  441 	mov	_RFCTL,#0x00
+      000068 22               [24]  442 	ret
+                                    443 ;------------------------------------------------------------
+                                    444 ;Allocation info for local variables in function 'radioNop'
+                                    445 ;------------------------------------------------------------
+                                    446 ;status                    Allocated with name '_radioNop_status_1_30'
+                                    447 ;------------------------------------------------------------
+                                    448 ;	src/radio.c:133: char radioNop()
+                                    449 ;	-----------------------------------------
+                                    450 ;	 function radioNop
+                                    451 ;	-----------------------------------------
+      000069                        452 _radioNop:
+                                    453 ;	src/radio.c:137: RADIO_EN_CS();
+      000069 C2 91            [12]  454 	clr	_RFCSN
+                                    455 ;	src/radio.c:138: status = spiRadioSend(CMD_NOP);
+      00006B 75 82 FF         [24]  456 	mov	dpl,#0xFF
+      00006E 12r00r00         [24]  457 	lcall	_spiRadioSend
+      000071 AF 82            [24]  458 	mov	r7,dpl
+                                    459 ;	src/radio.c:139: RADIO_DIS_CS();
+      000073 D2 91            [12]  460 	setb	_RFCSN
+                                    461 ;	src/radio.c:141: return status;
+      000075 8F 82            [24]  462 	mov	dpl,r7
+      000077 22               [24]  463 	ret
+                                    464 ;------------------------------------------------------------
+                                    465 ;Allocation info for local variables in function 'radioFlushTx'
+                                    466 ;------------------------------------------------------------
+                                    467 ;status                    Allocated with name '_radioFlushTx_status_1_31'
+                                    468 ;------------------------------------------------------------
+                                    469 ;	src/radio.c:144: char radioFlushTx()
+                                    470 ;	-----------------------------------------
+                                    471 ;	 function radioFlushTx
+                                    472 ;	-----------------------------------------
+      000078                        473 _radioFlushTx:
+                                    474 ;	src/radio.c:148: RADIO_EN_CS();
+      000078 C2 91            [12]  475 	clr	_RFCSN
+                                    476 ;	src/radio.c:149: status = spiRadioSend(CMD_FLUSH_TX);
+      00007A 75 82 E1         [24]  477 	mov	dpl,#0xE1
+      00007D 12r00r00         [24]  478 	lcall	_spiRadioSend
+      000080 AF 82            [24]  479 	mov	r7,dpl
+                                    480 ;	src/radio.c:150: RADIO_DIS_CS();
+      000082 D2 91            [12]  481 	setb	_RFCSN
+                                    482 ;	src/radio.c:152: return status;
+      000084 8F 82            [24]  483 	mov	dpl,r7
+      000086 22               [24]  484 	ret
+                                    485 ;------------------------------------------------------------
+                                    486 ;Allocation info for local variables in function 'radioFlushRx'
+                                    487 ;------------------------------------------------------------
+                                    488 ;status                    Allocated with name '_radioFlushRx_status_1_32'
+                                    489 ;------------------------------------------------------------
+                                    490 ;	src/radio.c:155: char radioFlushRx()
+                                    491 ;	-----------------------------------------
+                                    492 ;	 function radioFlushRx
+                                    493 ;	-----------------------------------------
+      000087                        494 _radioFlushRx:
+                                    495 ;	src/radio.c:159: RADIO_EN_CS();
+      000087 C2 91            [12]  496 	clr	_RFCSN
+                                    497 ;	src/radio.c:160: status = spiRadioSend(CMD_FLUSH_RX);
+      000089 75 82 E2         [24]  498 	mov	dpl,#0xE2
+      00008C 12r00r00         [24]  499 	lcall	_spiRadioSend
+      00008F AF 82            [24]  500 	mov	r7,dpl
+                                    501 ;	src/radio.c:161: RADIO_DIS_CS();
+      000091 D2 91            [12]  502 	setb	_RFCSN
+                                    503 ;	src/radio.c:163: return status;
+      000093 8F 82            [24]  504 	mov	dpl,r7
+      000095 22               [24]  505 	ret
+                                    506 ;------------------------------------------------------------
+                                    507 ;Allocation info for local variables in function 'radioReadReg'
+                                    508 ;------------------------------------------------------------
+                                    509 ;addr                      Allocated with name '_radioReadReg_addr_1_33'
+                                    510 ;value                     Allocated with name '_radioReadReg_value_1_34'
+                                    511 ;------------------------------------------------------------
+                                    512 ;	src/radio.c:166: char radioReadReg(char addr)
+                                    513 ;	-----------------------------------------
+                                    514 ;	 function radioReadReg
+                                    515 ;	-----------------------------------------
+      000096                        516 _radioReadReg:
+      000096 E5 82            [12]  517 	mov	a,dpl
+      000098 90r00r01         [24]  518 	mov	dptr,#_radioReadReg_addr_1_33
+      00009B F0               [24]  519 	movx	@dptr,a
+                                    520 ;	src/radio.c:170: RADIO_EN_CS();
+      00009C C2 91            [12]  521 	clr	_RFCSN
+                                    522 ;	src/radio.c:171: spiRadioSend(CMD_R_REG | (addr&0x1F));
+      00009E 90r00r01         [24]  523 	mov	dptr,#_radioReadReg_addr_1_33
+      0000A1 E0               [24]  524 	movx	a,@dptr
+      0000A2 FF               [12]  525 	mov	r7,a
+      0000A3 53 07 1F         [24]  526 	anl	ar7,#0x1F
+      0000A6 8F 82            [24]  527 	mov	dpl,r7
+      0000A8 12r00r00         [24]  528 	lcall	_spiRadioSend
+                                    529 ;	src/radio.c:172: value = spiRadioSend(0xA5);
+      0000AB 75 82 A5         [24]  530 	mov	dpl,#0xA5
+      0000AE 12r00r00         [24]  531 	lcall	_spiRadioSend
+      0000B1 AF 82            [24]  532 	mov	r7,dpl
+                                    533 ;	src/radio.c:173: RADIO_DIS_CS();
+      0000B3 D2 91            [12]  534 	setb	_RFCSN
+                                    535 ;	src/radio.c:175: return value;
+      0000B5 8F 82            [24]  536 	mov	dpl,r7
+      0000B7 22               [24]  537 	ret
+                                    538 ;------------------------------------------------------------
+                                    539 ;Allocation info for local variables in function 'radioWriteReg'
+                                    540 ;------------------------------------------------------------
+                                    541 ;value                     Allocated with name '_radioWriteReg_PARM_2'
+                                    542 ;addr                      Allocated with name '_radioWriteReg_addr_1_35'
+                                    543 ;status                    Allocated with name '_radioWriteReg_status_1_36'
+                                    544 ;------------------------------------------------------------
+                                    545 ;	src/radio.c:178: char radioWriteReg(char addr, char value)
+                                    546 ;	-----------------------------------------
+                                    547 ;	 function radioWriteReg
+                                    548 ;	-----------------------------------------
+      0000B8                        549 _radioWriteReg:
+      0000B8 E5 82            [12]  550 	mov	a,dpl
+      0000BA 90r00r03         [24]  551 	mov	dptr,#_radioWriteReg_addr_1_35
+      0000BD F0               [24]  552 	movx	@dptr,a
+                                    553 ;	src/radio.c:182: RADIO_EN_CS();
+      0000BE C2 91            [12]  554 	clr	_RFCSN
+                                    555 ;	src/radio.c:183: status = spiRadioSend(CMD_W_REG | (addr&0x1F));
+      0000C0 90r00r03         [24]  556 	mov	dptr,#_radioWriteReg_addr_1_35
+      0000C3 E0               [24]  557 	movx	a,@dptr
+      0000C4 FF               [12]  558 	mov	r7,a
+      0000C5 74 1F            [12]  559 	mov	a,#0x1F
+      0000C7 5F               [12]  560 	anl	a,r7
+      0000C8 44 20            [12]  561 	orl	a,#0x20
+      0000CA F5 82            [12]  562 	mov	dpl,a
+      0000CC 12r00r00         [24]  563 	lcall	_spiRadioSend
+                                    564 ;	src/radio.c:184: spiRadioSend(value);
+      0000CF 90r00r02         [24]  565 	mov	dptr,#_radioWriteReg_PARM_2
+      0000D2 E0               [24]  566 	movx	a,@dptr
+      0000D3 FF               [12]  567 	mov	r7,a
+      0000D4 F5 82            [12]  568 	mov	dpl,a
+      0000D6 C0 07            [24]  569 	push	ar7
+      0000D8 12r00r00         [24]  570 	lcall	_spiRadioSend
+      0000DB D0 07            [24]  571 	pop	ar7
+                                    572 ;	src/radio.c:185: RADIO_DIS_CS();
+      0000DD D2 91            [12]  573 	setb	_RFCSN
+                                    574 ;	src/radio.c:187: return value;
+      0000DF 8F 82            [24]  575 	mov	dpl,r7
+      0000E1 22               [24]  576 	ret
+                                    577 ;------------------------------------------------------------
+                                    578 ;Allocation info for local variables in function 'radioTxPacket'
+                                    579 ;------------------------------------------------------------
+                                    580 ;len                       Allocated with name '_radioTxPacket_PARM_2'
+                                    581 ;payload                   Allocated with name '_radioTxPacket_payload_1_37'
+                                    582 ;i                         Allocated with name '_radioTxPacket_i_1_38'
+                                    583 ;i                         Allocated with name '_radioTxPacket_i_2_39'
+                                    584 ;------------------------------------------------------------
+                                    585 ;	src/radio.c:191: void radioTxPacket(__xdata char *payload, char len)
+                                    586 ;	-----------------------------------------
+                                    587 ;	 function radioTxPacket
+                                    588 ;	-----------------------------------------
+      0000E2                        589 _radioTxPacket:
+      0000E2 AF 83            [24]  590 	mov	r7,dph
+      0000E4 E5 82            [12]  591 	mov	a,dpl
+      0000E6 90r00r05         [24]  592 	mov	dptr,#_radioTxPacket_payload_1_37
+      0000E9 F0               [24]  593 	movx	@dptr,a
+      0000EA EF               [12]  594 	mov	a,r7
+      0000EB A3               [24]  595 	inc	dptr
+      0000EC F0               [24]  596 	movx	@dptr,a
+                                    597 ;	src/radio.c:196: RADIO_EN_CS();
+      0000ED C2 91            [12]  598 	clr	_RFCSN
+                                    599 ;	src/radio.c:197: spiRadioSend(CMD_W_TX_PAYLOAD);
+      0000EF 75 82 A0         [24]  600 	mov	dpl,#0xA0
+      0000F2 12r00r00         [24]  601 	lcall	_spiRadioSend
+                                    602 ;	src/radio.c:198: for(i=0;i<len;i++)
+      0000F5 90r00r05         [24]  603 	mov	dptr,#_radioTxPacket_payload_1_37
+      0000F8 E0               [24]  604 	movx	a,@dptr
+      0000F9 FE               [12]  605 	mov	r6,a
+      0000FA A3               [24]  606 	inc	dptr
+      0000FB E0               [24]  607 	movx	a,@dptr
+      0000FC FF               [12]  608 	mov	r7,a
+      0000FD 90r00r04         [24]  609 	mov	dptr,#_radioTxPacket_PARM_2
+      000100 E0               [24]  610 	movx	a,@dptr
+      000101 FD               [12]  611 	mov	r5,a
+      000102 7B 00            [12]  612 	mov	r3,#0x00
+      000104 7C 00            [12]  613 	mov	r4,#0x00
+      000106                        614 00106$:
+      000106 ED               [12]  615 	mov	a,r5
+      000107 F9               [12]  616 	mov	r1,a
+      000108 33               [12]  617 	rlc	a
+      000109 95 E0            [12]  618 	subb	a,acc
+      00010B FA               [12]  619 	mov	r2,a
+      00010C C3               [12]  620 	clr	c
+      00010D EB               [12]  621 	mov	a,r3
+      00010E 99               [12]  622 	subb	a,r1
+      00010F EC               [12]  623 	mov	a,r4
+      000110 64 80            [12]  624 	xrl	a,#0x80
+      000112 8A F0            [24]  625 	mov	b,r2
+      000114 63 F0 80         [24]  626 	xrl	b,#0x80
+      000117 95 F0            [12]  627 	subb	a,b
+      000119 50 29            [24]  628 	jnc	00101$
+                                    629 ;	src/radio.c:199: spiRadioSend(payload[i]);
+      00011B EB               [12]  630 	mov	a,r3
+      00011C 2E               [12]  631 	add	a,r6
+      00011D F5 82            [12]  632 	mov	dpl,a
+      00011F EC               [12]  633 	mov	a,r4
+      000120 3F               [12]  634 	addc	a,r7
+      000121 F5 83            [12]  635 	mov	dph,a
+      000123 E0               [24]  636 	movx	a,@dptr
+      000124 F5 82            [12]  637 	mov	dpl,a
+      000126 C0 07            [24]  638 	push	ar7
+      000128 C0 06            [24]  639 	push	ar6
+      00012A C0 05            [24]  640 	push	ar5
+      00012C C0 04            [24]  641 	push	ar4
+      00012E C0 03            [24]  642 	push	ar3
+      000130 12r00r00         [24]  643 	lcall	_spiRadioSend
+      000133 D0 03            [24]  644 	pop	ar3
+      000135 D0 04            [24]  645 	pop	ar4
+      000137 D0 05            [24]  646 	pop	ar5
+      000139 D0 06            [24]  647 	pop	ar6
+      00013B D0 07            [24]  648 	pop	ar7
+                                    649 ;	src/radio.c:198: for(i=0;i<len;i++)
+      00013D 0B               [12]  650 	inc	r3
+      00013E BB 00 C5         [24]  651 	cjne	r3,#0x00,00106$
+      000141 0C               [12]  652 	inc	r4
+      000142 80 C2            [24]  653 	sjmp	00106$
+      000144                        654 00101$:
+                                    655 ;	src/radio.c:200: RADIO_DIS_CS();
+      000144 D2 91            [12]  656 	setb	_RFCSN
+                                    657 ;	src/radio.c:203: CE_PULSE();
+      000146 D2 90            [12]  658 	setb	_RFCE
+      000148 7E 32            [12]  659 	mov	r6,#0x32
+      00014A 7F 00            [12]  660 	mov	r7,#0x00
+      00014C                        661 00102$:
+      00014C 8E 04            [24]  662 	mov	ar4,r6
+      00014E 8F 05            [24]  663 	mov	ar5,r7
+      000150 1E               [12]  664 	dec	r6
+      000151 BE FF 01         [24]  665 	cjne	r6,#0xFF,00126$
+      000154 1F               [12]  666 	dec	r7
+      000155                        667 00126$:
+      000155 EC               [12]  668 	mov	a,r4
+      000156 4D               [12]  669 	orl	a,r5
+      000157 70 F3            [24]  670 	jnz	00102$
+      000159 C2 90            [12]  671 	clr	_RFCE
+                                    672 ;	src/radio.c:205: return;
+      00015B 22               [24]  673 	ret
+                                    674 ;------------------------------------------------------------
+                                    675 ;Allocation info for local variables in function 'radioTxPacketNoAck'
+                                    676 ;------------------------------------------------------------
+                                    677 ;len                       Allocated with name '_radioTxPacketNoAck_PARM_2'
+                                    678 ;payload                   Allocated with name '_radioTxPacketNoAck_payload_1_40'
+                                    679 ;i                         Allocated with name '_radioTxPacketNoAck_i_1_41'
+                                    680 ;i                         Allocated with name '_radioTxPacketNoAck_i_2_42'
+                                    681 ;------------------------------------------------------------
+                                    682 ;	src/radio.c:209: void radioTxPacketNoAck(__xdata char *payload, char len)
+                                    683 ;	-----------------------------------------
+                                    684 ;	 function radioTxPacketNoAck
+                                    685 ;	-----------------------------------------
+      00015C                        686 _radioTxPacketNoAck:
+      00015C AF 83            [24]  687 	mov	r7,dph
+      00015E E5 82            [12]  688 	mov	a,dpl
+      000160 90r00r08         [24]  689 	mov	dptr,#_radioTxPacketNoAck_payload_1_40
+      000163 F0               [24]  690 	movx	@dptr,a
+      000164 EF               [12]  691 	mov	a,r7
+      000165 A3               [24]  692 	inc	dptr
+      000166 F0               [24]  693 	movx	@dptr,a
+                                    694 ;	src/radio.c:214: RADIO_EN_CS();
+      000167 C2 91            [12]  695 	clr	_RFCSN
+                                    696 ;	src/radio.c:215: spiRadioSend(CMD_W_TX_PAYLOAD_NO_ACK);
+      000169 75 82 D0         [24]  697 	mov	dpl,#0xD0
+      00016C 12r00r00         [24]  698 	lcall	_spiRadioSend
+                                    699 ;	src/radio.c:216: for(i=0;i<len;i++)
+      00016F 90r00r08         [24]  700 	mov	dptr,#_radioTxPacketNoAck_payload_1_40
+      000172 E0               [24]  701 	movx	a,@dptr
+      000173 FE               [12]  702 	mov	r6,a
+      000174 A3               [24]  703 	inc	dptr
+      000175 E0               [24]  704 	movx	a,@dptr
+      000176 FF               [12]  705 	mov	r7,a
+      000177 90r00r07         [24]  706 	mov	dptr,#_radioTxPacketNoAck_PARM_2
+      00017A E0               [24]  707 	movx	a,@dptr
+      00017B FD               [12]  708 	mov	r5,a
+      00017C 7B 00            [12]  709 	mov	r3,#0x00
+      00017E 7C 00            [12]  710 	mov	r4,#0x00
+      000180                        711 00106$:
+      000180 ED               [12]  712 	mov	a,r5
+      000181 F9               [12]  713 	mov	r1,a
+      000182 33               [12]  714 	rlc	a
+      000183 95 E0            [12]  715 	subb	a,acc
+      000185 FA               [12]  716 	mov	r2,a
+      000186 C3               [12]  717 	clr	c
+      000187 EB               [12]  718 	mov	a,r3
+      000188 99               [12]  719 	subb	a,r1
+      000189 EC               [12]  720 	mov	a,r4
+      00018A 64 80            [12]  721 	xrl	a,#0x80
+      00018C 8A F0            [24]  722 	mov	b,r2
+      00018E 63 F0 80         [24]  723 	xrl	b,#0x80
+      000191 95 F0            [12]  724 	subb	a,b
+      000193 50 29            [24]  725 	jnc	00101$
+                                    726 ;	src/radio.c:217: spiRadioSend(payload[i]);
+      000195 EB               [12]  727 	mov	a,r3
+      000196 2E               [12]  728 	add	a,r6
+      000197 F5 82            [12]  729 	mov	dpl,a
+      000199 EC               [12]  730 	mov	a,r4
+      00019A 3F               [12]  731 	addc	a,r7
+      00019B F5 83            [12]  732 	mov	dph,a
+      00019D E0               [24]  733 	movx	a,@dptr
+      00019E F5 82            [12]  734 	mov	dpl,a
+      0001A0 C0 07            [24]  735 	push	ar7
+      0001A2 C0 06            [24]  736 	push	ar6
+      0001A4 C0 05            [24]  737 	push	ar5
+      0001A6 C0 04            [24]  738 	push	ar4
+      0001A8 C0 03            [24]  739 	push	ar3
+      0001AA 12r00r00         [24]  740 	lcall	_spiRadioSend
+      0001AD D0 03            [24]  741 	pop	ar3
+      0001AF D0 04            [24]  742 	pop	ar4
+      0001B1 D0 05            [24]  743 	pop	ar5
+      0001B3 D0 06            [24]  744 	pop	ar6
+      0001B5 D0 07            [24]  745 	pop	ar7
+                                    746 ;	src/radio.c:216: for(i=0;i<len;i++)
+      0001B7 0B               [12]  747 	inc	r3
+      0001B8 BB 00 C5         [24]  748 	cjne	r3,#0x00,00106$
+      0001BB 0C               [12]  749 	inc	r4
+      0001BC 80 C2            [24]  750 	sjmp	00106$
+      0001BE                        751 00101$:
+                                    752 ;	src/radio.c:218: RADIO_DIS_CS();
+      0001BE D2 91            [12]  753 	setb	_RFCSN
+                                    754 ;	src/radio.c:221: CE_PULSE();
+      0001C0 D2 90            [12]  755 	setb	_RFCE
+      0001C2 7E 32            [12]  756 	mov	r6,#0x32
+      0001C4 7F 00            [12]  757 	mov	r7,#0x00
+      0001C6                        758 00102$:
+      0001C6 8E 04            [24]  759 	mov	ar4,r6
+      0001C8 8F 05            [24]  760 	mov	ar5,r7
+      0001CA 1E               [12]  761 	dec	r6
+      0001CB BE FF 01         [24]  762 	cjne	r6,#0xFF,00126$
+      0001CE 1F               [12]  763 	dec	r7
+      0001CF                        764 00126$:
+      0001CF EC               [12]  765 	mov	a,r4
+      0001D0 4D               [12]  766 	orl	a,r5
+      0001D1 70 F3            [24]  767 	jnz	00102$
+      0001D3 C2 90            [12]  768 	clr	_RFCE
+                                    769 ;	src/radio.c:223: return;
+      0001D5 22               [24]  770 	ret
+                                    771 ;------------------------------------------------------------
+                                    772 ;Allocation info for local variables in function 'radioRxPacket'
+                                    773 ;------------------------------------------------------------
+                                    774 ;payload                   Allocated with name '_radioRxPacket_payload_1_43'
+                                    775 ;len                       Allocated with name '_radioRxPacket_len_1_44'
+                                    776 ;i                         Allocated with name '_radioRxPacket_i_1_44'
+                                    777 ;------------------------------------------------------------
+                                    778 ;	src/radio.c:228: char radioRxPacket(__xdata char *payload)
+                                    779 ;	-----------------------------------------
+                                    780 ;	 function radioRxPacket
+                                    781 ;	-----------------------------------------
+      0001D6                        782 _radioRxPacket:
+      0001D6 AF 83            [24]  783 	mov	r7,dph
+      0001D8 E5 82            [12]  784 	mov	a,dpl
+      0001DA 90r00r0A         [24]  785 	mov	dptr,#_radioRxPacket_payload_1_43
+      0001DD F0               [24]  786 	movx	@dptr,a
+      0001DE EF               [12]  787 	mov	a,r7
+      0001DF A3               [24]  788 	inc	dptr
+      0001E0 F0               [24]  789 	movx	@dptr,a
+                                    790 ;	src/radio.c:234: RADIO_EN_CS();
+      0001E1 C2 91            [12]  791 	clr	_RFCSN
+                                    792 ;	src/radio.c:235: spiRadioSend(CMD_RX_PL_WID);
+      0001E3 75 82 60         [24]  793 	mov	dpl,#0x60
+      0001E6 12r00r00         [24]  794 	lcall	_spiRadioSend
+                                    795 ;	src/radio.c:236: len = spiRadioReceive();
+      0001E9 12r00r14         [24]  796 	lcall	_spiRadioReceive
+      0001EC E5 82            [12]  797 	mov	a,dpl
+      0001EE FE               [12]  798 	mov	r6,a
+      0001EF 33               [12]  799 	rlc	a
+      0001F0 95 E0            [12]  800 	subb	a,acc
+      0001F2 FF               [12]  801 	mov	r7,a
+      0001F3 90r00r0C         [24]  802 	mov	dptr,#_radioRxPacket_len_1_44
+      0001F6 EE               [12]  803 	mov	a,r6
+      0001F7 F0               [24]  804 	movx	@dptr,a
+      0001F8 EF               [12]  805 	mov	a,r7
+      0001F9 A3               [24]  806 	inc	dptr
+      0001FA F0               [24]  807 	movx	@dptr,a
+                                    808 ;	src/radio.c:237: RADIO_DIS_CS();  
+      0001FB D2 91            [12]  809 	setb	_RFCSN
+                                    810 ;	src/radio.c:239: if (len>0 && len<33)
+      0001FD C3               [12]  811 	clr	c
+      0001FE E4               [12]  812 	clr	a
+      0001FF 9E               [12]  813 	subb	a,r6
+      000200 74 80            [12]  814 	mov	a,#(0x00 ^ 0x80)
+      000202 8F F0            [24]  815 	mov	b,r7
+      000204 63 F0 80         [24]  816 	xrl	b,#0x80
+      000207 95 F0            [12]  817 	subb	a,b
+      000209 50 76            [24]  818 	jnc	00103$
+      00020B C3               [12]  819 	clr	c
+      00020C EE               [12]  820 	mov	a,r6
+      00020D 94 21            [12]  821 	subb	a,#0x21
+      00020F EF               [12]  822 	mov	a,r7
+      000210 64 80            [12]  823 	xrl	a,#0x80
+      000212 94 80            [12]  824 	subb	a,#0x80
+      000214 50 6B            [24]  825 	jnc	00103$
+                                    826 ;	src/radio.c:242: RADIO_EN_CS();
+      000216 C2 91            [12]  827 	clr	_RFCSN
+                                    828 ;	src/radio.c:243: spiRadioSend(CMD_R_RX_PAYLOAD);
+      000218 75 82 61         [24]  829 	mov	dpl,#0x61
+      00021B C0 07            [24]  830 	push	ar7
+      00021D C0 06            [24]  831 	push	ar6
+      00021F 12r00r00         [24]  832 	lcall	_spiRadioSend
+      000222 D0 06            [24]  833 	pop	ar6
+      000224 D0 07            [24]  834 	pop	ar7
+                                    835 ;	src/radio.c:244: for(i=0;i<len;i++)
+      000226 90r00r0A         [24]  836 	mov	dptr,#_radioRxPacket_payload_1_43
+      000229 E0               [24]  837 	movx	a,@dptr
+      00022A FC               [12]  838 	mov	r4,a
+      00022B A3               [24]  839 	inc	dptr
+      00022C E0               [24]  840 	movx	a,@dptr
+      00022D FD               [12]  841 	mov	r5,a
+      00022E 7A 00            [12]  842 	mov	r2,#0x00
+      000230 7B 00            [12]  843 	mov	r3,#0x00
+      000232                        844 00107$:
+      000232 C3               [12]  845 	clr	c
+      000233 EA               [12]  846 	mov	a,r2
+      000234 9E               [12]  847 	subb	a,r6
+      000235 EB               [12]  848 	mov	a,r3
+      000236 64 80            [12]  849 	xrl	a,#0x80
+      000238 8F F0            [24]  850 	mov	b,r7
+      00023A 63 F0 80         [24]  851 	xrl	b,#0x80
+      00023D 95 F0            [12]  852 	subb	a,b
+      00023F 50 3C            [24]  853 	jnc	00101$
+                                    854 ;	src/radio.c:245: payload[i] = spiRadioReceive();
+      000241 C0 06            [24]  855 	push	ar6
+      000243 C0 07            [24]  856 	push	ar7
+      000245 EA               [12]  857 	mov	a,r2
+      000246 2C               [12]  858 	add	a,r4
+      000247 F8               [12]  859 	mov	r0,a
+      000248 EB               [12]  860 	mov	a,r3
+      000249 3D               [12]  861 	addc	a,r5
+      00024A F9               [12]  862 	mov	r1,a
+      00024B C0 06            [24]  863 	push	ar6
+      00024D C0 05            [24]  864 	push	ar5
+      00024F C0 04            [24]  865 	push	ar4
+      000251 C0 03            [24]  866 	push	ar3
+      000253 C0 02            [24]  867 	push	ar2
+      000255 C0 01            [24]  868 	push	ar1
+      000257 C0 00            [24]  869 	push	ar0
+      000259 12r00r14         [24]  870 	lcall	_spiRadioReceive
+      00025C AF 82            [24]  871 	mov	r7,dpl
+      00025E D0 00            [24]  872 	pop	ar0
+      000260 D0 01            [24]  873 	pop	ar1
+      000262 D0 02            [24]  874 	pop	ar2
+      000264 D0 03            [24]  875 	pop	ar3
+      000266 D0 04            [24]  876 	pop	ar4
+      000268 D0 05            [24]  877 	pop	ar5
+      00026A D0 06            [24]  878 	pop	ar6
+      00026C 88 82            [24]  879 	mov	dpl,r0
+      00026E 89 83            [24]  880 	mov	dph,r1
+      000270 EF               [12]  881 	mov	a,r7
+      000271 F0               [24]  882 	movx	@dptr,a
+                                    883 ;	src/radio.c:244: for(i=0;i<len;i++)
+      000272 0A               [12]  884 	inc	r2
+      000273 BA 00 01         [24]  885 	cjne	r2,#0x00,00127$
+      000276 0B               [12]  886 	inc	r3
+      000277                        887 00127$:
+      000277 D0 07            [24]  888 	pop	ar7
+      000279 D0 06            [24]  889 	pop	ar6
+      00027B 80 B5            [24]  890 	sjmp	00107$
+      00027D                        891 00101$:
+                                    892 ;	src/radio.c:246: RADIO_DIS_CS();
+      00027D D2 91            [12]  893 	setb	_RFCSN
+      00027F 80 07            [24]  894 	sjmp	00104$
+      000281                        895 00103$:
+                                    896 ;	src/radio.c:248: len=0;
+      000281 90r00r0C         [24]  897 	mov	dptr,#_radioRxPacket_len_1_44
+      000284 E4               [12]  898 	clr	a
+      000285 F0               [24]  899 	movx	@dptr,a
+      000286 A3               [24]  900 	inc	dptr
+      000287 F0               [24]  901 	movx	@dptr,a
+      000288                        902 00104$:
+                                    903 ;	src/radio.c:254: return len;
+      000288 90r00r0C         [24]  904 	mov	dptr,#_radioRxPacket_len_1_44
+      00028B E0               [24]  905 	movx	a,@dptr
+      00028C FE               [12]  906 	mov	r6,a
+      00028D A3               [24]  907 	inc	dptr
+      00028E E0               [24]  908 	movx	a,@dptr
+      00028F 8E 82            [24]  909 	mov	dpl,r6
+      000291 22               [24]  910 	ret
+                                    911 ;------------------------------------------------------------
+                                    912 ;Allocation info for local variables in function 'radioSendPacket'
+                                    913 ;------------------------------------------------------------
+                                    914 ;len                       Allocated with name '_radioSendPacket_PARM_2'
+                                    915 ;ackPayload                Allocated with name '_radioSendPacket_PARM_3'
+                                    916 ;ackLen                    Allocated with name '_radioSendPacket_PARM_4'
+                                    917 ;payload                   Allocated with name '_radioSendPacket_payload_1_47'
+                                    918 ;status                    Allocated with name '_radioSendPacket_status_1_48'
+                                    919 ;------------------------------------------------------------
+                                    920 ;	src/radio.c:260: unsigned char radioSendPacket(__xdata char *payload, char len, 
+                                    921 ;	-----------------------------------------
+                                    922 ;	 function radioSendPacket
+                                    923 ;	-----------------------------------------
+      000292                        924 _radioSendPacket:
+      000292 AF 83            [24]  925 	mov	r7,dph
+      000294 E5 82            [12]  926 	mov	a,dpl
+      000296 90r00r14         [24]  927 	mov	dptr,#_radioSendPacket_payload_1_47
+      000299 F0               [24]  928 	movx	@dptr,a
+      00029A EF               [12]  929 	mov	a,r7
+      00029B A3               [24]  930 	inc	dptr
+      00029C F0               [24]  931 	movx	@dptr,a
+                                    932 ;	src/radio.c:266: radioTxPacket(payload, len);
+      00029D 90r00r14         [24]  933 	mov	dptr,#_radioSendPacket_payload_1_47
+      0002A0 E0               [24]  934 	movx	a,@dptr
+      0002A1 FE               [12]  935 	mov	r6,a
+      0002A2 A3               [24]  936 	inc	dptr
+      0002A3 E0               [24]  937 	movx	a,@dptr
+      0002A4 FF               [12]  938 	mov	r7,a
+      0002A5 90r00r0E         [24]  939 	mov	dptr,#_radioSendPacket_PARM_2
+      0002A8 E0               [24]  940 	movx	a,@dptr
+      0002A9 90r00r04         [24]  941 	mov	dptr,#_radioTxPacket_PARM_2
+      0002AC F0               [24]  942 	movx	@dptr,a
+      0002AD 8E 82            [24]  943 	mov	dpl,r6
+      0002AF 8F 83            [24]  944 	mov	dph,r7
+      0002B1 12r00rE2         [24]  945 	lcall	_radioTxPacket
+                                    946 ;	src/radio.c:268: while(((status=radioNop())&0x70) == 0);
+      0002B4                        947 00101$:
+      0002B4 12r00r69         [24]  948 	lcall	_radioNop
+      0002B7 AF 82            [24]  949 	mov	r7,dpl
+      0002B9 8F 06            [24]  950 	mov	ar6,r7
+      0002BB EE               [12]  951 	mov	a,r6
+      0002BC 54 70            [12]  952 	anl	a,#0x70
+      0002BE 60 F4            [24]  953 	jz	00101$
+                                    954 ;	src/radio.c:271: radioWriteReg(REG_STATUS, 0x70);
+      0002C0 90r00r02         [24]  955 	mov	dptr,#_radioWriteReg_PARM_2
+      0002C3 74 70            [12]  956 	mov	a,#0x70
+      0002C5 F0               [24]  957 	movx	@dptr,a
+      0002C6 75 82 07         [24]  958 	mov	dpl,#0x07
+      0002C9 C0 07            [24]  959 	push	ar7
+      0002CB 12r00rB8         [24]  960 	lcall	_radioWriteReg
+      0002CE D0 07            [24]  961 	pop	ar7
+                                    962 ;	src/radio.c:274: if (status&BIT_MAX_RT) {
+      0002D0 EF               [12]  963 	mov	a,r7
+      0002D1 30 E4 07         [24]  964 	jnb	acc.4,00105$
+                                    965 ;	src/radio.c:275: radioFlushTx();
+      0002D4 12r00r78         [24]  966 	lcall	_radioFlushTx
+                                    967 ;	src/radio.c:276: return 0;
+      0002D7 75 82 00         [24]  968 	mov	dpl,#0x00
+      0002DA 22               [24]  969 	ret
+      0002DB                        970 00105$:
+                                    971 ;	src/radio.c:280: if (status&BIT_RX_DR)
+      0002DB EF               [12]  972 	mov	a,r7
+      0002DC 30 E6 38         [24]  973 	jnb	acc.6,00107$
+                                    974 ;	src/radio.c:281: *ackLen = radioRxPacket(ackPayload);
+      0002DF 90r00r11         [24]  975 	mov	dptr,#_radioSendPacket_PARM_4
+      0002E2 E0               [24]  976 	movx	a,@dptr
+      0002E3 FC               [12]  977 	mov	r4,a
+      0002E4 A3               [24]  978 	inc	dptr
+      0002E5 E0               [24]  979 	movx	a,@dptr
+      0002E6 FD               [12]  980 	mov	r5,a
+      0002E7 A3               [24]  981 	inc	dptr
+      0002E8 E0               [24]  982 	movx	a,@dptr
+      0002E9 FE               [12]  983 	mov	r6,a
+      0002EA 90r00r0F         [24]  984 	mov	dptr,#_radioSendPacket_PARM_3
+      0002ED E0               [24]  985 	movx	a,@dptr
+      0002EE FA               [12]  986 	mov	r2,a
+      0002EF A3               [24]  987 	inc	dptr
+      0002F0 E0               [24]  988 	movx	a,@dptr
+      0002F1 FB               [12]  989 	mov	r3,a
+      0002F2 8A 82            [24]  990 	mov	dpl,r2
+      0002F4 8B 83            [24]  991 	mov	dph,r3
+      0002F6 C0 07            [24]  992 	push	ar7
+      0002F8 C0 06            [24]  993 	push	ar6
+      0002FA C0 05            [24]  994 	push	ar5
+      0002FC C0 04            [24]  995 	push	ar4
+      0002FE 12r01rD6         [24]  996 	lcall	_radioRxPacket
+      000301 AB 82            [24]  997 	mov	r3,dpl
+      000303 D0 04            [24]  998 	pop	ar4
+      000305 D0 05            [24]  999 	pop	ar5
+      000307 D0 06            [24] 1000 	pop	ar6
+      000309 D0 07            [24] 1001 	pop	ar7
+      00030B 8C 82            [24] 1002 	mov	dpl,r4
+      00030D 8D 83            [24] 1003 	mov	dph,r5
+      00030F 8E F0            [24] 1004 	mov	b,r6
+      000311 EB               [12] 1005 	mov	a,r3
+      000312 12r00r00         [24] 1006 	lcall	__gptrput
+      000315 80 15            [24] 1007 	sjmp	00108$
+      000317                       1008 00107$:
+                                   1009 ;	src/radio.c:283: *ackLen = 0;
+      000317 90r00r11         [24] 1010 	mov	dptr,#_radioSendPacket_PARM_4
+      00031A E0               [24] 1011 	movx	a,@dptr
+      00031B FC               [12] 1012 	mov	r4,a
+      00031C A3               [24] 1013 	inc	dptr
+      00031D E0               [24] 1014 	movx	a,@dptr
+      00031E FD               [12] 1015 	mov	r5,a
+      00031F A3               [24] 1016 	inc	dptr
+      000320 E0               [24] 1017 	movx	a,@dptr
+      000321 FE               [12] 1018 	mov	r6,a
+      000322 8C 82            [24] 1019 	mov	dpl,r4
+      000324 8D 83            [24] 1020 	mov	dph,r5
+      000326 8E F0            [24] 1021 	mov	b,r6
+      000328 E4               [12] 1022 	clr	a
+      000329 12r00r00         [24] 1023 	lcall	__gptrput
+      00032C                       1024 00108$:
+                                   1025 ;	src/radio.c:285: radioFlushRx();
+      00032C C0 07            [24] 1026 	push	ar7
+      00032E 12r00r87         [24] 1027 	lcall	_radioFlushRx
+      000331 D0 07            [24] 1028 	pop	ar7
+                                   1029 ;	src/radio.c:287: return status&BIT_TX_DS;
+      000333 53 07 20         [24] 1030 	anl	ar7,#0x20
+      000336 8F 82            [24] 1031 	mov	dpl,r7
+      000338 22               [24] 1032 	ret
+                                   1033 ;------------------------------------------------------------
+                                   1034 ;Allocation info for local variables in function 'radioSendPacketNoAck'
+                                   1035 ;------------------------------------------------------------
+                                   1036 ;len                       Allocated with name '_radioSendPacketNoAck_PARM_2'
+                                   1037 ;payload                   Allocated with name '_radioSendPacketNoAck_payload_1_50'
+                                   1038 ;------------------------------------------------------------
+                                   1039 ;	src/radio.c:291: void radioSendPacketNoAck(__xdata char *payload, char len)
+                                   1040 ;	-----------------------------------------
+                                   1041 ;	 function radioSendPacketNoAck
+                                   1042 ;	-----------------------------------------
+      000339                       1043 _radioSendPacketNoAck:
+      000339 AF 83            [24] 1044 	mov	r7,dph
+      00033B E5 82            [12] 1045 	mov	a,dpl
+      00033D 90r00r17         [24] 1046 	mov	dptr,#_radioSendPacketNoAck_payload_1_50
+      000340 F0               [24] 1047 	movx	@dptr,a
+      000341 EF               [12] 1048 	mov	a,r7
+      000342 A3               [24] 1049 	inc	dptr
+      000343 F0               [24] 1050 	movx	@dptr,a
+                                   1051 ;	src/radio.c:294: while((radioNop()&0x01) != 0);
+      000344                       1052 00101$:
+      000344 12r00r69         [24] 1053 	lcall	_radioNop
+      000347 E5 82            [12] 1054 	mov	a,dpl
+      000349 FF               [12] 1055 	mov	r7,a
+      00034A 20 E0 F7         [24] 1056 	jb	acc.0,00101$
+                                   1057 ;	src/radio.c:297: radioTxPacketNoAck(payload, len);
+      00034D 90r00r17         [24] 1058 	mov	dptr,#_radioSendPacketNoAck_payload_1_50
+      000350 E0               [24] 1059 	movx	a,@dptr
+      000351 FE               [12] 1060 	mov	r6,a
+      000352 A3               [24] 1061 	inc	dptr
+      000353 E0               [24] 1062 	movx	a,@dptr
+      000354 FF               [12] 1063 	mov	r7,a
+      000355 90r00r16         [24] 1064 	mov	dptr,#_radioSendPacketNoAck_PARM_2
+      000358 E0               [24] 1065 	movx	a,@dptr
+      000359 90r00r07         [24] 1066 	mov	dptr,#_radioTxPacketNoAck_PARM_2
+      00035C F0               [24] 1067 	movx	@dptr,a
+      00035D 8E 82            [24] 1068 	mov	dpl,r6
+      00035F 8F 83            [24] 1069 	mov	dph,r7
+      000361 02r01r5C         [24] 1070 	ljmp	_radioTxPacketNoAck
+                                   1071 ;------------------------------------------------------------
+                                   1072 ;Allocation info for local variables in function 'radioUpdateRetr'
+                                   1073 ;------------------------------------------------------------
+                                   1074 ;ard                       Allocated with name '_radioUpdateRetr_ard_1_52'
+                                   1075 ;nbytes                    Allocated with name '_radioUpdateRetr_nbytes_1_52'
+                                   1076 ;------------------------------------------------------------
+                                   1077 ;	src/radio.c:303: void radioUpdateRetr()
+                                   1078 ;	-----------------------------------------
+                                   1079 ;	 function radioUpdateRetr
+                                   1080 ;	-----------------------------------------
+      000364                       1081 _radioUpdateRetr:
+                                   1082 ;	src/radio.c:308: if (radioConf.ard & ARD_PLOAD)
+      000364 90r00r03         [24] 1083 	mov	dptr,#(_radioConf + 0x0003)
+      000367 E0               [24] 1084 	movx	a,@dptr
+      000368 FF               [12] 1085 	mov	r7,a
+      000369 30 E7 4E         [24] 1086 	jnb	acc.7,00104$
+                                   1087 ;	src/radio.c:310: nbytes = ((radioConf.ard&0x7F)>32)?32:(radioConf.ard&0x7F);
+      00036C 8F 06            [24] 1088 	mov	ar6,r7
+      00036E 53 06 7F         [24] 1089 	anl	ar6,#0x7F
+      000371 EE               [12] 1090 	mov	a,r6
+      000372 24 DF            [12] 1091 	add	a,#0xff - 0x20
+      000374 50 04            [24] 1092 	jnc	00110$
+      000376 7E 20            [12] 1093 	mov	r6,#0x20
+      000378 80 04            [24] 1094 	sjmp	00115$
+      00037A                       1095 00110$:
+      00037A 74 7F            [12] 1096 	mov	a,#0x7F
+      00037C 5F               [12] 1097 	anl	a,r7
+      00037D FE               [12] 1098 	mov	r6,a
+                                   1099 ;	src/radio.c:311: for (ard=0; ardStep[radioConf.dataRate][ard]<nbytes; ard++)
+      00037E                       1100 00115$:
+      00037E 7D 00            [12] 1101 	mov	r5,#0x00
+      000380                       1102 00107$:
+      000380 90r00r00         [24] 1103 	mov	dptr,#_radioConf
+      000383 E0               [24] 1104 	movx	a,@dptr
+      000384 FC               [12] 1105 	mov	r4,a
+      000385 C2 D5            [12] 1106 	clr	F0
+      000387 75 F0 06         [24] 1107 	mov	b,#0x06
+      00038A EC               [12] 1108 	mov	a,r4
+      00038B 30 E7 04         [24] 1109 	jnb	acc.7,00127$
+      00038E B2 D5            [12] 1110 	cpl	F0
+      000390 F4               [12] 1111 	cpl	a
+      000391 04               [12] 1112 	inc	a
+      000392                       1113 00127$:
+      000392 A4               [48] 1114 	mul	ab
+      000393 30 D5 0A         [24] 1115 	jnb	F0,00128$
+      000396 F4               [12] 1116 	cpl	a
+      000397 24 01            [12] 1117 	add	a,#0x01
+      000399 C5 F0            [12] 1118 	xch	a,b
+      00039B F4               [12] 1119 	cpl	a
+      00039C 34 00            [12] 1120 	addc	a,#0x00
+      00039E C5 F0            [12] 1121 	xch	a,b
+      0003A0                       1122 00128$:
+      0003A0 24r00            [12] 1123 	add	a,#_ardStep
+      0003A2 FB               [12] 1124 	mov	r3,a
+      0003A3 74s00            [12] 1125 	mov	a,#(_ardStep >> 8)
+      0003A5 35 F0            [12] 1126 	addc	a,b
+      0003A7 FC               [12] 1127 	mov	r4,a
+      0003A8 ED               [12] 1128 	mov	a,r5
+      0003A9 2B               [12] 1129 	add	a,r3
+      0003AA F5 82            [12] 1130 	mov	dpl,a
+      0003AC E4               [12] 1131 	clr	a
+      0003AD 3C               [12] 1132 	addc	a,r4
+      0003AE F5 83            [12] 1133 	mov	dph,a
+      0003B0 E4               [12] 1134 	clr	a
+      0003B1 93               [24] 1135 	movc	a,@a+dptr
+      0003B2 FC               [12] 1136 	mov	r4,a
+      0003B3 C3               [12] 1137 	clr	c
+      0003B4 9E               [12] 1138 	subb	a,r6
+      0003B5 50 0C            [24] 1139 	jnc	00116$
+      0003B7 0D               [12] 1140 	inc	r5
+      0003B8 80 C6            [24] 1141 	sjmp	00107$
+      0003BA                       1142 00104$:
+                                   1143 ;	src/radio.c:314: ard = radioConf.ard & 0x0F;
+      0003BA 90r00r19         [24] 1144 	mov	dptr,#_radioUpdateRetr_ard_1_52
+      0003BD 74 0F            [12] 1145 	mov	a,#0x0F
+      0003BF 5F               [12] 1146 	anl	a,r7
+      0003C0 F0               [24] 1147 	movx	@dptr,a
+                                   1148 ;	src/radio.c:316: radioWriteReg(REG_SETUP_RETR, (ard<<4) | (radioConf.arc&0x0F)); 
+                                   1149 ;	src/radio.c:314: ard = radioConf.ard & 0x0F;
+      0003C1 80 05            [24] 1150 	sjmp	00105$
+      0003C3                       1151 00116$:
+      0003C3 90r00r19         [24] 1152 	mov	dptr,#_radioUpdateRetr_ard_1_52
+      0003C6 ED               [12] 1153 	mov	a,r5
+      0003C7 F0               [24] 1154 	movx	@dptr,a
+      0003C8                       1155 00105$:
+                                   1156 ;	src/radio.c:316: radioWriteReg(REG_SETUP_RETR, (ard<<4) | (radioConf.arc&0x0F)); 
+      0003C8 90r00r19         [24] 1157 	mov	dptr,#_radioUpdateRetr_ard_1_52
+      0003CB E0               [24] 1158 	movx	a,@dptr
+      0003CC C4               [12] 1159 	swap	a
+      0003CD 54 F0            [12] 1160 	anl	a,#0xF0
+      0003CF FF               [12] 1161 	mov	r7,a
+      0003D0 90r00r02         [24] 1162 	mov	dptr,#(_radioConf + 0x0002)
+      0003D3 E0               [24] 1163 	movx	a,@dptr
+      0003D4 FE               [12] 1164 	mov	r6,a
+      0003D5 74 0F            [12] 1165 	mov	a,#0x0F
+      0003D7 5E               [12] 1166 	anl	a,r6
+      0003D8 90r00r02         [24] 1167 	mov	dptr,#_radioWriteReg_PARM_2
+      0003DB 4F               [12] 1168 	orl	a,r7
+      0003DC F0               [24] 1169 	movx	@dptr,a
+      0003DD 75 82 04         [24] 1170 	mov	dpl,#0x04
+      0003E0 02r00rB8         [24] 1171 	ljmp	_radioWriteReg
+                                   1172 ;------------------------------------------------------------
+                                   1173 ;Allocation info for local variables in function 'radioUpdateRfSetup'
+                                   1174 ;------------------------------------------------------------
+                                   1175 ;setup                     Allocated with name '_radioUpdateRfSetup_setup_1_54'
+                                   1176 ;------------------------------------------------------------
+                                   1177 ;	src/radio.c:319: void radioUpdateRfSetup()
+                                   1178 ;	-----------------------------------------
+                                   1179 ;	 function radioUpdateRfSetup
+                                   1180 ;	-----------------------------------------
+      0003E3                       1181 _radioUpdateRfSetup:
+                                   1182 ;	src/radio.c:323: setup = setupDataRate[radioConf.dataRate];
+      0003E3 90r00r00         [24] 1183 	mov	dptr,#_radioConf
+      0003E6 E0               [24] 1184 	movx	a,@dptr
+      0003E7 90r00r12         [24] 1185 	mov	dptr,#_setupDataRate
+      0003EA 93               [24] 1186 	movc	a,@a+dptr
+      0003EB FF               [12] 1187 	mov	r7,a
+                                   1188 ;	src/radio.c:324: setup |= radioConf.power<<1;
+      0003EC 90r00r01         [24] 1189 	mov	dptr,#(_radioConf + 0x0001)
+      0003EF E0               [24] 1190 	movx	a,@dptr
+      0003F0 25 E0            [12] 1191 	add	a,acc
+      0003F2 FE               [12] 1192 	mov	r6,a
+      0003F3 42 07            [12] 1193 	orl	ar7,a
+      0003F5 90r00r1A         [24] 1194 	mov	dptr,#_radioUpdateRfSetup_setup_1_54
+      0003F8 EF               [12] 1195 	mov	a,r7
+      0003F9 F0               [24] 1196 	movx	@dptr,a
+                                   1197 ;	src/radio.c:326: if (radioConf.contCarrier)
+      0003FA 90r00r04         [24] 1198 	mov	dptr,#(_radioConf + 0x0004)
+      0003FD E0               [24] 1199 	movx	a,@dptr
+      0003FE 60 07            [24] 1200 	jz	00102$
+                                   1201 ;	src/radio.c:327: setup |= 0x90;
+      000400 90r00r1A         [24] 1202 	mov	dptr,#_radioUpdateRfSetup_setup_1_54
+      000403 74 90            [12] 1203 	mov	a,#0x90
+      000405 4F               [12] 1204 	orl	a,r7
+      000406 F0               [24] 1205 	movx	@dptr,a
+      000407                       1206 00102$:
+                                   1207 ;	src/radio.c:329: radioWriteReg(REG_RF_SETUP, setup);
+      000407 90r00r1A         [24] 1208 	mov	dptr,#_radioUpdateRfSetup_setup_1_54
+      00040A E0               [24] 1209 	movx	a,@dptr
+      00040B 90r00r02         [24] 1210 	mov	dptr,#_radioWriteReg_PARM_2
+      00040E F0               [24] 1211 	movx	@dptr,a
+      00040F 75 82 06         [24] 1212 	mov	dpl,#0x06
+      000412 02r00rB8         [24] 1213 	ljmp	_radioWriteReg
+                                   1214 ;------------------------------------------------------------
+                                   1215 ;Allocation info for local variables in function 'radioSetChannel'
+                                   1216 ;------------------------------------------------------------
+                                   1217 ;channel                   Allocated with name '_radioSetChannel_channel_1_55'
+                                   1218 ;------------------------------------------------------------
+                                   1219 ;	src/radio.c:333: void radioSetChannel(char channel)
+                                   1220 ;	-----------------------------------------
+                                   1221 ;	 function radioSetChannel
+                                   1222 ;	-----------------------------------------
+      000415                       1223 _radioSetChannel:
+      000415 E5 82            [12] 1224 	mov	a,dpl
+      000417 90r00r1B         [24] 1225 	mov	dptr,#_radioSetChannel_channel_1_55
+      00041A F0               [24] 1226 	movx	@dptr,a
+                                   1227 ;	src/radio.c:336: if(channel<0 || channel>125)
+      00041B E0               [24] 1228 	movx	a,@dptr
+      00041C FF               [12] 1229 	mov	r7,a
+      00041D 20 E7 0C         [24] 1230 	jb	acc.7,00101$
+      000420 C3               [12] 1231 	clr	c
+      000421 74 FD            [12] 1232 	mov	a,#(0x7D ^ 0x80)
+      000423 8F F0            [24] 1233 	mov	b,r7
+      000425 63 F0 80         [24] 1234 	xrl	b,#0x80
+      000428 95 F0            [12] 1235 	subb	a,b
+      00042A 50 01            [24] 1236 	jnc	00102$
+      00042C                       1237 00101$:
+                                   1238 ;	src/radio.c:337: return;
+      00042C 22               [24] 1239 	ret
+      00042D                       1240 00102$:
+                                   1241 ;	src/radio.c:340: RADIO_DIS_CE();
+      00042D C2 90            [12] 1242 	clr	_RFCE
+                                   1243 ;	src/radio.c:341: radioWriteReg(REG_RF_CH, channel);
+      00042F 90r00r02         [24] 1244 	mov	dptr,#_radioWriteReg_PARM_2
+      000432 EF               [12] 1245 	mov	a,r7
+      000433 F0               [24] 1246 	movx	@dptr,a
+      000434 75 82 05         [24] 1247 	mov	dpl,#0x05
+      000437 12r00rB8         [24] 1248 	lcall	_radioWriteReg
+                                   1249 ;	src/radio.c:344: if(radioConf.contCarrier)
+      00043A 90r00r04         [24] 1250 	mov	dptr,#(_radioConf + 0x0004)
+      00043D E0               [24] 1251 	movx	a,@dptr
+      00043E 60 02            [24] 1252 	jz	00106$
+                                   1253 ;	src/radio.c:345: RADIO_EN_CE();
+      000440 D2 90            [12] 1254 	setb	_RFCE
+      000442                       1255 00106$:
+      000442 22               [24] 1256 	ret
+                                   1257 ;------------------------------------------------------------
+                                   1258 ;Allocation info for local variables in function 'radioSetDataRate'
+                                   1259 ;------------------------------------------------------------
+                                   1260 ;dr                        Allocated with name '_radioSetDataRate_dr_1_57'
+                                   1261 ;------------------------------------------------------------
+                                   1262 ;	src/radio.c:349: void radioSetDataRate(unsigned char dr)
+                                   1263 ;	-----------------------------------------
+                                   1264 ;	 function radioSetDataRate
+                                   1265 ;	-----------------------------------------
+      000443                       1266 _radioSetDataRate:
+      000443 E5 82            [12] 1267 	mov	a,dpl
+      000445 90r00r1C         [24] 1268 	mov	dptr,#_radioSetDataRate_dr_1_57
+      000448 F0               [24] 1269 	movx	@dptr,a
+                                   1270 ;	src/radio.c:351: if (dr>=3)
+      000449 E0               [24] 1271 	movx	a,@dptr
+      00044A FF               [12] 1272 	mov	r7,a
+      00044B BF 03 00         [24] 1273 	cjne	r7,#0x03,00108$
+      00044E                       1274 00108$:
+      00044E 40 01            [24] 1275 	jc	00102$
+                                   1276 ;	src/radio.c:352: return;
+      000450 22               [24] 1277 	ret
+      000451                       1278 00102$:
+                                   1279 ;	src/radio.c:354: radioConf.dataRate = dr;
+      000451 90r00r00         [24] 1280 	mov	dptr,#_radioConf
+      000454 EF               [12] 1281 	mov	a,r7
+      000455 F0               [24] 1282 	movx	@dptr,a
+                                   1283 ;	src/radio.c:356: radioUpdateRfSetup();
+      000456 12r03rE3         [24] 1284 	lcall	_radioUpdateRfSetup
+                                   1285 ;	src/radio.c:357: radioUpdateRetr();
+      000459 02r03r64         [24] 1286 	ljmp	_radioUpdateRetr
+                                   1287 ;------------------------------------------------------------
+                                   1288 ;Allocation info for local variables in function 'radioGetDataRate'
+                                   1289 ;------------------------------------------------------------
+                                   1290 ;	src/radio.c:360: char radioGetDataRate()
+                                   1291 ;	-----------------------------------------
+                                   1292 ;	 function radioGetDataRate
+                                   1293 ;	-----------------------------------------
+      00045C                       1294 _radioGetDataRate:
+                                   1295 ;	src/radio.c:362: return radioConf.dataRate;
+      00045C 90r00r00         [24] 1296 	mov	dptr,#_radioConf
+      00045F E0               [24] 1297 	movx	a,@dptr
+      000460 F5 82            [12] 1298 	mov	dpl,a
+      000462 22               [24] 1299 	ret
+                                   1300 ;------------------------------------------------------------
+                                   1301 ;Allocation info for local variables in function 'radioSetPower'
+                                   1302 ;------------------------------------------------------------
+                                   1303 ;power                     Allocated with name '_radioSetPower_power_1_60'
+                                   1304 ;------------------------------------------------------------
+                                   1305 ;	src/radio.c:365: void radioSetPower(char power)
+                                   1306 ;	-----------------------------------------
+                                   1307 ;	 function radioSetPower
+                                   1308 ;	-----------------------------------------
+      000463                       1309 _radioSetPower:
+      000463 E5 82            [12] 1310 	mov	a,dpl
+      000465 90r00r1D         [24] 1311 	mov	dptr,#_radioSetPower_power_1_60
+      000468 F0               [24] 1312 	movx	@dptr,a
+                                   1313 ;	src/radio.c:367: radioConf.power = power&0x03;
+      000469 E0               [24] 1314 	movx	a,@dptr
+      00046A FF               [12] 1315 	mov	r7,a
+      00046B 53 07 03         [24] 1316 	anl	ar7,#0x03
+      00046E 90r00r01         [24] 1317 	mov	dptr,#(_radioConf + 0x0001)
+      000471 EF               [12] 1318 	mov	a,r7
+      000472 F0               [24] 1319 	movx	@dptr,a
+                                   1320 ;	src/radio.c:369: radioUpdateRfSetup();
+      000473 02r03rE3         [24] 1321 	ljmp	_radioUpdateRfSetup
+                                   1322 ;------------------------------------------------------------
+                                   1323 ;Allocation info for local variables in function 'radioSetArd'
+                                   1324 ;------------------------------------------------------------
+                                   1325 ;ard                       Allocated with name '_radioSetArd_ard_1_62'
+                                   1326 ;------------------------------------------------------------
+                                   1327 ;	src/radio.c:372: void radioSetArd(char ard)
+                                   1328 ;	-----------------------------------------
+                                   1329 ;	 function radioSetArd
+                                   1330 ;	-----------------------------------------
+      000476                       1331 _radioSetArd:
+      000476 E5 82            [12] 1332 	mov	a,dpl
+      000478 90r00r1E         [24] 1333 	mov	dptr,#_radioSetArd_ard_1_62
+      00047B F0               [24] 1334 	movx	@dptr,a
+                                   1335 ;	src/radio.c:374: radioConf.ard = ard;
+      00047C E0               [24] 1336 	movx	a,@dptr
+      00047D 90r00r03         [24] 1337 	mov	dptr,#(_radioConf + 0x0003)
+      000480 F0               [24] 1338 	movx	@dptr,a
+                                   1339 ;	src/radio.c:376: radioUpdateRetr(); 
+      000481 02r03r64         [24] 1340 	ljmp	_radioUpdateRetr
+                                   1341 ;------------------------------------------------------------
+                                   1342 ;Allocation info for local variables in function 'radioSetArc'
+                                   1343 ;------------------------------------------------------------
+                                   1344 ;arc                       Allocated with name '_radioSetArc_arc_1_64'
+                                   1345 ;------------------------------------------------------------
+                                   1346 ;	src/radio.c:379: void radioSetArc(char arc)
+                                   1347 ;	-----------------------------------------
+                                   1348 ;	 function radioSetArc
+                                   1349 ;	-----------------------------------------
+      000484                       1350 _radioSetArc:
+      000484 E5 82            [12] 1351 	mov	a,dpl
+      000486 90r00r1F         [24] 1352 	mov	dptr,#_radioSetArc_arc_1_64
+      000489 F0               [24] 1353 	movx	@dptr,a
+                                   1354 ;	src/radio.c:381: radioConf.arc = arc;
+      00048A E0               [24] 1355 	movx	a,@dptr
+      00048B 90r00r02         [24] 1356 	mov	dptr,#(_radioConf + 0x0002)
+      00048E F0               [24] 1357 	movx	@dptr,a
+                                   1358 ;	src/radio.c:383: radioUpdateRetr();
+      00048F 02r03r64         [24] 1359 	ljmp	_radioUpdateRetr
+                                   1360 ;------------------------------------------------------------
+                                   1361 ;Allocation info for local variables in function 'radioSetContCarrier'
+                                   1362 ;------------------------------------------------------------
+                                   1363 ;	src/radio.c:386: void radioSetContCarrier(bool contCarrier)
+                                   1364 ;	-----------------------------------------
+                                   1365 ;	 function radioSetContCarrier
+                                   1366 ;	-----------------------------------------
+      000492                       1367 _radioSetContCarrier:
+                                   1368 ;	src/radio.c:388: radioConf.contCarrier = contCarrier?1:0;
+      000492 30*00 04         [24] 1369 	jnb	_radioSetContCarrier_PARM_1,00105$
+      000495 7F 01            [12] 1370 	mov	r7,#0x01
+      000497 80 02            [24] 1371 	sjmp	00106$
+      000499                       1372 00105$:
+      000499 7F 00            [12] 1373 	mov	r7,#0x00
+      00049B                       1374 00106$:
+      00049B 90r00r04         [24] 1375 	mov	dptr,#(_radioConf + 0x0004)
+      00049E EF               [12] 1376 	mov	a,r7
+      00049F F0               [24] 1377 	movx	@dptr,a
+                                   1378 ;	src/radio.c:390: RADIO_DIS_CE();
+      0004A0 C2 90            [12] 1379 	clr	_RFCE
+                                   1380 ;	src/radio.c:392: radioUpdateRfSetup();
+      0004A2 12r03rE3         [24] 1381 	lcall	_radioUpdateRfSetup
+                                   1382 ;	src/radio.c:394: if(contCarrier)
+      0004A5 30*00 02         [24] 1383 	jnb	_radioSetContCarrier_PARM_1,00103$
+                                   1384 ;	src/radio.c:395: RADIO_EN_CE();
+      0004A8 D2 90            [12] 1385 	setb	_RFCE
+      0004AA                       1386 00103$:
+      0004AA 22               [24] 1387 	ret
+                                   1388 ;------------------------------------------------------------
+                                   1389 ;Allocation info for local variables in function 'radioSetAddress'
+                                   1390 ;------------------------------------------------------------
+                                   1391 ;address                   Allocated with name '_radioSetAddress_address_1_68'
+                                   1392 ;i                         Allocated with name '_radioSetAddress_i_1_69'
+                                   1393 ;------------------------------------------------------------
+                                   1394 ;	src/radio.c:399: void radioSetAddress(__xdata char* address)
+                                   1395 ;	-----------------------------------------
+                                   1396 ;	 function radioSetAddress
+                                   1397 ;	-----------------------------------------
+      0004AB                       1398 _radioSetAddress:
+      0004AB AF 83            [24] 1399 	mov	r7,dph
+      0004AD E5 82            [12] 1400 	mov	a,dpl
+      0004AF 90r00r20         [24] 1401 	mov	dptr,#_radioSetAddress_address_1_68
+      0004B2 F0               [24] 1402 	movx	@dptr,a
+      0004B3 EF               [12] 1403 	mov	a,r7
+      0004B4 A3               [24] 1404 	inc	dptr
+      0004B5 F0               [24] 1405 	movx	@dptr,a
+                                   1406 ;	src/radio.c:403: RADIO_EN_CS();
+      0004B6 C2 91            [12] 1407 	clr	_RFCSN
+                                   1408 ;	src/radio.c:404: spiRadioSend(CMD_W_REG | REG_TX_ADDR);
+      0004B8 75 82 30         [24] 1409 	mov	dpl,#0x30
+      0004BB 12r00r00         [24] 1410 	lcall	_spiRadioSend
+                                   1411 ;	src/radio.c:405: for(i=0; i<5; i++)
+      0004BE 90r00r20         [24] 1412 	mov	dptr,#_radioSetAddress_address_1_68
+      0004C1 E0               [24] 1413 	movx	a,@dptr
+      0004C2 FE               [12] 1414 	mov	r6,a
+      0004C3 A3               [24] 1415 	inc	dptr
+      0004C4 E0               [24] 1416 	movx	a,@dptr
+      0004C5 FF               [12] 1417 	mov	r7,a
+      0004C6 7C 00            [12] 1418 	mov	r4,#0x00
+      0004C8 7D 00            [12] 1419 	mov	r5,#0x00
+      0004CA                       1420 00103$:
+                                   1421 ;	src/radio.c:406: spiRadioSend(address[i]);
+      0004CA EC               [12] 1422 	mov	a,r4
+      0004CB 2E               [12] 1423 	add	a,r6
+      0004CC F5 82            [12] 1424 	mov	dpl,a
+      0004CE ED               [12] 1425 	mov	a,r5
+      0004CF 3F               [12] 1426 	addc	a,r7
+      0004D0 F5 83            [12] 1427 	mov	dph,a
+      0004D2 E0               [24] 1428 	movx	a,@dptr
+      0004D3 F5 82            [12] 1429 	mov	dpl,a
+      0004D5 C0 07            [24] 1430 	push	ar7
+      0004D7 C0 06            [24] 1431 	push	ar6
+      0004D9 C0 05            [24] 1432 	push	ar5
+      0004DB C0 04            [24] 1433 	push	ar4
+      0004DD 12r00r00         [24] 1434 	lcall	_spiRadioSend
+      0004E0 D0 04            [24] 1435 	pop	ar4
+      0004E2 D0 05            [24] 1436 	pop	ar5
+      0004E4 D0 06            [24] 1437 	pop	ar6
+      0004E6 D0 07            [24] 1438 	pop	ar7
+                                   1439 ;	src/radio.c:405: for(i=0; i<5; i++)
+      0004E8 0C               [12] 1440 	inc	r4
+      0004E9 BC 00 01         [24] 1441 	cjne	r4,#0x00,00123$
+      0004EC 0D               [12] 1442 	inc	r5
+      0004ED                       1443 00123$:
+      0004ED C3               [12] 1444 	clr	c
+      0004EE EC               [12] 1445 	mov	a,r4
+      0004EF 94 05            [12] 1446 	subb	a,#0x05
+      0004F1 ED               [12] 1447 	mov	a,r5
+      0004F2 64 80            [12] 1448 	xrl	a,#0x80
+      0004F4 94 80            [12] 1449 	subb	a,#0x80
+      0004F6 40 D2            [24] 1450 	jc	00103$
+                                   1451 ;	src/radio.c:407: RADIO_DIS_CS();
+      0004F8 D2 91            [12] 1452 	setb	_RFCSN
+                                   1453 ;	src/radio.c:409: RADIO_EN_CS();
+      0004FA C2 91            [12] 1454 	clr	_RFCSN
+                                   1455 ;	src/radio.c:410: spiRadioSend(CMD_W_REG | REG_RX_ADDR_P0);
+      0004FC 75 82 2A         [24] 1456 	mov	dpl,#0x2A
+      0004FF C0 07            [24] 1457 	push	ar7
+      000501 C0 06            [24] 1458 	push	ar6
+      000503 12r00r00         [24] 1459 	lcall	_spiRadioSend
+      000506 D0 06            [24] 1460 	pop	ar6
+      000508 D0 07            [24] 1461 	pop	ar7
+                                   1462 ;	src/radio.c:411: for(i=0; i<5; i++)
+      00050A 7C 00            [12] 1463 	mov	r4,#0x00
+      00050C 7D 00            [12] 1464 	mov	r5,#0x00
+      00050E                       1465 00105$:
+                                   1466 ;	src/radio.c:412: spiRadioSend(address[i]);
+      00050E EC               [12] 1467 	mov	a,r4
+      00050F 2E               [12] 1468 	add	a,r6
+      000510 F5 82            [12] 1469 	mov	dpl,a
+      000512 ED               [12] 1470 	mov	a,r5
+      000513 3F               [12] 1471 	addc	a,r7
+      000514 F5 83            [12] 1472 	mov	dph,a
+      000516 E0               [24] 1473 	movx	a,@dptr
+      000517 F5 82            [12] 1474 	mov	dpl,a
+      000519 C0 07            [24] 1475 	push	ar7
+      00051B C0 06            [24] 1476 	push	ar6
+      00051D C0 05            [24] 1477 	push	ar5
+      00051F C0 04            [24] 1478 	push	ar4
+      000521 12r00r00         [24] 1479 	lcall	_spiRadioSend
+      000524 D0 04            [24] 1480 	pop	ar4
+      000526 D0 05            [24] 1481 	pop	ar5
+      000528 D0 06            [24] 1482 	pop	ar6
+      00052A D0 07            [24] 1483 	pop	ar7
+                                   1484 ;	src/radio.c:411: for(i=0; i<5; i++)
+      00052C 0C               [12] 1485 	inc	r4
+      00052D BC 00 01         [24] 1486 	cjne	r4,#0x00,00125$
+      000530 0D               [12] 1487 	inc	r5
+      000531                       1488 00125$:
+      000531 C3               [12] 1489 	clr	c
+      000532 EC               [12] 1490 	mov	a,r4
+      000533 94 05            [12] 1491 	subb	a,#0x05
+      000535 ED               [12] 1492 	mov	a,r5
+      000536 64 80            [12] 1493 	xrl	a,#0x80
+      000538 94 80            [12] 1494 	subb	a,#0x80
+      00053A 40 D2            [24] 1495 	jc	00105$
+                                   1496 ;	src/radio.c:413: RADIO_DIS_CS();
+      00053C D2 91            [12] 1497 	setb	_RFCSN
+      00053E 22               [24] 1498 	ret
+                                   1499 ;------------------------------------------------------------
+                                   1500 ;Allocation info for local variables in function 'radioGetRpd'
+                                   1501 ;------------------------------------------------------------
+                                   1502 ;	src/radio.c:417: uint8_t radioGetRpd(void)
+                                   1503 ;	-----------------------------------------
+                                   1504 ;	 function radioGetRpd
+                                   1505 ;	-----------------------------------------
+      00053F                       1506 _radioGetRpd:
+                                   1507 ;	src/radio.c:419: return radioReadReg(REG_RPD);
+      00053F 75 82 09         [24] 1508 	mov	dpl,#0x09
+      000542 02r00r96         [24] 1509 	ljmp	_radioReadReg
+                                   1510 ;------------------------------------------------------------
+                                   1511 ;Allocation info for local variables in function 'radioGetTxRetry'
+                                   1512 ;------------------------------------------------------------
+                                   1513 ;	src/radio.c:423: uint8_t radioGetTxRetry(void)
+                                   1514 ;	-----------------------------------------
+                                   1515 ;	 function radioGetTxRetry
+                                   1516 ;	-----------------------------------------
+      000545                       1517 _radioGetTxRetry:
+                                   1518 ;	src/radio.c:425: return radioReadReg(REG_OBSERVE_TX)&0x0F;
+      000545 75 82 08         [24] 1519 	mov	dpl,#0x08
+      000548 12r00r96         [24] 1520 	lcall	_radioReadReg
+      00054B E5 82            [12] 1521 	mov	a,dpl
+      00054D 54 0F            [12] 1522 	anl	a,#0x0F
+      00054F F5 82            [12] 1523 	mov	dpl,a
+      000551 22               [24] 1524 	ret
+                                   1525 	.area CSEG    (CODE)
+                                   1526 	.area CONST   (CODE)
+      000000                       1527 _ardStep:
+      000000 00                    1528 	.db #0x00	; 0
+      000001 00                    1529 	.db #0x00	; 0
+      000002 08                    1530 	.db #0x08	; 8
+      000003 10                    1531 	.db #0x10	; 16
+      000004 18                    1532 	.db #0x18	; 24
+      000005 20                    1533 	.db #0x20	; 32
+      000006 0F                    1534 	.db #0x0F	; 15
+      000007 20                    1535 	.db #0x20	; 32
+      000008 00                    1536 	.db 0x00
+      000009 00                    1537 	.db 0x00
+      00000A 00                    1538 	.db 0x00
+      00000B 00                    1539 	.db 0x00
+      00000C 05                    1540 	.db #0x05	; 5
+      00000D 20                    1541 	.db #0x20	; 32
+      00000E 00                    1542 	.db 0x00
+      00000F 00                    1543 	.db 0x00
+      000010 00                    1544 	.db 0x00
+      000011 00                    1545 	.db 0x00
+      000012                       1546 _setupDataRate:
+      000012 20                    1547 	.db #0x20	; 32
+      000013 00                    1548 	.db #0x00	; 0
+      000014 08                    1549 	.db #0x08	; 8
+                                   1550 	.area XINIT   (CODE)
+      000000                       1551 __xinit__radioConf:
+      000000 02                    1552 	.db #0x02	;  2
+      000001 03                    1553 	.db #0x03	;  3
+      000002 03                    1554 	.db #0x03	;  3
+      000003 A0                    1555 	.db #0xA0	; -96
+      000004 00                    1556 	.db #0x00	;  0
+                                   1557 	.area CABS    (ABS,CODE)

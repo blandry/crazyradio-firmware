@@ -1,0 +1,326 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ANSI-C Compiler
+                                      3 ; Version 3.4.0 #8981 (Jul 12 2014) (Linux)
+                                      4 ; This file was generated Mon Jan 19 14:54:25 2015
+                                      5 ;--------------------------------------------------------
+                                      6 	.module utils
+                                      7 	.optsdcc -mmcs51 --model-large
+                                      8 	
+                                      9 ;--------------------------------------------------------
+                                     10 ; Public variables in this module
+                                     11 ;--------------------------------------------------------
+                                     12 	.globl _initId
+                                     13 	.globl _USB_SWRDT
+                                     14 	.globl _USB_WU
+                                     15 	.globl _USB_SUSPEND
+                                     16 	.globl _USB_IV4
+                                     17 	.globl _USB_IV3
+                                     18 	.globl _USB_IV2
+                                     19 	.globl _USB_IV1
+                                     20 	.globl _USB_IV0
+                                     21 	.globl _EXF2
+                                     22 	.globl _TF2
+                                     23 	.globl _WU
+                                     24 	.globl _USBIRQ_F
+                                     25 	.globl _USBWU
+                                     26 	.globl _SDONE
+                                     27 	.globl _RFIRQ
+                                     28 	.globl _RFRDY
+                                     29 	.globl _P0_7
+                                     30 	.globl _P0_6
+                                     31 	.globl _P0_5
+                                     32 	.globl _P0_4
+                                     33 	.globl _P0_3
+                                     34 	.globl _P0_2
+                                     35 	.globl _P0_1
+                                     36 	.globl _P0_0
+                                     37 	.globl _RFCKEN
+                                     38 	.globl _RFCSN
+                                     39 	.globl _RFCE
+                                     40 	.globl _USBSLP
+                                     41 	.globl _USBCON
+                                     42 	.globl _FCR
+                                     43 	.globl _FPCR
+                                     44 	.globl _FSR
+                                     45 	.globl _CRCH
+                                     46 	.globl _CRCL
+                                     47 	.globl _CCH3
+                                     48 	.globl _CCL3
+                                     49 	.globl _CCH2
+                                     50 	.globl _CCL2
+                                     51 	.globl _CCH1
+                                     52 	.globl _CCL1
+                                     53 	.globl _CCEN
+                                     54 	.globl _TH2
+                                     55 	.globl _TL2
+                                     56 	.globl _T2CON
+                                     57 	.globl _TH1
+                                     58 	.globl _TH0
+                                     59 	.globl _TL1
+                                     60 	.globl _TL0
+                                     61 	.globl _TMOD
+                                     62 	.globl _TCON
+                                     63 	.globl _IRCON
+                                     64 	.globl _IP1
+                                     65 	.globl _IP0
+                                     66 	.globl _IEN1
+                                     67 	.globl _IEN0
+                                     68 	.globl _SSSTAT
+                                     69 	.globl _SSDAT
+                                     70 	.globl _SSCONF
+                                     71 	.globl _P0EXP
+                                     72 	.globl _P0ALT
+                                     73 	.globl _P0DIR
+                                     74 	.globl _P0
+                                     75 	.globl _RFCON
+                                     76 	.globl _RFCTL
+                                     77 	.globl _RFDAT
+                                     78 	.globl _infopage_id
+                                     79 	.globl _chip_id
+                                     80 	.globl _ledTimeout
+                                     81 	.globl _IN5BUF
+                                     82 	.globl _OUT5BUF
+                                     83 	.globl _IN4BUF
+                                     84 	.globl _OUT4BUF
+                                     85 	.globl _IN3BUF
+                                     86 	.globl _OUT3BUF
+                                     87 	.globl _IN2BUF
+                                     88 	.globl _OUT2BUF
+                                     89 	.globl _IN1BUF
+                                     90 	.globl _OUT1BUF
+                                     91 	.globl _IN0BUF
+                                     92 	.globl _OUT0BUF
+                                     93 	.globl _SETUPBUF
+                                     94 ;--------------------------------------------------------
+                                     95 ; special function registers
+                                     96 ;--------------------------------------------------------
+                                     97 	.area RSEG    (ABS,DATA)
+      000000                         98 	.org 0x0000
+                           0000E5    99 _RFDAT	=	0x00e5
+                           0000E6   100 _RFCTL	=	0x00e6
+                           000090   101 _RFCON	=	0x0090
+                           000080   102 _P0	=	0x0080
+                           000094   103 _P0DIR	=	0x0094
+                           000095   104 _P0ALT	=	0x0095
+                           0000C9   105 _P0EXP	=	0x00c9
+                           0000BC   106 _SSCONF	=	0x00bc
+                           0000BD   107 _SSDAT	=	0x00bd
+                           0000BE   108 _SSSTAT	=	0x00be
+                           0000A8   109 _IEN0	=	0x00a8
+                           0000B8   110 _IEN1	=	0x00b8
+                           0000A9   111 _IP0	=	0x00a9
+                           0000B9   112 _IP1	=	0x00b9
+                           0000C0   113 _IRCON	=	0x00c0
+                           000088   114 _TCON	=	0x0088
+                           000089   115 _TMOD	=	0x0089
+                           00008A   116 _TL0	=	0x008a
+                           00008B   117 _TL1	=	0x008b
+                           00008C   118 _TH0	=	0x008c
+                           00008D   119 _TH1	=	0x008d
+                           0000C8   120 _T2CON	=	0x00c8
+                           0000CC   121 _TL2	=	0x00cc
+                           0000CD   122 _TH2	=	0x00cd
+                           0000C1   123 _CCEN	=	0x00c1
+                           0000C2   124 _CCL1	=	0x00c2
+                           0000C3   125 _CCH1	=	0x00c3
+                           0000C4   126 _CCL2	=	0x00c4
+                           0000C5   127 _CCH2	=	0x00c5
+                           0000C6   128 _CCL3	=	0x00c6
+                           0000C7   129 _CCH3	=	0x00c7
+                           0000CA   130 _CRCL	=	0x00ca
+                           0000CB   131 _CRCH	=	0x00cb
+                           0000F8   132 _FSR	=	0x00f8
+                           0000F9   133 _FPCR	=	0x00f9
+                           0000FA   134 _FCR	=	0x00fa
+                           0000A0   135 _USBCON	=	0x00a0
+                           0000D9   136 _USBSLP	=	0x00d9
+                                    137 ;--------------------------------------------------------
+                                    138 ; special function bits
+                                    139 ;--------------------------------------------------------
+                                    140 	.area RSEG    (ABS,DATA)
+      000000                        141 	.org 0x0000
+                           000090   142 _RFCE	=	0x0090
+                           000091   143 _RFCSN	=	0x0091
+                           000092   144 _RFCKEN	=	0x0092
+                           000080   145 _P0_0	=	0x0080
+                           000081   146 _P0_1	=	0x0081
+                           000082   147 _P0_2	=	0x0082
+                           000083   148 _P0_3	=	0x0083
+                           000084   149 _P0_4	=	0x0084
+                           000085   150 _P0_5	=	0x0085
+                           000086   151 _P0_6	=	0x0086
+                           000087   152 _P0_7	=	0x0087
+                           0000C0   153 _RFRDY	=	0x00c0
+                           0000C1   154 _RFIRQ	=	0x00c1
+                           0000C2   155 _SDONE	=	0x00c2
+                           0000C3   156 _USBWU	=	0x00c3
+                           0000C4   157 _USBIRQ_F	=	0x00c4
+                           0000C5   158 _WU	=	0x00c5
+                           0000C6   159 _TF2	=	0x00c6
+                           0000C7   160 _EXF2	=	0x00c7
+                           0000A0   161 _USB_IV0	=	0x00a0
+                           0000A1   162 _USB_IV1	=	0x00a1
+                           0000A2   163 _USB_IV2	=	0x00a2
+                           0000A3   164 _USB_IV3	=	0x00a3
+                           0000A4   165 _USB_IV4	=	0x00a4
+                           0000A5   166 _USB_SUSPEND	=	0x00a5
+                           0000A6   167 _USB_WU	=	0x00a6
+                           0000A7   168 _USB_SWRDT	=	0x00a7
+                                    169 ;--------------------------------------------------------
+                                    170 ; overlayable register banks
+                                    171 ;--------------------------------------------------------
+                                    172 	.area REG_BANK_0	(REL,OVR,DATA)
+      000000                        173 	.ds 8
+                                    174 ;--------------------------------------------------------
+                                    175 ; internal ram data
+                                    176 ;--------------------------------------------------------
+                                    177 	.area DSEG    (DATA)
+                                    178 ;--------------------------------------------------------
+                                    179 ; overlayable items in internal ram 
+                                    180 ;--------------------------------------------------------
+                                    181 ;--------------------------------------------------------
+                                    182 ; indirectly addressable internal ram data
+                                    183 ;--------------------------------------------------------
+                                    184 	.area ISEG    (DATA)
+                                    185 ;--------------------------------------------------------
+                                    186 ; absolute internal ram data
+                                    187 ;--------------------------------------------------------
+                                    188 	.area IABS    (ABS,DATA)
+                                    189 	.area IABS    (ABS,DATA)
+                                    190 ;--------------------------------------------------------
+                                    191 ; bit data
+                                    192 ;--------------------------------------------------------
+                                    193 	.area BSEG    (BIT)
+                                    194 ;--------------------------------------------------------
+                                    195 ; paged external ram data
+                                    196 ;--------------------------------------------------------
+                                    197 	.area PSEG    (PAG,XDATA)
+                                    198 ;--------------------------------------------------------
+                                    199 ; external ram data
+                                    200 ;--------------------------------------------------------
+                                    201 	.area XSEG    (XDATA)
+                           00C7E8   202 _SETUPBUF	=	0xc7e8
+                           00C6C0   203 _OUT0BUF	=	0xc6c0
+                           00C700   204 _IN0BUF	=	0xc700
+                           00C640   205 _OUT1BUF	=	0xc640
+                           00C680   206 _IN1BUF	=	0xc680
+                           00C5C0   207 _OUT2BUF	=	0xc5c0
+                           00C600   208 _IN2BUF	=	0xc600
+                           00C540   209 _OUT3BUF	=	0xc540
+                           00C580   210 _IN3BUF	=	0xc580
+                           00C4C0   211 _OUT4BUF	=	0xc4c0
+                           00C500   212 _IN4BUF	=	0xc500
+                           00C440   213 _OUT5BUF	=	0xc440
+                           00C480   214 _IN5BUF	=	0xc480
+      00807E                        215 _ledTimeout::
+      00807E                        216 	.ds 2
+      008080                        217 _chip_id::
+      008080                        218 	.ds 5
+                                    219 ;--------------------------------------------------------
+                                    220 ; absolute external ram data
+                                    221 ;--------------------------------------------------------
+                                    222 	.area XABS    (ABS,XDATA)
+                                    223 ;--------------------------------------------------------
+                                    224 ; external initialized ram data
+                                    225 ;--------------------------------------------------------
+                                    226 	.area XISEG   (XDATA)
+      008096                        227 _infopage_id::
+      008096                        228 	.ds 2
+                                    229 	.area HOME    (CODE)
+                                    230 	.area GSINIT0 (CODE)
+                                    231 	.area GSINIT1 (CODE)
+                                    232 	.area GSINIT2 (CODE)
+                                    233 	.area GSINIT3 (CODE)
+                                    234 	.area GSINIT4 (CODE)
+                                    235 	.area GSINIT5 (CODE)
+                                    236 	.area GSINIT  (CODE)
+                                    237 	.area GSFINAL (CODE)
+                                    238 	.area CSEG    (CODE)
+                                    239 ;--------------------------------------------------------
+                                    240 ; global & static initialisations
+                                    241 ;--------------------------------------------------------
+                                    242 	.area HOME    (CODE)
+                                    243 	.area GSINIT  (CODE)
+                                    244 	.area GSFINAL (CODE)
+                                    245 	.area GSINIT  (CODE)
+                                    246 ;--------------------------------------------------------
+                                    247 ; Home
+                                    248 ;--------------------------------------------------------
+                                    249 	.area HOME    (CODE)
+                                    250 	.area HOME    (CODE)
+                                    251 ;--------------------------------------------------------
+                                    252 ; code
+                                    253 ;--------------------------------------------------------
+                                    254 	.area CSEG    (CODE)
+                                    255 ;------------------------------------------------------------
+                                    256 ;Allocation info for local variables in function 'initId'
+                                    257 ;------------------------------------------------------------
+                                    258 ;i                         Allocated with name '_initId_i_1_1'
+                                    259 ;------------------------------------------------------------
+                                    260 ;	src/utils.c:36: void initId()
+                                    261 ;	-----------------------------------------
+                                    262 ;	 function initId
+                                    263 ;	-----------------------------------------
+      0014FA                        264 _initId:
+                           000007   265 	ar7 = 0x07
+                           000006   266 	ar6 = 0x06
+                           000005   267 	ar5 = 0x05
+                           000004   268 	ar4 = 0x04
+                           000003   269 	ar3 = 0x03
+                           000002   270 	ar2 = 0x02
+                           000001   271 	ar1 = 0x01
+                           000000   272 	ar0 = 0x00
+                                    273 ;	src/utils.c:41: FSR |= FSR_INFEN;
+      0014FA 43 F8 08         [24]  274 	orl	_FSR,#0x08
+                                    275 ;	src/utils.c:44: for (i=0; i<5; i++)
+      0014FD 7E 00            [12]  276 	mov	r6,#0x00
+      0014FF 7F 00            [12]  277 	mov	r7,#0x00
+      001501                        278 00102$:
+                                    279 ;	src/utils.c:45: chip_id[i] = infopage_id[i];
+      001501 EE               [12]  280 	mov	a,r6
+      001502 24 80            [12]  281 	add	a,#_chip_id
+      001504 FC               [12]  282 	mov	r4,a
+      001505 EF               [12]  283 	mov	a,r7
+      001506 34 80            [12]  284 	addc	a,#(_chip_id >> 8)
+      001508 FD               [12]  285 	mov	r5,a
+      001509 90 80 96         [24]  286 	mov	dptr,#_infopage_id
+      00150C E0               [24]  287 	movx	a,@dptr
+      00150D FA               [12]  288 	mov	r2,a
+      00150E A3               [24]  289 	inc	dptr
+      00150F E0               [24]  290 	movx	a,@dptr
+      001510 FB               [12]  291 	mov	r3,a
+      001511 EE               [12]  292 	mov	a,r6
+      001512 2A               [12]  293 	add	a,r2
+      001513 F5 82            [12]  294 	mov	dpl,a
+      001515 EF               [12]  295 	mov	a,r7
+      001516 3B               [12]  296 	addc	a,r3
+      001517 F5 83            [12]  297 	mov	dph,a
+      001519 E0               [24]  298 	movx	a,@dptr
+      00151A FB               [12]  299 	mov	r3,a
+      00151B 8C 82            [24]  300 	mov	dpl,r4
+      00151D 8D 83            [24]  301 	mov	dph,r5
+      00151F F0               [24]  302 	movx	@dptr,a
+                                    303 ;	src/utils.c:44: for (i=0; i<5; i++)
+      001520 0E               [12]  304 	inc	r6
+      001521 BE 00 01         [24]  305 	cjne	r6,#0x00,00113$
+      001524 0F               [12]  306 	inc	r7
+      001525                        307 00113$:
+      001525 C3               [12]  308 	clr	c
+      001526 EE               [12]  309 	mov	a,r6
+      001527 94 05            [12]  310 	subb	a,#0x05
+      001529 EF               [12]  311 	mov	a,r7
+      00152A 64 80            [12]  312 	xrl	a,#0x80
+      00152C 94 80            [12]  313 	subb	a,#0x80
+      00152E 40 D1            [24]  314 	jc	00102$
+                                    315 ;	src/utils.c:48: FSR &= ~FSR_INFEN;
+      001530 AF F8            [24]  316 	mov	r7,_FSR
+      001532 74 F7            [12]  317 	mov	a,#0xF7
+      001534 5F               [12]  318 	anl	a,r7
+      001535 F5 F8            [12]  319 	mov	_FSR,a
+      001537 22               [24]  320 	ret
+                                    321 	.area CSEG    (CODE)
+                                    322 	.area CONST   (CODE)
+                                    323 	.area XINIT   (CODE)
+      0016A1                        324 __xinit__infopage_id:
+      0016A1 0B 00                  325 	.byte #0x0B,#0x00
+                                    326 	.area CABS    (ABS,CODE)
