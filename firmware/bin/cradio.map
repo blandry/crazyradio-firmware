@@ -36,11 +36,11 @@ C:   00000001  l_BSEG_BYTES
 C:   00000003  l_GSFINAL                       
 C:   00000003  l_GSINIT0                       
 C:   00000005  l_OSEG                          
-C:   00000006  l_BSEG                          
-C:   00000008  l_GSINIT                        
+C:   00000007  l_BSEG                          
 C:   00000008  l_REG_BANK_0                    
 C:   00000008  l_REG_BANK_1                    
 C:   00000008  s_REG_BANK_1                    
+C:   0000000A  l_GSINIT                        
 C:   0000000A  l_GSINIT2                       
 C:   0000000A  l_XINIT                         
 C:   0000000A  l_XISEG                         
@@ -73,13 +73,13 @@ C:   00000098  s_GSINIT4
 C:   000000B2  l_CONST                         
 C:   000000C2  s_GSINIT                        
 C:   000000C2  s_GSINIT5                       
-C:   000000CA  s_GSFINAL                       
-C:   000000CD  s_CSEG                          
+C:   000000CC  s_GSFINAL                       
+C:   000000CF  s_CSEG                          
 C:   000000DE  l_SSEG                          
 C:   00000100  l_IRAM                          
 C:   0000151A  l_CSEG                          
-C:   000015E7  s_CONST                         
-C:   00001699  s_XINIT                         
+C:   000015E9  s_CONST                         
+C:   0000169B  s_XINIT                         
 C:   00008000  s_PSEG                          
 C:   00008000  s_XSEG                          
 C:   0000808E  s_XISEG                         
@@ -348,7 +348,7 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-GSINIT                              000000C2    00000008 =           8. bytes (REL,CON,CODE)
+GSINIT                              000000C2    0000000A =          10. bytes (REL,CON,CODE)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -357,7 +357,7 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-GSFINAL                             000000CA    00000003 =           3. bytes (REL,CON,CODE)
+GSFINAL                             000000CC    00000003 =           3. bytes (REL,CON,CODE)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -366,93 +366,93 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-CSEG                                000000CD    0000151A =        5402. bytes (REL,CON,CODE)
+CSEG                                000000CF    0000151A =        5402. bytes (REL,CON,CODE)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-C:   000000CD  _main                              main
-C:   00000285  _handleUsbVendorSetup              main
-C:   000005DD  _launchBootloader                  main
-C:   000005E9  _spiRadioSend                      radio
-C:   000005FD  _spiRadioReceive                   radio
-C:   00000603  _radioInit                         radio
-C:   00000640  _radioDeinit                       radio
-C:   00000652  _radioNop                          radio
-C:   00000661  _radioFlushTx                      radio
-C:   00000670  _radioFlushRx                      radio
-C:   0000067F  _radioReadReg                      radio
-C:   000006A1  _radioWriteReg                     radio
-C:   000006CB  _radioTxPacket                     radio
-C:   00000745  _radioTxPacketNoAck                radio
-C:   000007BF  _radioRxPacket                     radio
-C:   0000087B  _radioSendPacket                   radio
-C:   00000922  _radioSendPacketNoAck              radio
-C:   0000094D  _radioUpdateRetr                   radio
-C:   000009CC  _radioUpdateRfSetup                radio
-C:   000009FE  _radioSetChannel                   radio
-C:   00000A2C  _radioSetDataRate                  radio
-C:   00000A45  _radioGetDataRate                  radio
-C:   00000A4C  _radioSetPower                     radio
-C:   00000A5F  _radioSetArd                       radio
-C:   00000A6D  _radioSetArc                       radio
-C:   00000A7B  _radioSetContCarrier               radio
-C:   00000A94  _radioSetAddress                   radio
-C:   00000B28  _radioGetRpd                       radio
-C:   00000B2E  _radioGetTxRetry                   radio
-C:   00000B3B  _usbInit                           usb
-C:   00000BC4  _usbDeinit                         usb
-C:   00000BD3  _usbGetState                       usb
-C:   00000BDA  _usbWuIsr                          usb
-C:   00000BDB  _usbIsr                            usb
-C:   00000DD1  _usbBulkOutIsr                     usb
-C:   00000DD2  _usbBulkInIsr                      usb
-C:   00000ED4  _usbSetupIsr                       usb
-C:   00001362  _usbVendorIsr                      usb
-C:   00001365  _usbClassIsr                       usb
-C:   0000136C  _usbBulkSend                       usb
-C:   000013A5  _usbSendIdString                   usb
-C:   00001436  _usbIsVendorSetup                  usb
-C:   0000143F  _usbGetSetupPacket                 usb
-C:   00001443  _usbAckSetup                       usb
-C:   0000144A  _usbDismissSetup                   usb
-C:   00001451  _ledInit                           led
-C:   0000148C  _ledSet                            led
-C:   000014FA  _initId                            utils
-C:   00001538  _memcpy                            _memcpy
-C:   000015AC  __gptrput                          _gptrput
+C:   000000CF  _main                              main
+C:   00000287  _handleUsbVendorSetup              main
+C:   000005DF  _launchBootloader                  main
+C:   000005EB  _spiRadioSend                      radio
+C:   000005FF  _spiRadioReceive                   radio
+C:   00000605  _radioInit                         radio
+C:   00000642  _radioDeinit                       radio
+C:   00000654  _radioNop                          radio
+C:   00000663  _radioFlushTx                      radio
+C:   00000672  _radioFlushRx                      radio
+C:   00000681  _radioReadReg                      radio
+C:   000006A3  _radioWriteReg                     radio
+C:   000006CD  _radioTxPacket                     radio
+C:   00000747  _radioTxPacketNoAck                radio
+C:   000007C1  _radioRxPacket                     radio
+C:   0000087D  _radioSendPacket                   radio
+C:   00000924  _radioSendPacketNoAck              radio
+C:   0000094F  _radioUpdateRetr                   radio
+C:   000009CE  _radioUpdateRfSetup                radio
+C:   00000A00  _radioSetChannel                   radio
+C:   00000A2E  _radioSetDataRate                  radio
+C:   00000A47  _radioGetDataRate                  radio
+C:   00000A4E  _radioSetPower                     radio
+C:   00000A61  _radioSetArd                       radio
+C:   00000A6F  _radioSetArc                       radio
+C:   00000A7D  _radioSetContCarrier               radio
+C:   00000A96  _radioSetAddress                   radio
+C:   00000B2A  _radioGetRpd                       radio
+C:   00000B30  _radioGetTxRetry                   radio
+C:   00000B3D  _usbInit                           usb
+C:   00000BC6  _usbDeinit                         usb
+C:   00000BD5  _usbGetState                       usb
+C:   00000BDC  _usbWuIsr                          usb
+C:   00000BDD  _usbIsr                            usb
+C:   00000DD3  _usbBulkOutIsr                     usb
+C:   00000DD4  _usbBulkInIsr                      usb
+C:   00000ED6  _usbSetupIsr                       usb
+C:   00001364  _usbVendorIsr                      usb
+C:   00001367  _usbClassIsr                       usb
+C:   0000136E  _usbBulkSend                       usb
+C:   000013A7  _usbSendIdString                   usb
+C:   00001438  _usbIsVendorSetup                  usb
+C:   00001441  _usbGetSetupPacket                 usb
+C:   00001445  _usbAckSetup                       usb
+C:   0000144C  _usbDismissSetup                   usb
+C:   00001453  _ledInit                           led
+C:   0000148E  _ledSet                            led
+C:   000014FC  _initId                            utils
+C:   0000153A  _memcpy                            _memcpy
+C:   000015AE  __gptrput                          _gptrput
 ASxxxx Linker V03.00 + NoICE + sdld,  page 22.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-CSEG                                000000CD    0000151A =        5402. bytes (REL,CON,CODE)
+CSEG                                000000CF    0000151A =        5402. bytes (REL,CON,CODE)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-C:   000015C7  __gptrget                          _gptrget
-C:   000015E3  __sdcc_external_startup            _startup
+C:   000015C9  __gptrget                          _gptrget
+C:   000015E5  __sdcc_external_startup            _startup
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 23.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-CONST                               000015E7    000000B2 =         178. bytes (REL,CON,CODE)
+CONST                               000015E9    000000B2 =         178. bytes (REL,CON,CODE)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-C:   0000160C  _usbDeviceDescriptor               usbDescriptor
-C:   0000161E  _usbConfigurationDescriptor        usbDescriptor
-C:   00001657  _usbStringDescriptor0              usbDescriptor
-C:   0000165B  _usbStringDescriptor1              usbDescriptor
-C:   0000166D  _usbStringDescriptor2              usbDescriptor
+C:   0000160E  _usbDeviceDescriptor               usbDescriptor
+C:   00001620  _usbConfigurationDescriptor        usbDescriptor
+C:   00001659  _usbStringDescriptor0              usbDescriptor
+C:   0000165D  _usbStringDescriptor1              usbDescriptor
+C:   0000166F  _usbStringDescriptor2              usbDescriptor
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 24.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-XINIT                               00001699    0000000A =          10. bytes (REL,CON,CODE)
+XINIT                               0000169B    0000000A =          10. bytes (REL,CON,CODE)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------

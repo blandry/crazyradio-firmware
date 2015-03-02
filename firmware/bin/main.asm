@@ -1,7 +1,7 @@
 ;--------------------------------------------------------
 ; File Created by SDCC : free open source ANSI-C Compiler
 ; Version 3.4.0 #8981 (Jul 12 2014) (Linux)
-; This file was generated Mon Jan 19 15:32:16 2015
+; This file was generated Mon Mar  2 13:45:47 2015
 ;--------------------------------------------------------
 	.module main
 	.optsdcc -mmcs51 --model-large
@@ -232,6 +232,8 @@ _contCarrier:
 	.ds 1
 _needAck:
 	.ds 1
+_udpMode:
+	.ds 1
 ;--------------------------------------------------------
 ; paged external ram data
 ;--------------------------------------------------------
@@ -337,6 +339,8 @@ __interrupt_vect:
 	clr	_contCarrier
 ;	src/main.c:63: static bool needAck = true;
 	setb	_needAck
+;	src/main.c:64: static bool udpMode = false;
+	clr	_udpMode
 	.area GSFINAL (CODE)
 	ljmp	__sdcc_program_startup
 ;--------------------------------------------------------
@@ -360,7 +364,7 @@ __sdcc_program_startup:
 ;rlen                      Allocated with name '_main_rlen_1_45'
 ;ack                       Allocated with name '_main_ack_1_45'
 ;------------------------------------------------------------
-;	src/main.c:65: void main()
+;	src/main.c:66: void main()
 ;	-----------------------------------------
 ;	 function main
 ;	-----------------------------------------
@@ -373,45 +377,45 @@ _main:
 	ar2 = 0x02
 	ar1 = 0x01
 	ar0 = 0x00
-;	src/main.c:81: initId();
+;	src/main.c:82: initId();
 	lcall	_initId
-;	src/main.c:84: ledInit(CR_LED_RED, CR_LED_GREEN);
+;	src/main.c:85: ledInit(CR_LED_RED, CR_LED_GREEN);
 	mov	dptr,#_ledInit_PARM_2
 	mov	a,#0x04
 	movx	@dptr,a
 	mov	dpl,#0x02
 	lcall	_ledInit
-;	src/main.c:88: ledSet(LED_GREEN | LED_RED, true);
+;	src/main.c:89: ledSet(LED_GREEN | LED_RED, true);
 	setb	_ledSet_PARM_2
 	mov	dpl,#0x03
 	lcall	_ledSet
-;	src/main.c:96: radioInit();
+;	src/main.c:97: radioInit();
 	lcall	_radioInit
-;	src/main.c:102: usbInit();
+;	src/main.c:103: usbInit();
 	lcall	_usbInit
-;	src/main.c:105: IEN0 |= 0x80;
+;	src/main.c:106: IEN0 |= 0x80;
 	orl	_IEN0,#0x80
-;	src/main.c:108: while (usbGetState() != ADDRESS);
+;	src/main.c:109: while (usbGetState() != ADDRESS);
 00106$:
 	lcall	_usbGetState
 	mov	r7,dpl
 	cjne	r7,#0x02,00106$
-;	src/main.c:111: ledSet(LED_GREEN | LED_RED, false);
+;	src/main.c:112: ledSet(LED_GREEN | LED_RED, false);
 	clr	_ledSet_PARM_2
 	mov	dpl,#0x03
 	lcall	_ledSet
-;	src/main.c:114: while (usbGetState() != CONFIGURED);
+;	src/main.c:115: while (usbGetState() != CONFIGURED);
 00109$:
 	lcall	_usbGetState
 	mov	r7,dpl
 	cjne	r7,#0x03,00109$
-;	src/main.c:117: OUT1BC=0xFF;
+;	src/main.c:118: OUT1BC=0xFF;
 	mov	dptr,#0xC7C7
 	mov	a,#0xFF
 	movx	@dptr,a
-;	src/main.c:119: while(1)
+;	src/main.c:120: while(1)
 00132$:
-;	src/main.c:122: if (!(OUT1CS&EPBSY) && !contCarrier)
+;	src/main.c:124: if (!(OUT1CS&EPBSY) && !contCarrier)
 	mov	dptr,#0xC7C6
 	movx	a,@dptr
 	mov	r7,a
@@ -421,17 +425,17 @@ _main:
 	jnb	_contCarrier,00190$
 	ljmp	00127$
 00190$:
-;	src/main.c:126: IN1CS = 0x02;
+;	src/main.c:128: IN1CS = 0x02;
 	mov	dptr,#0xC7B6
 	mov	a,#0x02
 	movx	@dptr,a
-;	src/main.c:129: tlen = OUT1BC;
+;	src/main.c:131: tlen = OUT1BC;
 	mov	dptr,#0xC7C7
 	movx	a,@dptr
 	mov	r7,a
 	mov	dptr,#_main_tlen_1_45
 	movx	@dptr,a
-;	src/main.c:130: if (tlen>32) tlen=32;
+;	src/main.c:132: if (tlen>32) tlen=32;
 	clr	c
 	mov	a,#(0x20 ^ 0x80)
 	mov	b,r7
@@ -442,7 +446,7 @@ _main:
 	mov	a,#0x20
 	movx	@dptr,a
 00113$:
-;	src/main.c:133: memcpy(tbuffer, OUT1BUF, tlen);
+;	src/main.c:135: memcpy(tbuffer, OUT1BUF, tlen);
 	mov	dptr,#_main_tlen_1_45
 	movx	a,@dptr
 	mov	r7,a
@@ -470,11 +474,11 @@ _main:
 	push	ar7
 	lcall	_memcpy
 	pop	ar7
-;	src/main.c:134: if (needAck)
+;	src/main.c:136: if (needAck)
 	jb	_needAck,00192$
 	ljmp	00124$
 00192$:
-;	src/main.c:136: status = radioSendPacket(tbuffer, tlen, rbuffer, &rlen);
+;	src/main.c:138: status = radioSendPacket(tbuffer, tlen, rbuffer, &rlen);
 	mov	dptr,#_radioSendPacket_PARM_2
 	mov	a,r7
 	movx	@dptr,a
@@ -496,23 +500,23 @@ _main:
 	mov	dptr,#_tbuffer
 	lcall	_radioSendPacket
 	mov	r6,dpl
-;	src/main.c:141: ledTimeout = 2;
+;	src/main.c:143: ledTimeout = 2;
 	mov	dptr,#_ledTimeout
 	mov	a,#0x02
 	movx	@dptr,a
 	clr	a
 	inc	dptr
 	movx	@dptr,a
-;	src/main.c:142: ledSet(LED_GREEN | LED_RED, false);
+;	src/main.c:144: ledSet(LED_GREEN | LED_RED, false);
 	clr	_ledSet_PARM_2
 	mov	dpl,#0x03
 	push	ar6
 	lcall	_ledSet
 	pop	ar6
-;	src/main.c:143: if(status)
+;	src/main.c:145: if(status)
 	mov	a,r6
 	jz	00115$
-;	src/main.c:144: ledSet(LED_GREEN, true);
+;	src/main.c:146: ledSet(LED_GREEN, true);
 	setb	_ledSet_PARM_2
 	mov	dpl,#0x02
 	push	ar6
@@ -520,18 +524,18 @@ _main:
 	pop	ar6
 	sjmp	00116$
 00115$:
-;	src/main.c:146: ledSet(LED_RED, true);
+;	src/main.c:148: ledSet(LED_RED, true);
 	setb	_ledSet_PARM_2
 	mov	dpl,#0x01
 	push	ar6
 	lcall	_ledSet
 	pop	ar6
 00116$:
-;	src/main.c:148: OUT1BC=BCDUMMY;
+;	src/main.c:150: OUT1BC=BCDUMMY;
 	mov	dptr,#0xC7C7
 	mov	a,#0x01
 	movx	@dptr,a
-;	src/main.c:152: ack=status?1:0;
+;	src/main.c:154: ack=status?1:0;
 	mov	a,r6
 	jz	00136$
 	mov	r5,#0x01
@@ -542,10 +546,10 @@ _main:
 	mov	dptr,#_main_ack_1_45
 	mov	a,r5
 	movx	@dptr,a
-;	src/main.c:153: if (ack)
+;	src/main.c:155: if (ack)
 	mov	a,r5
 	jz	00120$
-;	src/main.c:155: if (radioGetRpd()) ack |= 0x02;
+;	src/main.c:157: if (radioGetRpd()) ack |= 0x02;
 	push	ar6
 	push	ar5
 	lcall	_radioGetRpd
@@ -558,7 +562,7 @@ _main:
 	orl	a,r5
 	movx	@dptr,a
 00118$:
-;	src/main.c:156: ack |= radioGetTxRetry()<<4;
+;	src/main.c:158: ack |= radioGetTxRetry()<<4;
 	push	ar6
 	lcall	_radioGetTxRetry
 	mov	r5,dpl
@@ -573,20 +577,20 @@ _main:
 	orl	a,r5
 	movx	@dptr,a
 00120$:
-;	src/main.c:158: IN1BUF[0]=ack;
+;	src/main.c:160: IN1BUF[0]=ack;
 	mov	dptr,#_main_ack_1_45
 	movx	a,@dptr
 	mov	r5,a
 	mov	dptr,#_IN1BUF
 	movx	@dptr,a
-;	src/main.c:159: if(!(status&BIT_TX_DS)) rlen=0;
+;	src/main.c:161: if(!(status&BIT_TX_DS)) rlen=0;
 	mov	a,r6
 	jb	acc.5,00122$
 	mov	dptr,#_main_rlen_1_45
 	clr	a
 	movx	@dptr,a
 00122$:
-;	src/main.c:160: memcpy(IN1BUF+1, rbuffer, rlen);
+;	src/main.c:162: memcpy(IN1BUF+1, rbuffer, rlen);
 	mov	dptr,#_main_rlen_1_45
 	movx	a,@dptr
 	mov	r6,a
@@ -611,7 +615,7 @@ _main:
 	mov	dptr,#(_IN1BUF + 0x0001)
 	mov	b,#0x00
 	lcall	_memcpy
-;	src/main.c:162: IN1BC = rlen+1;
+;	src/main.c:164: IN1BC = rlen+1;
 	mov	dptr,#_main_rlen_1_45
 	movx	a,@dptr
 	mov	r6,a
@@ -621,38 +625,38 @@ _main:
 	movx	@dptr,a
 	sjmp	00127$
 00124$:
-;	src/main.c:166: radioSendPacketNoAck(tbuffer, tlen);
+;	src/main.c:168: radioSendPacketNoAck(tbuffer, tlen);
 	mov	dptr,#_radioSendPacketNoAck_PARM_2
 	mov	a,r7
 	movx	@dptr,a
 	mov	dptr,#_tbuffer
 	lcall	_radioSendPacketNoAck
-;	src/main.c:168: ledTimeout = 2;
+;	src/main.c:170: ledTimeout = 2;
 	mov	dptr,#_ledTimeout
 	mov	a,#0x02
 	movx	@dptr,a
 	clr	a
 	inc	dptr
 	movx	@dptr,a
-;	src/main.c:169: ledSet(LED_GREEN | LED_RED, false);
+;	src/main.c:171: ledSet(LED_GREEN | LED_RED, false);
 	clr	_ledSet_PARM_2
 	mov	dpl,#0x03
 	lcall	_ledSet
-;	src/main.c:170: ledSet(LED_GREEN, true);
+;	src/main.c:172: ledSet(LED_GREEN, true);
 	setb	_ledSet_PARM_2
 	mov	dpl,#0x02
 	lcall	_ledSet
-;	src/main.c:173: OUT1BC=BCDUMMY;
+;	src/main.c:175: OUT1BC=BCDUMMY;
 	mov	dptr,#0xC7C7
 	mov	a,#0x01
 	movx	@dptr,a
 00127$:
-;	src/main.c:178: if(usbIsVendorSetup())
+;	src/main.c:180: if(usbIsVendorSetup())
 	lcall	_usbIsVendorSetup
 	jc	00198$
 	ljmp	00132$
 00198$:
-;	src/main.c:179: handleUsbVendorSetup();
+;	src/main.c:181: handleUsbVendorSetup();
 	lcall	_handleUsbVendorSetup
 	ljmp	00132$
 ;------------------------------------------------------------
@@ -668,16 +672,16 @@ _main:
 ;start                     Allocated with name '_handleUsbVendorSetup_start_3_66'
 ;stop                      Allocated with name '_handleUsbVendorSetup_stop_3_66'
 ;------------------------------------------------------------
-;	src/main.c:184: void handleUsbVendorSetup()
+;	src/main.c:186: void handleUsbVendorSetup()
 ;	-----------------------------------------
 ;	 function handleUsbVendorSetup
 ;	-----------------------------------------
 _handleUsbVendorSetup:
-;	src/main.c:186: __xdata struct controllStruct *setup = usbGetSetupPacket();
+;	src/main.c:188: __xdata struct controllStruct *setup = usbGetSetupPacket();
 	lcall	_usbGetSetupPacket
 	mov	r6,dpl
 	mov	r7,dph
-;	src/main.c:189: if (usbGetState() >= CONFIGURED)
+;	src/main.c:191: if (usbGetState() >= CONFIGURED)
 	push	ar7
 	push	ar6
 	lcall	_usbGetState
@@ -689,22 +693,22 @@ _handleUsbVendorSetup:
 	jnc	00259$
 	ljmp	00157$
 00259$:
-;	src/main.c:191: if(setup->request == LAUNCH_BOOTLOADER)
+;	src/main.c:193: if(setup->request == LAUNCH_BOOTLOADER)
 	mov	dpl,r6
 	mov	dph,r7
 	inc	dptr
 	movx	a,@dptr
 	mov	r5,a
 	cjne	r5,#0xFF,00154$
-;	src/main.c:194: usbAckSetup();
+;	src/main.c:196: usbAckSetup();
 	lcall	_usbAckSetup
-;	src/main.c:196: launchBootloader();
-;	src/main.c:199: return;
+;	src/main.c:198: launchBootloader();
+;	src/main.c:201: return;
 	ljmp	_launchBootloader
 00154$:
-;	src/main.c:201: else if(setup->request == SET_RADIO_CHANNEL)
+;	src/main.c:203: else if(setup->request == SET_RADIO_CHANNEL)
 	cjne	r5,#0x01,00151$
-;	src/main.c:203: radioSetChannel(setup->value);
+;	src/main.c:205: radioSetChannel(setup->value);
 	mov	dpl,r6
 	mov	dph,r7
 	inc	dptr
@@ -715,13 +719,13 @@ _handleUsbVendorSetup:
 	movx	a,@dptr
 	mov	dpl,r3
 	lcall	_radioSetChannel
-;	src/main.c:205: usbAckSetup();
-;	src/main.c:206: return;
+;	src/main.c:207: usbAckSetup();
+;	src/main.c:208: return;
 	ljmp	_usbAckSetup
 00151$:
-;	src/main.c:208: else if(setup->request == SET_DATA_RATE)
+;	src/main.c:210: else if(setup->request == SET_DATA_RATE)
 	cjne	r5,#0x03,00148$
-;	src/main.c:210: radioSetDataRate(setup->value);
+;	src/main.c:212: radioSetDataRate(setup->value);
 	mov	dpl,r6
 	mov	dph,r7
 	inc	dptr
@@ -732,13 +736,13 @@ _handleUsbVendorSetup:
 	movx	a,@dptr
 	mov	dpl,r3
 	lcall	_radioSetDataRate
-;	src/main.c:212: usbAckSetup();
-;	src/main.c:213: return;
+;	src/main.c:214: usbAckSetup();
+;	src/main.c:215: return;
 	ljmp	_usbAckSetup
 00148$:
-;	src/main.c:215: else if(setup->request == SET_RADIO_ADDRESS)
+;	src/main.c:217: else if(setup->request == SET_RADIO_ADDRESS)
 	cjne	r5,#0x02,00145$
-;	src/main.c:217: if(setup->length != 5)
+;	src/main.c:219: if(setup->length != 5)
 	mov	a,#0x06
 	add	a,r6
 	mov	dpl,a
@@ -754,30 +758,30 @@ _handleUsbVendorSetup:
 	cjne	r4,#0x00,00268$
 	sjmp	00102$
 00268$:
-;	src/main.c:219: usbDismissSetup();
-;	src/main.c:220: return;
+;	src/main.c:221: usbDismissSetup();
+;	src/main.c:222: return;
 	ljmp	_usbDismissSetup
 00102$:
-;	src/main.c:224: OUT0BC = BCDUMMY;
+;	src/main.c:226: OUT0BC = BCDUMMY;
 	mov	dptr,#0xC7C5
 	mov	a,#0x01
 	movx	@dptr,a
-;	src/main.c:225: while (EP0CS & OUTBSY);
+;	src/main.c:227: while (EP0CS & OUTBSY);
 00103$:
 	mov	dptr,#0xC7B4
 	movx	a,@dptr
 	mov	r4,a
 	jb	acc.3,00103$
-;	src/main.c:228: radioSetAddress(OUT0BUF);
+;	src/main.c:230: radioSetAddress(OUT0BUF);
 	mov	dptr,#_OUT0BUF
 	lcall	_radioSetAddress
-;	src/main.c:231: usbAckSetup();
-;	src/main.c:232: return;
+;	src/main.c:233: usbAckSetup();
+;	src/main.c:234: return;
 	ljmp	_usbAckSetup
 00145$:
-;	src/main.c:234: else if(setup->request == SET_RADIO_POWER)
+;	src/main.c:236: else if(setup->request == SET_RADIO_POWER)
 	cjne	r5,#0x04,00142$
-;	src/main.c:236: radioSetPower(setup->value);
+;	src/main.c:238: radioSetPower(setup->value);
 	mov	dpl,r6
 	mov	dph,r7
 	inc	dptr
@@ -788,13 +792,13 @@ _handleUsbVendorSetup:
 	movx	a,@dptr
 	mov	dpl,r3
 	lcall	_radioSetPower
-;	src/main.c:238: usbAckSetup();
-;	src/main.c:239: return;
+;	src/main.c:240: usbAckSetup();
+;	src/main.c:241: return;
 	ljmp	_usbAckSetup
 00142$:
-;	src/main.c:241: else if(setup->request == SET_RADIO_ARD)
+;	src/main.c:243: else if(setup->request == SET_RADIO_ARD)
 	cjne	r5,#0x05,00139$
-;	src/main.c:243: radioSetArd(setup->value);
+;	src/main.c:245: radioSetArd(setup->value);
 	mov	dpl,r6
 	mov	dph,r7
 	inc	dptr
@@ -805,13 +809,13 @@ _handleUsbVendorSetup:
 	movx	a,@dptr
 	mov	dpl,r3
 	lcall	_radioSetArd
-;	src/main.c:245: usbAckSetup();
-;	src/main.c:246: return;
+;	src/main.c:247: usbAckSetup();
+;	src/main.c:248: return;
 	ljmp	_usbAckSetup
 00139$:
-;	src/main.c:248: else if(setup->request == SET_RADIO_ARC)
+;	src/main.c:250: else if(setup->request == SET_RADIO_ARC)
 	cjne	r5,#0x06,00136$
-;	src/main.c:250: radioSetArc(setup->value);
+;	src/main.c:252: radioSetArc(setup->value);
 	mov	dpl,r6
 	mov	dph,r7
 	inc	dptr
@@ -822,13 +826,13 @@ _handleUsbVendorSetup:
 	movx	a,@dptr
 	mov	dpl,r3
 	lcall	_radioSetArc
-;	src/main.c:252: usbAckSetup();
-;	src/main.c:253: return;
+;	src/main.c:254: usbAckSetup();
+;	src/main.c:255: return;
 	ljmp	_usbAckSetup
 00136$:
-;	src/main.c:255: else if(setup->request == SET_CONT_CARRIER)
+;	src/main.c:257: else if(setup->request == SET_CONT_CARRIER)
 	cjne	r5,#0x20,00133$
-;	src/main.c:257: radioSetContCarrier((setup->value)?true:false);
+;	src/main.c:259: radioSetContCarrier((setup->value)?true:false);
 	mov	a,#0x02
 	add	a,r6
 	mov	r3,a
@@ -849,7 +853,7 @@ _handleUsbVendorSetup:
 	lcall	_radioSetContCarrier
 	pop	ar3
 	pop	ar4
-;	src/main.c:258: contCarrier = (setup->value)?true:false;
+;	src/main.c:260: contCarrier = (setup->value)?true:false;
 	mov	dpl,r3
 	mov	dph,r4
 	movx	a,@dptr
@@ -859,13 +863,13 @@ _handleUsbVendorSetup:
 	orl	a,r1
 	add	a,#0xff
 	mov	_contCarrier,c
-;	src/main.c:260: ledTimeout = -1;
+;	src/main.c:262: ledTimeout = -1;
 	mov	dptr,#_ledTimeout
 	mov	a,#0xFF
 	movx	@dptr,a
 	inc	dptr
 	movx	@dptr,a
-;	src/main.c:261: ledSet(LED_RED, (setup->value)?true:false);
+;	src/main.c:263: ledSet(LED_RED, (setup->value)?true:false);
 	mov	dpl,r3
 	mov	dph,r4
 	movx	a,@dptr
@@ -877,13 +881,13 @@ _handleUsbVendorSetup:
 	mov	_ledSet_PARM_2,c
 	mov	dpl,#0x01
 	lcall	_ledSet
-;	src/main.c:263: usbAckSetup();
-;	src/main.c:264: return;
+;	src/main.c:265: usbAckSetup();
+;	src/main.c:266: return;
 	ljmp	_usbAckSetup
 00133$:
-;	src/main.c:266: else if(setup->request == ACK_ENABLE)
+;	src/main.c:268: else if(setup->request == ACK_ENABLE)
 	cjne	r5,#0x10,00130$
-;	src/main.c:268: needAck = (setup->value)?true:false;
+;	src/main.c:270: needAck = (setup->value)?true:false;
 	mov	dpl,r6
 	mov	dph,r7
 	inc	dptr
@@ -895,11 +899,11 @@ _handleUsbVendorSetup:
 	orl	a,r3
 	add	a,#0xff
 	mov	_needAck,c
-;	src/main.c:270: usbAckSetup();
-;	src/main.c:271: return;
+;	src/main.c:272: usbAckSetup();
+;	src/main.c:273: return;
 	ljmp	_usbAckSetup
 00130$:
-;	src/main.c:273: else if(setup->request == CHANNEL_SCANN && setup->requestType == 0x40)
+;	src/main.c:275: else if(setup->request == CHANNEL_SCANN && setup->requestType == 0x40)
 	clr	a
 	cjne	r5,#0x21,00280$
 	inc	a
@@ -917,15 +921,15 @@ _handleUsbVendorSetup:
 00283$:
 	ljmp	00126$
 00284$:
-;	src/main.c:278: char inc = 1;
+;	src/main.c:280: char inc = 1;
 	mov	dptr,#_handleUsbVendorSetup_inc_3_66
 	mov	a,#0x01
 	movx	@dptr,a
-;	src/main.c:280: scannLength = 0;
+;	src/main.c:282: scannLength = 0;
 	mov	dptr,#_scannLength
 	clr	a
 	movx	@dptr,a
-;	src/main.c:282: if(setup->length < 1)
+;	src/main.c:284: if(setup->length < 1)
 	mov	a,#0x06
 	add	a,r6
 	mov	r3,a
@@ -945,11 +949,11 @@ _handleUsbVendorSetup:
 	mov	a,r2
 	subb	a,#0x00
 	jnc	00107$
-;	src/main.c:284: usbDismissSetup();
-;	src/main.c:285: return;
+;	src/main.c:286: usbDismissSetup();
+;	src/main.c:287: return;
 	ljmp	_usbDismissSetup
 00107$:
-;	src/main.c:289: start = setup->value;
+;	src/main.c:291: start = setup->value;
 	mov	dpl,r6
 	mov	dph,r7
 	inc	dptr
@@ -958,7 +962,7 @@ _handleUsbVendorSetup:
 	mov	r1,a
 	inc	dptr
 	movx	a,@dptr
-;	src/main.c:290: stop = (setup->index>125)?125:setup->index;
+;	src/main.c:292: stop = (setup->index>125)?125:setup->index;
 	mov	dpl,r6
 	mov	dph,r7
 	inc	dptr
@@ -984,7 +988,7 @@ _handleUsbVendorSetup:
 	mov	(_handleUsbVendorSetup_sloc0_1_0 + 1),r2
 00165$:
 	mov	r2,_handleUsbVendorSetup_sloc0_1_0
-;	src/main.c:292: if (radioGetDataRate() == DATA_RATE_2M)
+;	src/main.c:294: if (radioGetDataRate() == DATA_RATE_2M)
 	push	ar4
 	push	ar3
 	push	ar2
@@ -996,22 +1000,22 @@ _handleUsbVendorSetup:
 	pop	ar3
 	pop	ar4
 	cjne	r0,#0x02,00109$
-;	src/main.c:293: inc = 2; //2M channel are 2MHz wide
+;	src/main.c:295: inc = 2; //2M channel are 2MHz wide
 	mov	dptr,#_handleUsbVendorSetup_inc_3_66
 	mov	a,#0x02
 	movx	@dptr,a
 00109$:
-;	src/main.c:296: OUT0BC = BCDUMMY;
+;	src/main.c:298: OUT0BC = BCDUMMY;
 	mov	dptr,#0xC7C5
 	mov	a,#0x01
 	movx	@dptr,a
-;	src/main.c:297: while (EP0CS & OUTBSY);
+;	src/main.c:299: while (EP0CS & OUTBSY);
 00110$:
 	mov	dptr,#0xC7B4
 	movx	a,@dptr
 	mov	r0,a
 	jb	acc.3,00110$
-;	src/main.c:299: memcpy(tbuffer, OUT0BUF, setup->length);
+;	src/main.c:301: memcpy(tbuffer, OUT0BUF, setup->length);
 	push	ar2
 	mov	dpl,r3
 	mov	dph,r4
@@ -1046,7 +1050,7 @@ _handleUsbVendorSetup:
 	pop	ar2
 	pop	ar3
 	pop	ar4
-;	src/main.c:300: for (i=start; i<stop+1 && scannLength<MAX_SCANN_LENGTH; i+=inc)
+;	src/main.c:302: for (i=start; i<stop+1 && scannLength<MAX_SCANN_LENGTH; i+=inc)
 	mov	dptr,#_handleUsbVendorSetup_i_3_66
 	mov	a,r1
 	movx	@dptr,a
@@ -1056,9 +1060,9 @@ _handleUsbVendorSetup:
 	mov	dptr,#_handleUsbVendorSetup_inc_3_66
 	movx	a,@dptr
 	mov	_handleUsbVendorSetup_sloc0_1_0,a
-;	src/main.c:334: usbDismissSetup();
+;	src/main.c:336: usbDismissSetup();
 	pop	ar2
-;	src/main.c:300: for (i=start; i<stop+1 && scannLength<MAX_SCANN_LENGTH; i+=inc)
+;	src/main.c:302: for (i=start; i<stop+1 && scannLength<MAX_SCANN_LENGTH; i+=inc)
 00160$:
 	mov	ar0,r2
 	mov	r1,#0x00
@@ -1092,7 +1096,7 @@ _handleUsbVendorSetup:
 	jc	00292$
 	ljmp	00118$
 00292$:
-;	src/main.c:302: radioSetChannel(i);
+;	src/main.c:304: radioSetChannel(i);
 	mov	r1,_handleUsbVendorSetup_sloc1_1_0
 	mov	dpl,r1
 	push	ar4
@@ -1102,7 +1106,7 @@ _handleUsbVendorSetup:
 	pop	ar2
 	pop	ar3
 	pop	ar4
-;	src/main.c:303: status = radioSendPacket(tbuffer, setup->length, rbuffer, &rlen);
+;	src/main.c:305: status = radioSendPacket(tbuffer, setup->length, rbuffer, &rlen);
 	mov	dpl,r3
 	mov	dph,r4
 	movx	a,@dptr
@@ -1136,10 +1140,10 @@ _handleUsbVendorSetup:
 	pop	ar2
 	pop	ar3
 	pop	ar4
-;	src/main.c:305: if (status)
+;	src/main.c:307: if (status)
 	mov	a,r1
 	jz	00114$
-;	src/main.c:306: IN0BUF[scannLength++] = i;
+;	src/main.c:308: IN0BUF[scannLength++] = i;
 	mov	dptr,#_scannLength
 	movx	a,@dptr
 	mov	r0,a
@@ -1151,14 +1155,14 @@ _handleUsbVendorSetup:
 	mov	r0,a
 	movx	@dptr,a
 00114$:
-;	src/main.c:308: ledTimeout = 2;
+;	src/main.c:310: ledTimeout = 2;
 	mov	dptr,#_ledTimeout
 	mov	a,#0x02
 	movx	@dptr,a
 	clr	a
 	inc	dptr
 	movx	@dptr,a
-;	src/main.c:309: ledSet(LED_GREEN | LED_RED, false);
+;	src/main.c:311: ledSet(LED_GREEN | LED_RED, false);
 	clr	_ledSet_PARM_2
 	mov	dpl,#0x03
 	push	ar4
@@ -1170,10 +1174,10 @@ _handleUsbVendorSetup:
 	pop	ar2
 	pop	ar3
 	pop	ar4
-;	src/main.c:310: if(status)
+;	src/main.c:312: if(status)
 	mov	a,r1
 	jz	00116$
-;	src/main.c:311: ledSet(LED_GREEN, true);
+;	src/main.c:313: ledSet(LED_GREEN, true);
 	setb	_ledSet_PARM_2
 	mov	dpl,#0x02
 	push	ar4
@@ -1185,7 +1189,7 @@ _handleUsbVendorSetup:
 	pop	ar4
 	sjmp	00161$
 00116$:
-;	src/main.c:313: ledSet(LED_RED, true);
+;	src/main.c:315: ledSet(LED_RED, true);
 	setb	_ledSet_PARM_2
 	mov	dpl,#0x01
 	push	ar4
@@ -1196,7 +1200,7 @@ _handleUsbVendorSetup:
 	pop	ar3
 	pop	ar4
 00161$:
-;	src/main.c:300: for (i=start; i<stop+1 && scannLength<MAX_SCANN_LENGTH; i+=inc)
+;	src/main.c:302: for (i=start; i<stop+1 && scannLength<MAX_SCANN_LENGTH; i+=inc)
 	push	ar2
 	mov	a,_handleUsbVendorSetup_sloc0_1_0
 	mov	_handleUsbVendorSetup_sloc1_1_0,a
@@ -1220,11 +1224,11 @@ _handleUsbVendorSetup:
 	pop	ar2
 	ljmp	00160$
 00118$:
-;	src/main.c:317: usbAckSetup();
-;	src/main.c:318: return;
+;	src/main.c:319: usbAckSetup();
+;	src/main.c:320: return;
 	ljmp	_usbAckSetup
 00126$:
-;	src/main.c:320: else if(setup->request == CHANNEL_SCANN && setup->requestType == 0xC0)
+;	src/main.c:322: else if(setup->request == CHANNEL_SCANN && setup->requestType == 0xC0)
 	mov	a,r5
 	jz	00157$
 	mov	dpl,r6
@@ -1232,7 +1236,7 @@ _handleUsbVendorSetup:
 	movx	a,@dptr
 	mov	r5,a
 	cjne	r5,#0xC0,00157$
-;	src/main.c:324: IN0BC = (setup->length>scannLength)?scannLength:setup->length;
+;	src/main.c:326: IN0BC = (setup->length>scannLength)?scannLength:setup->length;
 	mov	a,#0x06
 	add	a,r6
 	mov	dpl,a
@@ -1264,35 +1268,35 @@ _handleUsbVendorSetup:
 	mov	dptr,#0xC7B5
 	mov	a,r4
 	movx	@dptr,a
-;	src/main.c:325: while (EP0CS & INBSY);
+;	src/main.c:327: while (EP0CS & INBSY);
 00119$:
 	mov	dptr,#0xC7B4
 	movx	a,@dptr
 	mov	r7,a
 	jb	acc.2,00119$
-;	src/main.c:328: usbAckSetup();
-;	src/main.c:329: return;
+;	src/main.c:330: usbAckSetup();
+;	src/main.c:331: return;
 	ljmp	_usbAckSetup
 00157$:
-;	src/main.c:334: usbDismissSetup();
+;	src/main.c:336: usbDismissSetup();
 	ljmp	_usbDismissSetup
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'launchBootloader'
 ;------------------------------------------------------------
 ;bootloader                Allocated with name '_launchBootloader_bootloader_1_70'
 ;------------------------------------------------------------
-;	src/main.c:339: void launchBootloader()
+;	src/main.c:341: void launchBootloader()
 ;	-----------------------------------------
 ;	 function launchBootloader
 ;	-----------------------------------------
 _launchBootloader:
-;	src/main.c:344: IEN0 = 0x00;
+;	src/main.c:346: IEN0 = 0x00;
 	mov	_IEN0,#0x00
-;	src/main.c:347: usbDeinit();
+;	src/main.c:349: usbDeinit();
 	lcall	_usbDeinit
-;	src/main.c:350: radioDeinit();
+;	src/main.c:352: radioDeinit();
 	lcall	_radioDeinit
-;	src/main.c:353: bootloader();
+;	src/main.c:355: bootloader();
 	ljmp	0x7800
 	.area CSEG    (CODE)
 	.area CONST   (CODE)

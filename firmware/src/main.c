@@ -61,6 +61,7 @@ static char scannLength;
 
 static bool contCarrier=false;
 static bool needAck = true;
+static bool udpMode = false;
 
 void main()
 {
@@ -118,6 +119,7 @@ void main()
 
   while(1)
   {
+    
     //Send a packet if something is received on the USB
     if (!(OUT1CS&EPBSY) && !contCarrier)
     {

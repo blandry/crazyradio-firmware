@@ -1,7 +1,7 @@
                                       1 ;--------------------------------------------------------
                                       2 ; File Created by SDCC : free open source ANSI-C Compiler
                                       3 ; Version 3.4.0 #8981 (Jul 12 2014) (Linux)
-                                      4 ; This file was generated Mon Jan 19 15:32:16 2015
+                                      4 ; This file was generated Mon Mar  2 13:45:47 2015
                                       5 ;--------------------------------------------------------
                                       6 	.module utils
                                       7 	.optsdcc -mmcs51 --model-large
@@ -261,7 +261,7 @@
                                     261 ;	-----------------------------------------
                                     262 ;	 function initId
                                     263 ;	-----------------------------------------
-      0014FA                        264 _initId:
+      0014FC                        264 _initId:
                            000007   265 	ar7 = 0x07
                            000006   266 	ar6 = 0x06
                            000005   267 	ar5 = 0x05
@@ -271,56 +271,56 @@
                            000001   271 	ar1 = 0x01
                            000000   272 	ar0 = 0x00
                                     273 ;	src/utils.c:41: FSR |= FSR_INFEN;
-      0014FA 43 F8 08         [24]  274 	orl	_FSR,#0x08
+      0014FC 43 F8 08         [24]  274 	orl	_FSR,#0x08
                                     275 ;	src/utils.c:44: for (i=0; i<5; i++)
-      0014FD 7E 00            [12]  276 	mov	r6,#0x00
-      0014FF 7F 00            [12]  277 	mov	r7,#0x00
-      001501                        278 00102$:
+      0014FF 7E 00            [12]  276 	mov	r6,#0x00
+      001501 7F 00            [12]  277 	mov	r7,#0x00
+      001503                        278 00102$:
                                     279 ;	src/utils.c:45: chip_id[i] = infopage_id[i];
-      001501 EE               [12]  280 	mov	a,r6
-      001502 24 80            [12]  281 	add	a,#_chip_id
-      001504 FC               [12]  282 	mov	r4,a
-      001505 EF               [12]  283 	mov	a,r7
-      001506 34 80            [12]  284 	addc	a,#(_chip_id >> 8)
-      001508 FD               [12]  285 	mov	r5,a
-      001509 90 80 96         [24]  286 	mov	dptr,#_infopage_id
-      00150C E0               [24]  287 	movx	a,@dptr
-      00150D FA               [12]  288 	mov	r2,a
-      00150E A3               [24]  289 	inc	dptr
-      00150F E0               [24]  290 	movx	a,@dptr
-      001510 FB               [12]  291 	mov	r3,a
-      001511 EE               [12]  292 	mov	a,r6
-      001512 2A               [12]  293 	add	a,r2
-      001513 F5 82            [12]  294 	mov	dpl,a
-      001515 EF               [12]  295 	mov	a,r7
-      001516 3B               [12]  296 	addc	a,r3
-      001517 F5 83            [12]  297 	mov	dph,a
-      001519 E0               [24]  298 	movx	a,@dptr
-      00151A FB               [12]  299 	mov	r3,a
-      00151B 8C 82            [24]  300 	mov	dpl,r4
-      00151D 8D 83            [24]  301 	mov	dph,r5
-      00151F F0               [24]  302 	movx	@dptr,a
+      001503 EE               [12]  280 	mov	a,r6
+      001504 24 80            [12]  281 	add	a,#_chip_id
+      001506 FC               [12]  282 	mov	r4,a
+      001507 EF               [12]  283 	mov	a,r7
+      001508 34 80            [12]  284 	addc	a,#(_chip_id >> 8)
+      00150A FD               [12]  285 	mov	r5,a
+      00150B 90 80 96         [24]  286 	mov	dptr,#_infopage_id
+      00150E E0               [24]  287 	movx	a,@dptr
+      00150F FA               [12]  288 	mov	r2,a
+      001510 A3               [24]  289 	inc	dptr
+      001511 E0               [24]  290 	movx	a,@dptr
+      001512 FB               [12]  291 	mov	r3,a
+      001513 EE               [12]  292 	mov	a,r6
+      001514 2A               [12]  293 	add	a,r2
+      001515 F5 82            [12]  294 	mov	dpl,a
+      001517 EF               [12]  295 	mov	a,r7
+      001518 3B               [12]  296 	addc	a,r3
+      001519 F5 83            [12]  297 	mov	dph,a
+      00151B E0               [24]  298 	movx	a,@dptr
+      00151C FB               [12]  299 	mov	r3,a
+      00151D 8C 82            [24]  300 	mov	dpl,r4
+      00151F 8D 83            [24]  301 	mov	dph,r5
+      001521 F0               [24]  302 	movx	@dptr,a
                                     303 ;	src/utils.c:44: for (i=0; i<5; i++)
-      001520 0E               [12]  304 	inc	r6
-      001521 BE 00 01         [24]  305 	cjne	r6,#0x00,00113$
-      001524 0F               [12]  306 	inc	r7
-      001525                        307 00113$:
-      001525 C3               [12]  308 	clr	c
-      001526 EE               [12]  309 	mov	a,r6
-      001527 94 05            [12]  310 	subb	a,#0x05
-      001529 EF               [12]  311 	mov	a,r7
-      00152A 64 80            [12]  312 	xrl	a,#0x80
-      00152C 94 80            [12]  313 	subb	a,#0x80
-      00152E 40 D1            [24]  314 	jc	00102$
+      001522 0E               [12]  304 	inc	r6
+      001523 BE 00 01         [24]  305 	cjne	r6,#0x00,00113$
+      001526 0F               [12]  306 	inc	r7
+      001527                        307 00113$:
+      001527 C3               [12]  308 	clr	c
+      001528 EE               [12]  309 	mov	a,r6
+      001529 94 05            [12]  310 	subb	a,#0x05
+      00152B EF               [12]  311 	mov	a,r7
+      00152C 64 80            [12]  312 	xrl	a,#0x80
+      00152E 94 80            [12]  313 	subb	a,#0x80
+      001530 40 D1            [24]  314 	jc	00102$
                                     315 ;	src/utils.c:48: FSR &= ~FSR_INFEN;
-      001530 AF F8            [24]  316 	mov	r7,_FSR
-      001532 74 F7            [12]  317 	mov	a,#0xF7
-      001534 5F               [12]  318 	anl	a,r7
-      001535 F5 F8            [12]  319 	mov	_FSR,a
-      001537 22               [24]  320 	ret
+      001532 AF F8            [24]  316 	mov	r7,_FSR
+      001534 74 F7            [12]  317 	mov	a,#0xF7
+      001536 5F               [12]  318 	anl	a,r7
+      001537 F5 F8            [12]  319 	mov	_FSR,a
+      001539 22               [24]  320 	ret
                                     321 	.area CSEG    (CODE)
                                     322 	.area CONST   (CODE)
                                     323 	.area XINIT   (CODE)
-      0016A1                        324 __xinit__infopage_id:
-      0016A1 0B 00                  325 	.byte #0x0B,#0x00
+      0016A3                        324 __xinit__infopage_id:
+      0016A3 0B 00                  325 	.byte #0x0B,#0x00
                                     326 	.area CABS    (ABS,CODE)
