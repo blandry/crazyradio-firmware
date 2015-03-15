@@ -1,7 +1,7 @@
                                       1 ;--------------------------------------------------------
                                       2 ; File Created by SDCC : free open source ANSI-C Compiler
                                       3 ; Version 3.4.0 #8981 (Jul 12 2014) (Linux)
-                                      4 ; This file was generated Mon Mar  2 13:45:47 2015
+                                      4 ; This file was generated Sat Mar 14 13:10:12 2015
                                       5 ;--------------------------------------------------------
                                       6 	.module usbDescriptor
                                       7 	.optsdcc -mmcs51 --model-large
